@@ -16,15 +16,6 @@ public class DiceRollerPresenter {
         this.roller = new DiceRoller();
     }
 
-//    public ArrayList<Integer> rollDice(int dicePool, int threshold) {
-//        return roller.rollDice(dicePool, threshold);
-//    }
-//
-//    public int getSuccesses(ArrayList<Integer> rolls, int threshold) {
-//        return roller.getSuccessesCofd(rolls, threshold);
-//    }
-//
-
     public void rollDice(
         int dicePool,           // How many dice are rolled?
         int rerollThreshold)    // What is the minimum die roll required for rerolls?

@@ -2,10 +2,11 @@
     <string name="app_name">DiceRoller</string>
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="label_dice">Dice</string>
     <string name="label_reroll_threshold">Reroll threshold</string>
     <string name="label_results">Results</string>
     <string name="label_successes">Successes</string>
+
+    <string name="text_sample_roll">The rolls were: 5, 4, 8, 9, 1</string>
+    <string name="text_sample_successes">2 successes</string>
 </resources>

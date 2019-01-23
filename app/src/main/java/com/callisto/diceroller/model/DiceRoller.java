@@ -5,47 +5,9 @@ import android.support.annotation.NonNull;
 import com.callisto.diceroller.tools.Constants;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class DiceRoller {
-//    private int getDicePoolCofd
-//        (int attribute,
-//        int skill,
-//        int misc,
-//        int penalties) {
-//
-//        return attribute + skill + misc - penalties;
-//    }
-//
-//    public ArrayList<Integer> getRollsCofd
-//        (int attribute,
-//         int skill,
-//         int misc,
-//         int penalties) {
-//        return getRollsCofd(attribute, skill, misc, penalties,
-//            Constants.Values.COFD_BASE_ROLL_AGAIN_THRESHOLD.getValue());
-//    }
-//
-//    public ArrayList<Integer> getRollsCofd
-//        (int attribute,
-//         int skill,
-//         int misc,
-//         int penalties,
-//         int rollAgainThreshold) {
-//
-//        int dicePool = getDicePoolCofd(attribute, skill, misc, penalties);
-//
-//        if (dicePool < 1) dicePool = 1;
-//
-//        return rollDice(rollAgainThreshold, dicePool);
-//    }
-
-    @NonNull
-    public ArrayList<Integer> rollDice
-        (int dicePool) {
-
-        return rollDice(Constants.Values.COFD_BASE_ROLL_AGAIN_THRESHOLD.getValue(), dicePool);
-    }
 
     @NonNull
     public ArrayList<Integer> rollDice
@@ -55,17 +17,18 @@ public class DiceRoller {
         ArrayList<Integer> result = new ArrayList<>();
 
         for (int i = 0; i < dicePool; i++) {
-            int integer = new Random().nextInt(Constants.Values.COFD_DIE_SIZE.getValue());
+            int integer = getD10();
 
             result.add(integer);
 
-            while (integer >= rollAgainThreshold) {
-                result.add(integer);
-                integer = new Random().nextInt(Constants.Values.COFD_DIE_SIZE.getValue());
-            }
+            if (integer >= rollAgainThreshold) i--;
         }
 
         return result;
+    }
+
+    private int getD10() {
+        return 1 + ThreadLocalRandom.current().nextInt(1, Constants.Values.COFD_DIE_SIZE.getValue());
     }
 
     public int getSuccessesCofd(ArrayList<Integer> rolls) {

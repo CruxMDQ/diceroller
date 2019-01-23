@@ -1,10 +1,9 @@
 package com.callisto.diceroller.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.presenters.DiceRollerPresenter;
@@ -28,11 +27,6 @@ public class DiceRollerFragment
 
     @ViewById EditText txtDice;
     @ViewById EditText txtThreshold;
-
-    @ViewById TextView txtResults;
-    @ViewById TextView txtSuccesses;
-
-    @ViewById Button btnRoll;
 
     @Override
     public void onViewCreated
@@ -79,8 +73,11 @@ public class DiceRollerFragment
             }
         }
 
-        txtResults.setText(rollString);
-
-        txtSuccesses.setText(String.valueOf(successes));
+        AlertDialog ad = new AlertDialog.Builder(getContext())
+            .create();
+        ad.setCancelable(true);
+        ad.setTitle(String.valueOf(successes) + " successes");
+        ad.setMessage("The rolls were " + rollString);
+        ad.show();
     }
 }
