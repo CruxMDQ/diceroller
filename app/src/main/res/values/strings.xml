@@ -41,4 +41,7 @@
     <string name="label_survival">Survival</string>
     <string name="label_weaponry">Weaponry</string>
     <string name="label_skills_social">Social (-1)</string>
+    <string name="label_stat_edition">Stat edition</string>
+    <string name="prompt_stat_edition">Set new value for </string>
+    <string name="label_btn_ok">OK</string>
 </resources>

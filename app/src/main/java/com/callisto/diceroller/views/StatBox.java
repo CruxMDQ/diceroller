@@ -79,6 +79,8 @@ public class StatBox extends LinearLayout {
             lblStat.setTypeface(Typeface.DEFAULT);
             txtStat.setTypeface(Typeface.DEFAULT);
             isSelected = false;
+
+            changeDicePool();
         } else {
             setBackgroundColor(ContextCompat.getColor(context, R.color.color_stat_box_selected));
             lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_white));
@@ -86,7 +88,15 @@ public class StatBox extends LinearLayout {
             lblStat.setTypeface(Typeface.DEFAULT_BOLD);
             txtStat.setTypeface(Typeface.DEFAULT_BOLD);
             isSelected = true;
+
+            changeDicePool();
         }
+    }
+
+    private void changeDicePool() {
+        observer.changeDicePool(
+            lblStat.getText().toString(),
+            Integer.parseInt(txtStat.getText().toString()));
     }
 
     private void inflateLayout() {

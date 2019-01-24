@@ -39,6 +39,7 @@
                 android:id="@+id/lblSkillsMental"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="@string/label_skills_mental"/>
             
             <!-- Academics -->
@@ -118,6 +119,7 @@
                 android:id="@+id/lblSkillsPhysical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="@string/label_skills_physical"/>
 
             <!-- Athletics -->
@@ -197,6 +199,7 @@
                 android:id="@+id/lblSkillsSocial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="@string/label_skills_social"/>
 
             <!-- Animal Ken -->
