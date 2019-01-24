@@ -36,4 +36,26 @@ public class Constants {
             return value;
         }
     }
+
+    public enum Tags {
+        TAG_STAT_INT("Intelligence"),
+        TAG_STAT_WIT("Wits"),
+        TAG_STAT_RES("Resolve"),
+        TAG_STAT_STR("Strength"),
+        TAG_STAT_DEX("Dexterity"),
+        TAG_STAT_STA("Stamina"),
+        TAG_STAT_PRE("Presence"),
+        TAG_STAT_MAN("Manipulation"),
+        TAG_STAT_COM("Composure");
+
+        private String text;
+
+        Tags(String text) {
+            this.text = text;
+        }
+
+        public String getText() {
+            return text;
+        }
+    }
 }

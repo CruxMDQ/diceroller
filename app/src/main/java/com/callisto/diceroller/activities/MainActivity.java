@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.fragments.BaseFragment;
-import com.callisto.diceroller.fragments.DiceRollerFragment_;
+import com.callisto.diceroller.fragments.CharacterSheetFragment;
 import com.callisto.diceroller.presenters.MainActivityPresenter;
 import com.callisto.diceroller.viewmanagers.MainActivityNavigation;
 
@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity
 
         presenter = new MainActivityPresenter(this);
 
-        setFragment(new DiceRollerFragment_());
-
+//        setFragment(new DiceRollerFragment());
+        setFragment(new CharacterSheetFragment());
     }
 
     @Override

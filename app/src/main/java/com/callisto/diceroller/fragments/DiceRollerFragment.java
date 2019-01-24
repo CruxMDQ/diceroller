@@ -3,20 +3,17 @@ package com.callisto.diceroller.fragments;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.view.View;
 import android.widget.EditText;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.presenters.DiceRollerPresenter;
 import com.callisto.diceroller.viewmanagers.DiceRollerNavigation;
 
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
-@EFragment(R.layout.fragment_dice_roller)
 public class DiceRollerFragment
     extends BaseFragment
     implements DiceRollerNavigation.View,
@@ -25,8 +22,10 @@ public class DiceRollerFragment
 
     DiceRollerPresenter presenter;
 
-    @ViewById EditText txtDice;
-    @ViewById EditText txtThreshold;
+    EditText txtDice;
+    EditText txtThreshold;
+
+    FloatingActionButton fab;
 
     @Override
     public void onViewCreated
@@ -37,14 +36,23 @@ public class DiceRollerFragment
         presenter = new DiceRollerPresenter(this);
     }
 
-    @Click
-    void fabRollDice() {
-        presenter.rollDice(getDiceNumber(), getReRollThreshold());
-    }
-
     @Override
     protected int getLayout() {
         return R.layout.fragment_dice_roller;
+    }
+
+    @Override
+    protected void findViews() {
+        txtDice = rootView.findViewById(R.id.txtDice);
+        txtThreshold = rootView.findViewById(R.id.txtThreshold);
+
+        fab = rootView.findViewById(R.id.fabRollDice);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.rollDice(getDiceNumber(), getReRollThreshold());
+            }
+        });
     }
 
     @Override

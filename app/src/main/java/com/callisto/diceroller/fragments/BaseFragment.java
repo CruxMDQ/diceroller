@@ -26,6 +26,8 @@ public abstract class BaseFragment
 
         rootView = inflater.inflate(getLayout(), container, false);
 
+        findViews();
+
         return rootView;
     }
 
@@ -35,5 +37,7 @@ public abstract class BaseFragment
     }
 
     protected abstract int getLayout();
+
+    protected abstract void findViews();
 
 }

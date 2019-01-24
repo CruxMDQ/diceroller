@@ -9,4 +9,36 @@
 
     <string name="text_sample_roll">The rolls were: 5, 4, 8, 9, 1</string>
     <string name="text_sample_successes">2 successes</string>
+
+    <string name="label_attributes">Attributes</string>
+    <string name="label_attr_int">Intelligence</string>
+    <string name="label_attr_wits">Wits</string>
+    <string name="label_attr_res">Resolve</string>
+    <string name="label_attr_str">Strength</string>
+    <string name="label_attr_dex">Dexterity</string>
+    <string name="label_attr_sta">Stamina</string>
+    <string name="label_attr_pre">Presence</string>
+    <string name="label_attr_man">Manipulation</string>
+    <string name="label_attr_com">Composure</string>
+
+    <string name="label_skills">Skills (untrained penalty)</string>
+    <string name="label_skills_mental">Mental (-3)</string>
+    <string name="skill_academics">Academics</string>
+    <string name="skill_crafts">Crafts</string>
+    <string name="skill_computer">Computer</string>
+    <string name="skill_investigation">Investigation</string>
+    <string name="skill_medicine">Medicine</string>
+    <string name="skill_occult">Occult</string>
+    <string name="skill_politics">Politics</string>
+    <string name="skill_science">Science</string>
+    <string name="label_skills_physical">Physical (-1)</string>
+    <string name="label_athletics">Athletics</string>
+    <string name="label_brawl">Brawl</string>
+    <string name="label_drive">Drive</string>
+    <string name="label_guns">Firearms</string>
+    <string name="label_larceny">Larceny</string>
+    <string name="label_stealth">Stealth</string>
+    <string name="label_survival">Survival</string>
+    <string name="label_weaponry">Weaponry</string>
+    <string name="label_skills_social">Social (-1)</string>
 </resources>
