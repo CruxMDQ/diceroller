@@ -127,7 +127,7 @@
                 android:id="@+id/skillAthletics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/label_athletics"
+                custom:statName="@string/skill_athletics"
                 custom:statValue="0"/>
 
             <!-- Brawl -->
@@ -135,7 +135,7 @@
                 android:id="@+id/skillBrawl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/label_brawl"
+                custom:statName="@string/skill_brawl"
                 custom:statValue="0"/>
 
             <!-- Drive -->
@@ -143,7 +143,7 @@
                 android:id="@+id/skillDrive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/label_drive"
+                custom:statName="@string/skill_drive"
                 custom:statValue="0"/>
 
             <!-- Firearms -->
@@ -151,7 +151,7 @@
                 android:id="@+id/skillFirearms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/label_guns"
+                custom:statName="@string/skill_guns"
                 custom:statValue="0"/>
 
             <!-- Larceny -->
@@ -159,7 +159,7 @@
                 android:id="@+id/skillLarceny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/label_larceny"
+                custom:statName="@string/skill_larceny"
                 custom:statValue="0"/>
 
             <!-- Stealth -->
@@ -167,7 +167,7 @@
                 android:id="@+id/skillStealth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/label_stealth"
+                custom:statName="@string/skill_stealth"
                 custom:statValue="0"/>
 
             <!-- Survival -->
@@ -175,7 +175,7 @@
                 android:id="@+id/skillSurvival"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/label_survival"
+                custom:statName="@string/skill_survival"
                 custom:statValue="0"/>
 
             <!-- Weaponry -->
@@ -183,7 +183,7 @@
                 android:id="@+id/skillWeaponry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/label_weaponry"
+                custom:statName="@string/skill_weaponry"
                 custom:statValue="0"/>
         </LinearLayout>
 

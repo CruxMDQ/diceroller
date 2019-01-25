@@ -32,14 +32,14 @@
     <string name="skill_politics">Politics</string>
     <string name="skill_science">Science</string>
     <string name="label_skills_physical">Physical (-1)</string>
-    <string name="label_athletics">Athletics</string>
-    <string name="label_brawl">Brawl</string>
-    <string name="label_drive">Drive</string>
-    <string name="label_guns">Firearms</string>
-    <string name="label_larceny">Larceny</string>
-    <string name="label_stealth">Stealth</string>
-    <string name="label_survival">Survival</string>
-    <string name="label_weaponry">Weaponry</string>
+    <string name="skill_athletics">Athletics</string>
+    <string name="skill_brawl">Brawl</string>
+    <string name="skill_drive">Drive</string>
+    <string name="skill_guns">Firearms</string>
+    <string name="skill_larceny">Larceny</string>
+    <string name="skill_stealth">Stealth</string>
+    <string name="skill_survival">Survival</string>
+    <string name="skill_weaponry">Weaponry</string>
     <string name="label_skills_social">Social (-1)</string>
     <string name="label_stat_edition">Stat edition</string>
     <string name="prompt_stat_edition">Set new value for %1$s</string>
@@ -58,4 +58,7 @@
     <string name="label_btn_roll">Roll</string>
     <string name="label_dice_roll">Dice roll</string>
     <string name="label_roll_report">The rolls were %1$s</string>
+    <string name="label_attrs_mental">Mental</string>
+    <string name="label_attrs_physical">Physical</string>
+    <string name="label_attrs_social">Social</string>
 </resources>

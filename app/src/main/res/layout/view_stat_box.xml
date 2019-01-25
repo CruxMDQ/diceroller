@@ -16,9 +16,12 @@
         android:text="@string/label_attr_int"
         />
 
-    <TextView
-        style="@style/attributeInputBox"
-        android:id="@+id/txtStat"
-        android:text="3"
+    <LinearLayout
+        android:id="@+id/panelValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:orientation="horizontal"
         />
 </LinearLayout>

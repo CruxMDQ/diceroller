@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.MainActivity"
-    tools:showIn="@layout/fragment_char_sheet"
     android:orientation="vertical"
-    >
+    tools:context=".activities.MainActivity"
+    tools:showIn="@layout/fragment_char_sheet">
 
     <TextView
         android:id="@+id/lblAttributes"
@@ -19,110 +17,201 @@
         android:text="@string/label_attributes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
-        
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
         <!--Mental attributes -->
+        <!-- Swapping logic: width to match_parent, remove weight attribute -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            >
-            
-            <!-- Intelligence -->
-            <com.callisto.diceroller.views.StatBox
-                android:id="@+id/statIntelligence"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                custom:statName="@string/label_attr_int"
-                custom:statValue="3"/>
+            style="@style/statGroupContainerOpen"
+            android:id="@+id/containerAttrsMental"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-            <!-- Wits -->
-            <com.callisto.diceroller.views.StatBox
-                android:id="@+id/statWits"
+            <LinearLayout
+                android:id="@+id/panelLabelMental"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                custom:statName="@string/label_attr_wits"
-                custom:statValue="3"/>
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <!-- Resolve -->
-            <com.callisto.diceroller.views.StatBox
-                android:id="@+id/statResolve"
+                <TextView
+                    android:id="@+id/labelAttrsMental"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_attrs_mental"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/txtSelectedMentalAttribute"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="(Intelligence)"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/panelAttrsMental"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/label_attr_res"
-                custom:statValue="3"/>
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <!-- Intelligence -->
+                <com.callisto.diceroller.views.StatBox
+                    android:id="@+id/statIntelligence"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    custom:statName="@string/label_attr_int"
+                    custom:statValue="3" />
+
+                <!-- Wits -->
+                <com.callisto.diceroller.views.StatBox
+                    android:id="@+id/statWits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    custom:statName="@string/label_attr_wits"
+                    custom:statValue="3" />
+
+                <!-- Resolve -->
+                <com.callisto.diceroller.views.StatBox
+                    android:id="@+id/statResolve"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    custom:statName="@string/label_attr_res"
+                    custom:statValue="3" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Physical attributes -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            >
-            <!-- Strength -->
-            <com.callisto.diceroller.views.StatBox
-                android:id="@+id/statStrength"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                custom:statName="@string/label_attr_str"
-                custom:statValue="3"/>
+            style="@style/statGroupContainerOpen"
+            android:id="@+id/containerAttrsPhysical"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-            <!-- Dexterity -->
-            <com.callisto.diceroller.views.StatBox
-                android:id="@+id/statDexterity"
+            <LinearLayout
+                android:id="@+id/panelLabelPhysical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                custom:statName="@string/label_attr_dex"
-                custom:statValue="3"/>
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <!-- Stamina -->
-            <com.callisto.diceroller.views.StatBox
-                android:id="@+id/statStamina"
+                <TextView
+                    android:id="@+id/labelAttrsPhysical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_attrs_physical"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/txtSelectedPhysicalAttribute"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/panelAttrsPhysical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/label_attr_sta"
-                custom:statValue="3"/>
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <!-- Strength -->
+                <com.callisto.diceroller.views.StatBox
+                    android:id="@+id/statStrength"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    custom:statName="@string/label_attr_str"
+                    custom:statValue="3" />
+
+                <!-- Dexterity -->
+                <com.callisto.diceroller.views.StatBox
+                    android:id="@+id/statDexterity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    custom:statName="@string/label_attr_dex"
+                    custom:statValue="3" />
+
+                <!-- Stamina -->
+                <com.callisto.diceroller.views.StatBox
+                    android:id="@+id/statStamina"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    custom:statName="@string/label_attr_sta"
+                    custom:statValue="3" />
+            </LinearLayout>
         </LinearLayout>
-        
+
         <!-- Social attributes -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            >
-            <!-- Presence -->
-            <com.callisto.diceroller.views.StatBox
-                android:id="@+id/statPresence"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                custom:statName="@string/label_attr_pre"
-                custom:statValue="3"/>
+            style="@style/statGroupContainerOpen"
+            android:id="@+id/containerAttrsSocial"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-            <!-- Manipulation -->
-            <com.callisto.diceroller.views.StatBox
-                android:id="@+id/statManipulation"
+            <LinearLayout
+                android:id="@+id/panelLabelSocial"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                custom:statName="@string/label_attr_man"
-                custom:statValue="3"/>
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <!-- Composure -->
-            <com.callisto.diceroller.views.StatBox
-                android:id="@+id/statComposure"
+                <TextView
+                    android:id="@+id/labelAttrsSocial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_attrs_social"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/txtSelectedSocialAttribute"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/panelAttrsSocial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/label_attr_com"
-                custom:statValue="3"/>
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <!-- Presence -->
+                <com.callisto.diceroller.views.StatBox
+                    android:id="@+id/statPresence"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    custom:statName="@string/label_attr_pre"
+                    custom:statValue="3" />
+
+                <!-- Manipulation -->
+                <com.callisto.diceroller.views.StatBox
+                    android:id="@+id/statManipulation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    custom:statName="@string/label_attr_man"
+                    custom:statValue="3" />
+
+                <!-- Composure -->
+                <com.callisto.diceroller.views.StatBox
+                    android:id="@+id/statComposure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    custom:statName="@string/label_attr_com"
+                    custom:statValue="3" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

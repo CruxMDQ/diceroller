@@ -1,4 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="margin_small">8dp</dimen>
+
+    <!-- Used for dots on attributes, skills, etc. -->
+    <dimen name="dot_size">10dp</dimen>
 </resources>

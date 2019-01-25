@@ -4,5 +4,4 @@
         <attr name="statName" format="string" localization="suggested" />
         <attr name="statValue" format="string" />
     </declare-styleable>
-
 </resources>
