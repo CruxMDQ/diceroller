@@ -66,7 +66,7 @@ public class DiceRollerFragment
     }
 
     @Override
-    public void showResults(ArrayList<Integer> rolls, int successes) {
+    public void showResults(ArrayList<Integer> rolls, int successes, boolean isExtended) {
         Iterator iterator = rolls.iterator();
 
         String rollString = "";

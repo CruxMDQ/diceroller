@@ -207,7 +207,7 @@
                 android:id="@+id/skillAnimalKen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="Animal Ken"
+                custom:statName="@string/skill_animal_ken"
                 custom:statValue="0"/>
 
             <!-- Empathy -->
@@ -215,7 +215,7 @@
                 android:id="@+id/skillEmpathy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="Empathy"
+                custom:statName="@string/skill_empathy"
                 custom:statValue="0"/>
 
             <!-- Expression -->
@@ -223,7 +223,7 @@
                 android:id="@+id/skillExpression"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="Expression"
+                custom:statName="@string/skill_expression"
                 custom:statValue="0"/>
 
             <!-- Intimidation -->
@@ -231,7 +231,7 @@
                 android:id="@+id/skillIntimidation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="Intimidation"
+                custom:statName="@string/skill_intimidation"
                 custom:statValue="0"/>
 
             <!-- Persuasion -->
@@ -239,7 +239,7 @@
                 android:id="@+id/skillPersuasion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="Persuasion"
+                custom:statName="@string/skill_persuasion"
                 custom:statValue="0"/>
 
             <!-- Socialize -->
@@ -247,7 +247,7 @@
                 android:id="@+id/skillSocialize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="Socialize"
+                custom:statName="@string/skill_socialize"
                 custom:statValue="0"/>
 
             <!-- Streetwise -->
@@ -255,7 +255,7 @@
                 android:id="@+id/skillStreetwise"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="Streetwise"
+                custom:statName="@string/skill_streetwise"
                 custom:statValue="0"/>
 
             <!-- Subterfuge -->
@@ -263,9 +263,8 @@
                 android:id="@+id/skillSubterfuge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="Subterfuge"
+                custom:statName="@string/skill_subterfuge"
                 custom:statValue="0"/>
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

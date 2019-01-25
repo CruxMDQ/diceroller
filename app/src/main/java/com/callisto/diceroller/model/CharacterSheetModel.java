@@ -77,4 +77,8 @@ public class CharacterSheetModel {
     public ArrayList<Pair<String, Integer>> getStats() {
         return stats;
     }
+
+    public ArrayList<Integer> rollExtended(int threshold) {
+        return diceRoller.rollExtended(threshold, diceNumber);
+    }
 }

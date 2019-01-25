@@ -42,6 +42,20 @@
     <string name="label_weaponry">Weaponry</string>
     <string name="label_skills_social">Social (-1)</string>
     <string name="label_stat_edition">Stat edition</string>
-    <string name="prompt_stat_edition">Set new value for </string>
+    <string name="prompt_stat_edition">Set new value for %1$s</string>
     <string name="label_btn_ok">OK</string>
+    <string name="skill_animal_ken">Animal Ken</string>
+    <string name="skill_empathy">Empathy</string>
+    <string name="skill_expression">Expression</string>
+    <string name="skill_intimidation">Intimidation</string>
+    <string name="skill_persuasion">Persuasion</string>
+    <string name="skill_socialize">Socialize</string>
+    <string name="skill_streetwise">Streetwise</string>
+    <string name="skill_subterfuge">Subterfuge</string>
+    <string name="alert_no_dice">There are no dice to roll!</string>
+    <string name="label_dice_pool">Dice pool:</string>
+    <string name="label_extended_roll">Extended roll</string>
+    <string name="label_btn_roll">Roll</string>
+    <string name="label_dice_roll">Dice roll</string>
+    <string name="label_roll_report">The rolls were %1$s</string>
 </resources>

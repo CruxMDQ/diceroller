@@ -23,6 +23,6 @@ public class DiceRollerPresenter {
 
         int successes = roller.getSuccessesCofd(rolls);
 
-        view.showResults(rolls, successes);
+        view.showResults(rolls, successes, false);
     }
 }

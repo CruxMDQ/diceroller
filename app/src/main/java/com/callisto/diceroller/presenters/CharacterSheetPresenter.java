@@ -25,7 +25,7 @@ public class CharacterSheetPresenter {
 
         int successes = model.getSuccessesCofd(rolls);
 
-        view.showResults(rolls, successes);
+        view.showResults(rolls, successes, false);
     }
 
     public void rollDice(int threshold) {
@@ -33,7 +33,7 @@ public class CharacterSheetPresenter {
 
         int successes = model.getSuccessesCofd(rolls);
 
-        view.showResults(rolls, successes);
+        view.showResults(rolls, successes, false);
     }
 
     public void rollDice() {
@@ -41,7 +41,7 @@ public class CharacterSheetPresenter {
 
         int successes = model.getSuccessesCofd(rolls);
 
-        view.showResults(rolls, successes);
+        view.showResults(rolls, successes, false);
     }
 
 
@@ -55,5 +55,17 @@ public class CharacterSheetPresenter {
 
     public ArrayList<Pair<String, Integer>> getStats() {
         return model.getStats();
+    }
+
+    public boolean hasDiceToRoll() {
+        return model.getDiceNumber() > 0;
+    }
+
+    public void rollExtended(int threshold) {
+        ArrayList<Integer> rolls = model.rollExtended(threshold);
+
+        int successes = model.getSuccessesCofd(rolls);
+
+        view.showResults(rolls, successes, true);
     }
 }

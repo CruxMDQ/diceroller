@@ -3,13 +3,18 @@ package com.callisto.diceroller.fragments;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.text.InputType;
 import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.interfaces.StatObserver;
@@ -70,8 +75,6 @@ public class CharacterSheetFragment
     private StatBox skillStreetwise;
     private StatBox skillSubterfuge;
 
-    private FloatingActionButton fabRoll;
-
     @Override
     protected int getLayout() {
         return R.layout.fragment_char_sheet;
@@ -79,7 +82,7 @@ public class CharacterSheetFragment
 
     @Override
     public void onViewCreated
-        (android.view.View view,
+        (@NonNull android.view.View view,
          @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -124,13 +127,21 @@ public class CharacterSheetFragment
         skillSurvival = rootView.findViewById(R.id.skillSurvival);
         skillWeaponry = rootView.findViewById(R.id.skillWeaponry);
 
-        fabRoll = rootView.findViewById(R.id.fabRoll);
+        FloatingActionButton fabRoll = rootView.findViewById(R.id.fabRoll);
         fabRoll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spawnDiceRollDialog(presenter.getStats());
+                if (presenter.hasDiceToRoll()) {
+                    spawnCustomDiceRollDialog(presenter.getStats());
+                } else {
+                    spawnNoDiceAlert();
+                }
             }
         });
+    }
+
+    private void spawnNoDiceAlert() {
+        Toast.makeText(getContext(), getString(R.string.alert_no_dice), Toast.LENGTH_SHORT).show();
     }
 
     public void observeBoxes() {
@@ -171,11 +182,24 @@ public class CharacterSheetFragment
     }
 
     // TODO Think up a logic to account for equipment-based penalties
-    public void spawnDiceRollDialog(ArrayList<Pair<String, Integer>> stats) {
+    public void spawnCustomDiceRollDialog(ArrayList<Pair<String, Integer>> stats) {
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
 
-        dialogBuilder.setTitle("Dice roll");
+        // Set dialog title
+        dialogBuilder.setTitle(getString(R.string.label_dice_roll));
 
+        // Set dialog view
+        final View view = getLayoutInflater().inflate(R.layout.dialog_dice_roll, null);
+        dialogBuilder.setView(view);
+
+        // Find dialog components
+        TextView txtDicePool = view.findViewById(R.id.txtDicePool);
+        final EditText inputRerollThreshold = view.findViewById(R.id.inputRerollThreshold);
+        final CheckBox chkExtendedRoll = view.findViewById(R.id.chkExtendedRoll);
+        Button btnRoll = view.findViewById(R.id.btnRoll);
+
+        // Assemble dice pool string
         String statList = "";
 
         Iterator iterator = stats.iterator();
@@ -190,32 +214,27 @@ public class CharacterSheetFragment
             }
         }
 
-        dialogBuilder.setMessage("Dice pool: " + statList);
+        // Set dice pool string
+        txtDicePool.setText(statList);
 
-        final EditText input = new EditText(getContext());
+        // Store dialog reference to later be able to dismiss it
+        final AlertDialog dialog = dialogBuilder.show();
 
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
-
-        dialogBuilder.setView(input);
-
-
-        dialogBuilder.setPositiveButton(getString(R.string.label_btn_ok), new DialogInterface.OnClickListener() {
+        btnRoll.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                int threshold = Integer.parseInt(input.getText().toString());
+            public void onClick(View view) {
+                int threshold = Integer.parseInt(inputRerollThreshold.getText().toString());
 
-                presenter.rollDice(threshold);
+                if (!chkExtendedRoll.isChecked()) {
+                    presenter.rollDice(threshold);
+                } else {
+                    presenter.rollExtended(threshold);
+                }
 
-                dialog.dismiss();
+                dialog.cancel();
             }
         });
 
-        dialogBuilder.show();
     }
 
     @Override
@@ -223,7 +242,7 @@ public class CharacterSheetFragment
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
 
         dialogBuilder.setTitle(getString(R.string.label_stat_edition));
-        dialogBuilder.setMessage(getString(R.string.prompt_stat_edition) + statName);
+        dialogBuilder.setMessage(getString(R.string.prompt_stat_edition, statName));
 
         final EditText input = new EditText(getContext());
 
@@ -256,27 +275,39 @@ public class CharacterSheetFragment
     }
 
     @Override
-    public void showResults(ArrayList<Integer> rolls, int successes) {
-        Iterator iterator = rolls.iterator();
-
-        String rollString = "";
-
-        while (iterator.hasNext()) {
-            int roll = Integer.parseInt(iterator.next().toString());
-
-            rollString = rollString.concat(String.valueOf(roll));
-
-            if (iterator.hasNext()) {
-                rollString = rollString.concat(", ");
-            }
-        }
-
+    public void showResults(ArrayList<Integer> rolls, int successes, boolean isExtended) {
         AlertDialog ad = new AlertDialog.Builder(getContext())
                 .create();
         ad.setCancelable(true);
-        ad.setTitle(String.valueOf(successes) + " successes");
-        ad.setMessage("The rolls were " + rollString);
-        ad.show();
 
+        /*
+            Likely cases:
+            successes > 0 and isExtended -> successful extended roll
+            successes == 0 and isExtended -> failed extended roll
+            successes > 0 and !isExtended -> successful normal roll
+            successes = 0 and !isExtended -> failed normal roll
+         */
+
+        if (successes == 0 && isExtended) {
+            ad.setMessage("Roll failed!");
+        } else {
+            Iterator iterator = rolls.iterator();
+
+            String rollString = "";
+
+            while (iterator.hasNext()) {
+                int roll = Integer.parseInt(iterator.next().toString());
+
+                rollString = rollString.concat(String.valueOf(roll));
+
+                if (iterator.hasNext()) {
+                    rollString = rollString.concat(", ");
+                }
+            }
+
+            ad.setTitle(String.valueOf(successes) + " successes");
+            ad.setMessage(getString(R.string.label_roll_report, rollString));
+        }
+        ad.show();
     }
 }

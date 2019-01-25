@@ -44,4 +44,29 @@ public class DiceRoller {
 
         return successes;
     }
+
+    public ArrayList<Integer> rollExtended(int threshold, int diceNumber) {
+        ArrayList<Integer> extendedRoll = new ArrayList<>();
+
+        for (int p = 0; p < diceNumber; p++) {
+            ArrayList<Integer> result = new ArrayList<>();
+
+            for (int i = 0; i < diceNumber; i++) {
+                int integer = getD10();
+
+                result.add(integer);
+
+                if (integer >= threshold) i--;
+            }
+
+            if (getSuccessesCofd(result) > 0) {
+                extendedRoll.addAll(result);
+            } else {
+                extendedRoll.clear();
+                break;
+            }
+        }
+
+        return extendedRoll;
+    }
 }
