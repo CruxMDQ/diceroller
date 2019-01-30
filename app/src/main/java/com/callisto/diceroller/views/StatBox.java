@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,12 +17,6 @@ import com.callisto.diceroller.beans.Stat;
 import com.callisto.diceroller.interfaces.StatObserver;
 
 public class StatBox extends LinearLayout {
-
-    private String statName;
-    private String statCategory;
-    private String statType;
-    private String statKind;
-    private int statColor;
 
     private TextView lblStat;
 
@@ -49,52 +44,29 @@ public class StatBox extends LinearLayout {
             R.styleable.StatBox_colorSelected,
             ContextCompat.getColor(
                 getContext(),
-                R.color.color_stat_box_selected)
+                R.color.color_purple_dark)
         );
 
-        statName = args.getString(R.styleable.StatBox_statName);
-        statCategory = args.getString(R.styleable.StatBox_statCategory);
-        statType = args.getString(R.styleable.StatBox_statType);
-
-        stat = new Stat(
-            statName,
-            statCategory,
-            statType
-        );
+        stat = Stat.newInstance()
+            .setName(args.getString(R.styleable.StatBox_statName))
+            .setCategory(args.getString(R.styleable.StatBox_statCategory))
+            .setType(args.getString(R.styleable.StatBox_statType));
 
         try {
-            stat.setKind(args.getString(R.styleable.StatBox_statKind));
             int color = args.getColor(
                 R.styleable.StatBox_colorSelected,
                 ContextCompat.getColor(
                     getContext(),
-                    R.color.color_stat_box_selected)
+                    R.color.color_purple_dark)
             );
-            stat.setColor(color);
 
-//            statKind = args.getString(R.styleable.StatBox_statKind);
-//            statColor = args.getColor(
-//                R.styleable.StatBox_colorSelected,
-//                ContextCompat.getColor(
-//                    getContext(),
-//                    R.color.color_stat_box_selected)
-//            );
+            stat.setKind(args.getString(R.styleable.StatBox_statKind))
+                .setColor(color);
 
-//            stat = new Stat(
-//                statName,
-//                statCategory,
-//                statType,
-//                statKind,
-//                statColor
-//            );
         }
         catch (Exception e)
         {
-//            stat = new Stat(
-//                statName,
-//                statCategory,
-//                statType
-//            );
+            Log.e("Statbox error", e.getLocalizedMessage());
         }
 
         final String statValue = args.getString(R.styleable.StatBox_statValue);
@@ -108,7 +80,7 @@ public class StatBox extends LinearLayout {
 
         resolveViews();
 
-        setName(statName);
+        setName(stat.getName());
         setValue(statValue);
 
         setBackgroundColor(ContextCompat.getColor(context, R.color.color_light_gray));
@@ -123,7 +95,7 @@ public class StatBox extends LinearLayout {
         setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                observer.spawnStatEditionDialog(v.getId(), statName);
+                observer.spawnStatEditionDialog(v.getId(), stat.getName());
 
                 return true;
             }
@@ -135,35 +107,33 @@ public class StatBox extends LinearLayout {
         refreshPointsPanel(!isSelected);
     }
 
-    public String getStatName()
-    {
-        return statName;
-    }
-
     private void setName(String statName) {
         lblStat.setText(statName);
     }
 
-    private void toggleSelected(Context context) {
-        if (isSelected) {
+    private void toggleSelected(Context context)
+    {
+        if (isSelected)
+        {
             setBackgroundColor(ContextCompat.getColor(context, R.color.color_light_gray));
             lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_black));
             lblStat.setTypeface(Typeface.DEFAULT);
+
             isSelected = false;
 
-            refreshPointsPanel(!isSelected);
-
-            changeDicePool();
-        } else {
+        }
+        else
+        {
             setBackgroundColor(colorSelected);
             lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_white));
             lblStat.setTypeface(Typeface.DEFAULT_BOLD);
+
             isSelected = true;
-
-            refreshPointsPanel(!isSelected);
-
-            changeDicePool();
         }
+
+        refreshPointsPanel(!isSelected);
+
+        changeDicePool();
     }
 
     private void changeDicePool() {

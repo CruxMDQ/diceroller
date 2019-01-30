@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.beans.Stat;
+import com.callisto.diceroller.interfaces.StatusObserver;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,6 +32,8 @@ public class StatLayout extends LinearLayout {
 
     private TextView lblSelectedStats;
     private TextView txtSelectedStats;
+
+    private StatusObserver observer;
 
     public StatLayout(
         Context context,
@@ -97,11 +100,14 @@ public class StatLayout extends LinearLayout {
         containedStats = new ArrayList<>();
         pickedStats = new ArrayList<>();
 
-        setOnClickListener(new OnClickListener()
+            setOnClickListener(new OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
+
+                observer.togglePanels(v.getId());
+
                 StatLayout t = (StatLayout) v;
 
                 if (t.getPickedStatsCount() == 0)
@@ -146,7 +152,7 @@ public class StatLayout extends LinearLayout {
         });
     }
 
-    private void toggleStatPanel(int visible, boolean isOpen)
+    public void toggleStatPanel(int visible, boolean isOpen)
     {
         getPanelStats().setVisibility(visible);
         setOpen(isOpen);
@@ -161,8 +167,6 @@ public class StatLayout extends LinearLayout {
         int targetColor = ContextCompat.getColor(
             Objects.requireNonNull(getContext()), color);
         
-//        setBackgroundColor(targetColor);
-
         setBackgroundDrawableColor(targetColor);
     }
 
@@ -280,25 +284,36 @@ public class StatLayout extends LinearLayout {
         {
             Stat stat = pickedStats.get(0);
             setBackgroundDrawableColor(stat.getColor());
-            txtSelectedStats.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_white));
-            lblSelectedStats.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_white));
+            setTextViewsColor(
+                ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_white));
         }
         else if (selectedStatCount > 1)
         {
             setBackgroundDrawableColor(tan);
-            txtSelectedStats.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_white));
-            lblSelectedStats.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_white));
+            setTextViewsColor(
+                ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_white));
         }
         else if (selectedStatCount == 0)
         {
             setBackgroundDrawableColor(gray);
-            txtSelectedStats.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_black));
-            lblSelectedStats.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_black));
+            setTextViewsColor(
+                ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_black));
         }
+    }
+
+    private void setTextViewsColor(int color)
+    {
+        txtSelectedStats.setTextColor(color);
+        lblSelectedStats.setTextColor(color);
     }
 
     public void setLblSelectedStats(TextView lblSelectedStats)
     {
         this.lblSelectedStats = lblSelectedStats;
+    }
+
+    public void setObserver(StatusObserver observer)
+    {
+        this.observer = observer;
     }
 }

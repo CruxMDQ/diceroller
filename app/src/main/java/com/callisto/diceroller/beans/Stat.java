@@ -5,6 +5,11 @@ public class Stat {
 
     private int color, value;
 
+    public static Stat newInstance()
+    {
+        return new Stat();
+    }
+
     public Stat() {}
 
     public Stat(String name, String category, String type)
@@ -58,9 +63,11 @@ public class Stat {
         return name;
     }
 
-    public void setName(String name)
+    public Stat setName(String name)
     {
         this.name = name;
+
+        return this;
     }
 
     public String getCategory()
@@ -68,9 +75,11 @@ public class Stat {
         return category;
     }
 
-    public void setCategory(String category)
+    public Stat setCategory(String category)
     {
         this.category = category;
+
+        return this;
     }
 
     public String getType()
@@ -78,9 +87,11 @@ public class Stat {
         return type;
     }
 
-    public void setType(String type)
+    public Stat setType(String type)
     {
         this.type = type;
+
+        return this;
     }
 
     public String getKind()
@@ -88,9 +99,11 @@ public class Stat {
         return kind;
     }
 
-    public void setKind(String kind)
+    public Stat setKind(String kind)
     {
         this.kind = kind;
+
+        return this;
     }
 
     public int getColor()
@@ -98,8 +111,10 @@ public class Stat {
         return color;
     }
 
-    public void setColor(int color)
+    public Stat setColor(int color)
     {
         this.color = color;
+
+        return this;
     }
 }

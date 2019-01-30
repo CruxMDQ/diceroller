@@ -35,7 +35,7 @@ public class CharacterSheetModel {
         this.diceNumber = diceNumber;
     }
 
-    public void calculateDiceNumber() {
+    private void calculateDiceNumber() {
         int pool = 0;
 
         for (Pair<String, Integer> pair : stats) {

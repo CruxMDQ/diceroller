@@ -115,9 +115,9 @@
 
         <!-- Physical attributes -->
         <com.callisto.diceroller.views.StatLayout
+            android:id="@+id/containerAttrsPhysical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/containerAttrsPhysical"
             android:layout_gravity="center"
             android:orientation="vertical"
             android:layout_margin="@dimen/margin_small"

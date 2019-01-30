@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.beans.Stat;
 import com.callisto.diceroller.interfaces.StatObserver;
+import com.callisto.diceroller.interfaces.StatusObserver;
 import com.callisto.diceroller.presenters.CharacterSheetPresenter;
 import com.callisto.diceroller.viewmanagers.CharacterSheet;
 import com.callisto.diceroller.views.StatBox;
@@ -31,7 +32,9 @@ public class CharacterSheetFragment
     extends BaseFragment
     implements
         CharacterSheet.View,
-        StatObserver {
+        StatObserver,
+        StatusObserver
+{
 
     CharacterSheetPresenter presenter;
 
@@ -39,14 +42,12 @@ public class CharacterSheetFragment
     private StatLayout containerAttrsPhysical;
     private StatLayout containerAttrsSocial;
 
-    private LinearLayout panelAttrsMental;
-    private LinearLayout panelAttrsPhysical;
-    private LinearLayout panelAttrsSocial;
+    private StatLayout containerSkillsMental;
+    private StatLayout containerSkillsPhysical;
+    private StatLayout containerSkillsSocial;
 
-    private TextView txtSelectedMentalAttribute;
-    private TextView txtSelectedPhysicalAttribute;
-    private TextView txtSelectedSocialAttribute;
-    
+    private ArrayList<StatLayout> statContainers;
+
     // Attributes
     private StatBox statIntelligence;
     private StatBox statWits;
@@ -163,6 +164,7 @@ public class CharacterSheetFragment
         containerAttrsMental.addOrRemoveContainedStat(statIntelligence.getStat());
         containerAttrsMental.addOrRemoveContainedStat(statWits.getStat());
         containerAttrsMental.addOrRemoveContainedStat(statResolve.getStat());
+        containerAttrsMental.setObserver(this);
 
         containerAttrsPhysical = rootView.findViewById(R.id.containerAttrsPhysical);
         containerAttrsPhysical.setPanelStats(
@@ -174,6 +176,7 @@ public class CharacterSheetFragment
         containerAttrsPhysical.addOrRemoveContainedStat(statStrength.getStat());
         containerAttrsPhysical.addOrRemoveContainedStat(statDexterity.getStat());
         containerAttrsPhysical.addOrRemoveContainedStat(statStamina.getStat());
+        containerAttrsPhysical.setObserver(this);
 
         containerAttrsSocial = rootView.findViewById(R.id.containerAttrsSocial);
         containerAttrsSocial.setPanelStats(
@@ -185,6 +188,66 @@ public class CharacterSheetFragment
         containerAttrsSocial.addOrRemoveContainedStat(statPresence.getStat());
         containerAttrsSocial.addOrRemoveContainedStat(statManipulation.getStat());
         containerAttrsSocial.addOrRemoveContainedStat(statComposure.getStat());
+        containerAttrsSocial.setObserver(this);
+
+        containerSkillsMental = rootView.findViewById(R.id.containerSkillsMental);
+        containerSkillsMental.setPanelStats(
+            (LinearLayout) rootView.findViewById(R.id.panelSkillsMental));
+        containerSkillsMental.setTxtSelectedStats(
+            (TextView) rootView.findViewById(R.id.txtSelectedMentalSkill));
+        containerSkillsMental.setLblSelectedStats(
+            (TextView) rootView.findViewById(R.id.lblSkillsMental));
+        containerSkillsMental.addOrRemoveContainedStat(skillAcademics.getStat());
+        containerSkillsMental.addOrRemoveContainedStat(skillComputer.getStat());
+        containerSkillsMental.addOrRemoveContainedStat(skillCrafts.getStat());
+        containerSkillsMental.addOrRemoveContainedStat(skillInvestigation.getStat());
+        containerSkillsMental.addOrRemoveContainedStat(skillMedicine.getStat());
+        containerSkillsMental.addOrRemoveContainedStat(skillOccult.getStat());
+        containerSkillsMental.addOrRemoveContainedStat(skillPolitics.getStat());
+        containerSkillsMental.addOrRemoveContainedStat(skillScience.getStat());
+        containerSkillsMental.setObserver(this);
+
+        containerSkillsPhysical = rootView.findViewById(R.id.containerSkillsPhysical);
+        containerSkillsPhysical.setPanelStats(
+            (LinearLayout) rootView.findViewById(R.id.panelSkillsPhysical));
+        containerSkillsPhysical.setTxtSelectedStats(
+            (TextView) rootView.findViewById(R.id.txtSelectedPhysicalSkill));
+        containerSkillsPhysical.setLblSelectedStats(
+            (TextView) rootView.findViewById(R.id.lblSkillsPhysical));
+        containerSkillsPhysical.addOrRemoveContainedStat(skillAthletics.getStat());
+        containerSkillsPhysical.addOrRemoveContainedStat(skillBrawl.getStat());
+        containerSkillsPhysical.addOrRemoveContainedStat(skillDrive.getStat());
+        containerSkillsPhysical.addOrRemoveContainedStat(skillFirearms.getStat());
+        containerSkillsPhysical.addOrRemoveContainedStat(skillLarceny.getStat());
+        containerSkillsPhysical.addOrRemoveContainedStat(skillStealth.getStat());
+        containerSkillsPhysical.addOrRemoveContainedStat(skillSurvival.getStat());
+        containerSkillsPhysical.addOrRemoveContainedStat(skillWeaponry.getStat());
+        containerSkillsPhysical.setObserver(this);
+
+        containerSkillsSocial = rootView.findViewById(R.id.containerSkillsSocial);
+        containerSkillsSocial.setPanelStats(
+            (LinearLayout) rootView.findViewById(R.id.panelSkillsSocial));
+        containerSkillsSocial.setTxtSelectedStats(
+            (TextView) rootView.findViewById(R.id.txtSelectedSocialSkill));
+        containerSkillsSocial.setLblSelectedStats(
+            (TextView) rootView.findViewById(R.id.lblSkillsSocial));
+        containerSkillsSocial.addOrRemoveContainedStat(skillAnimalKen.getStat());
+        containerSkillsSocial.addOrRemoveContainedStat(skillEmpathy.getStat());
+        containerSkillsSocial.addOrRemoveContainedStat(skillExpression.getStat());
+        containerSkillsSocial.addOrRemoveContainedStat(skillIntimidation.getStat());
+        containerSkillsSocial.addOrRemoveContainedStat(skillPersuasion.getStat());
+        containerSkillsSocial.addOrRemoveContainedStat(skillSocialize.getStat());
+        containerSkillsSocial.addOrRemoveContainedStat(skillStreetwise.getStat());
+        containerSkillsSocial.addOrRemoveContainedStat(skillSubterfuge.getStat());
+        containerSkillsSocial.setObserver(this);
+
+        statContainers = new ArrayList<>();
+        statContainers.add(containerAttrsMental);
+        statContainers.add(containerAttrsPhysical);
+        statContainers.add(containerAttrsSocial);
+        statContainers.add(containerSkillsMental);
+        statContainers.add(containerSkillsPhysical);
+        statContainers.add(containerSkillsSocial);
     }
 
     private void spawnNoDiceAlert() {
@@ -400,6 +463,18 @@ public class CharacterSheetFragment
                 }
             }
             target.setPanelColor();
+        }
+    }
+
+    @Override
+    public void togglePanels(int id)
+    {
+        for (StatLayout statLayout : statContainers)
+        {
+            if (statLayout.getId() != id)
+            {
+                statLayout.toggleStatPanel(View.GONE, false);
+            }
         }
     }
 }
