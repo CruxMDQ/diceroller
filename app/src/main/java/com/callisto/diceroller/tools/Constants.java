@@ -5,6 +5,10 @@ public class Constants {
         throw new AssertionError("This class is NOT MEANT FOR INSTANTIATION!");
     }
 
+    public static String TAG_TYPE_MENTAL = "Mental";
+    public static String TAG_TYPE_PHYSICAL = "Physical";
+    public static String TAG_TYPE_SOCIAL = "Social";
+
     public enum Systems {
         FIFTH_EDITION("5E"),
         OWOD("Old World of Darkness"),
@@ -38,19 +42,33 @@ public class Constants {
     }
 
     public enum Tags {
-        TAG_STAT_INT("Intelligence"),
-        TAG_STAT_WIT("Wits"),
-        TAG_STAT_RES("Resolve"),
-        TAG_STAT_STR("Strength"),
-        TAG_STAT_DEX("Dexterity"),
-        TAG_STAT_STA("Stamina"),
-        TAG_STAT_PRE("Presence"),
-        TAG_STAT_MAN("Manipulation"),
-        TAG_STAT_COM("Composure");
+        TAG_TYPE_MENTAL("Mental"),
+        TAG_TYPE_PHYSICAL("Physical"),
+        TAG_TYPE_SOCIAL("Social");
 
         private String text;
 
         Tags(String text) {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+    }
+
+    public enum XmlTags {
+        TAG_STAT_SINGLE("stat"),
+        TAG_STAT_FIELD_NAME("name"),
+        TAG_STAT_FIELD_CATEGORY("category"),
+        TAG_STAT_FIELD_TYPE("type"),
+        TAG_STAT_FIELD_KIND("kind"),
+        TAG_STAT_FIELD_COLOR("color");
+
+        private String text;
+
+        XmlTags(String text) {
             this.text = text;
         }
 

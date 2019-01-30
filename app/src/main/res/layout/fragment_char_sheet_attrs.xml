@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,25 +12,32 @@
         android:id="@+id/lblAttributes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/margin_small"
         android:text="@string/label_attributes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        >
 
         <!--Mental attributes -->
-        <!-- Swapping logic: width to match_parent, remove weight attribute -->
-        <LinearLayout
-            style="@style/statGroupContainerOpen"
+        <com.callisto.diceroller.views.StatLayout
             android:id="@+id/containerAttrsMental"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_margin="@dimen/margin_small"
+            android:padding="@dimen/margin_small"
+            android:background="@drawable/background_dark"
+            app:isOpen="false"
+            >
 
             <LinearLayout
                 android:id="@+id/panelLabelMental"
@@ -39,7 +45,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="gone">
+                >
 
                 <TextView
                     android:id="@+id/labelAttrsMental"
@@ -52,8 +58,8 @@
                     android:id="@+id/txtSelectedMentalAttribute"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="(Intelligence)"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:visibility="gone"/>
             </LinearLayout>
 
             <LinearLayout
@@ -61,40 +67,64 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone"
+                >
 
                 <!-- Intelligence -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statIntelligence"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    custom:statName="@string/label_attr_int"
-                    custom:statValue="3" />
+                    app:statName="@string/label_attr_int"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statType="@string/stat_type_mental"
+                    app:statKind="@string/stat_kind_power"
+                    app:statColor="@color/color_red_dark"
+                    app:statValue="3"
+                    app:colorSelected="@color/color_red_dark"/>
 
                 <!-- Wits -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statWits"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    custom:statName="@string/label_attr_wits"
-                    custom:statValue="3" />
+                    app:statName="@string/label_attr_wits"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statType="@string/stat_type_mental"
+                    app:statKind="@string/stat_kind_finesse"
+                    app:statColor="@color/color_green_dark"
+                    app:statValue="3"
+                    app:colorSelected="@color/color_green_dark"
+                    />
 
                 <!-- Resolve -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statResolve"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    custom:statName="@string/label_attr_res"
-                    custom:statValue="3" />
+                    app:statName="@string/label_attr_res"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statType="@string/stat_type_mental"
+                    app:statKind="@string/stat_kind_resistance"
+                    app:statColor="@color/color_blue_dark"
+                    app:statValue="3"
+                    app:colorSelected="@color/color_blue_dark"
+                    />
             </LinearLayout>
-        </LinearLayout>
+        </com.callisto.diceroller.views.StatLayout>
 
         <!-- Physical attributes -->
-        <LinearLayout
-            style="@style/statGroupContainerOpen"
+        <com.callisto.diceroller.views.StatLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/containerAttrsPhysical"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_margin="@dimen/margin_small"
+            android:padding="@dimen/margin_small"
+            android:background="@drawable/background_dark"
+            app:isOpen="false"
+            >
 
             <LinearLayout
                 android:id="@+id/panelLabelPhysical"
@@ -102,7 +132,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="gone">
+                >
 
                 <TextView
                     android:id="@+id/labelAttrsPhysical"
@@ -115,7 +145,8 @@
                     android:id="@+id/txtSelectedPhysicalAttribute"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:visibility="gone"/>
             </LinearLayout>
 
             <LinearLayout
@@ -123,40 +154,64 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <!-- Strength -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statStrength"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    custom:statName="@string/label_attr_str"
-                    custom:statValue="3" />
+                    app:statName="@string/label_attr_str"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statType="@string/stat_type_physical"
+                    app:statKind="@string/stat_kind_power"
+                    app:statColor="@color/color_red_dark"
+                    app:statValue="3"
+                    app:colorSelected="@color/color_red_dark"
+                    />
 
                 <!-- Dexterity -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statDexterity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    custom:statName="@string/label_attr_dex"
-                    custom:statValue="3" />
+                    app:statName="@string/label_attr_dex"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statType="@string/stat_type_physical"
+                    app:statKind="@string/stat_kind_finesse"
+                    app:statColor="@color/color_green_dark"
+                    app:statValue="3"
+                    app:colorSelected="@color/color_green_dark"
+                    />
 
                 <!-- Stamina -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statStamina"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    custom:statName="@string/label_attr_sta"
-                    custom:statValue="3" />
+                    app:statName="@string/label_attr_sta"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statType="@string/stat_type_physical"
+                    app:statKind="@string/stat_kind_resistance"
+                    app:statColor="@color/color_blue_dark"
+                    app:statValue="3"
+                    app:colorSelected="@color/color_blue_dark"
+                    />
             </LinearLayout>
-        </LinearLayout>
+        </com.callisto.diceroller.views.StatLayout>
 
         <!-- Social attributes -->
-        <LinearLayout
-            style="@style/statGroupContainerOpen"
+        <com.callisto.diceroller.views.StatLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/containerAttrsSocial"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_margin="@dimen/margin_small"
+            android:padding="@dimen/margin_small"
+            android:background="@drawable/background_dark"
+            app:isOpen="false"
+            >
 
             <LinearLayout
                 android:id="@+id/panelLabelSocial"
@@ -164,7 +219,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="gone">
+                >
 
                 <TextView
                     android:id="@+id/labelAttrsSocial"
@@ -177,7 +232,8 @@
                     android:id="@+id/txtSelectedSocialAttribute"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
@@ -186,32 +242,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <!-- Presence -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statPresence"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    custom:statName="@string/label_attr_pre"
-                    custom:statValue="3" />
+                    app:statName="@string/label_attr_pre"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statType="@string/stat_type_social"
+                    app:statKind="@string/stat_kind_power"
+                    app:statColor="@color/color_red_dark"
+                    app:statValue="3"
+                    app:colorSelected="@color/color_red_dark"
+                    />
 
                 <!-- Manipulation -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statManipulation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    custom:statName="@string/label_attr_man"
-                    custom:statValue="3" />
+                    app:statName="@string/label_attr_man"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statType="@string/stat_type_social"
+                    app:statKind="@string/stat_kind_finesse"
+                    app:statColor="@color/color_green_dark"
+                    app:statValue="3"
+                    app:colorSelected="@color/color_green_dark"
+                    />
 
                 <!-- Composure -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statComposure"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    custom:statName="@string/label_attr_com"
-                    custom:statValue="3" />
+                    app:statName="@string/label_attr_com"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statType="@string/stat_type_social"
+                    app:statKind="@string/stat_kind_resistance"
+                    app:statColor="@color/color_blue_dark"
+                    app:statValue="3"
+                    app:colorSelected="@color/color_blue_dark"
+                    />
             </LinearLayout>
-        </LinearLayout>
+        </com.callisto.diceroller.views.StatLayout>
     </LinearLayout>
 </LinearLayout>

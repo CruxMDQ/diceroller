@@ -17,10 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.callisto.diceroller.R;
+import com.callisto.diceroller.beans.Stat;
 import com.callisto.diceroller.interfaces.StatObserver;
 import com.callisto.diceroller.presenters.CharacterSheetPresenter;
-import com.callisto.diceroller.viewmanagers.DiceRollerNavigation;
+import com.callisto.diceroller.viewmanagers.CharacterSheet;
 import com.callisto.diceroller.views.StatBox;
+import com.callisto.diceroller.views.StatLayout;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,11 +30,23 @@ import java.util.Iterator;
 public class CharacterSheetFragment
     extends BaseFragment
     implements
-        DiceRollerNavigation.View,
+        CharacterSheet.View,
         StatObserver {
 
     CharacterSheetPresenter presenter;
 
+    private StatLayout containerAttrsMental;
+    private StatLayout containerAttrsPhysical;
+    private StatLayout containerAttrsSocial;
+
+    private LinearLayout panelAttrsMental;
+    private LinearLayout panelAttrsPhysical;
+    private LinearLayout panelAttrsSocial;
+
+    private TextView txtSelectedMentalAttribute;
+    private TextView txtSelectedPhysicalAttribute;
+    private TextView txtSelectedSocialAttribute;
+    
     // Attributes
     private StatBox statIntelligence;
     private StatBox statWits;
@@ -86,7 +100,7 @@ public class CharacterSheetFragment
          @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new CharacterSheetPresenter(this);
+        presenter = new CharacterSheetPresenter(this, getContext());
 
         observeBoxes();
     }
@@ -138,6 +152,39 @@ public class CharacterSheetFragment
                 }
             }
         });
+
+        containerAttrsMental = rootView.findViewById(R.id.containerAttrsMental);
+        containerAttrsMental.setPanelStats(
+            (LinearLayout) rootView.findViewById(R.id.panelAttrsMental));
+        containerAttrsMental.setTxtSelectedStats(
+            (TextView) rootView.findViewById(R.id.txtSelectedMentalAttribute));
+        containerAttrsMental.setLblSelectedStats(
+            (TextView) rootView.findViewById(R.id.labelAttrsMental));
+        containerAttrsMental.addOrRemoveContainedStat(statIntelligence.getStat());
+        containerAttrsMental.addOrRemoveContainedStat(statWits.getStat());
+        containerAttrsMental.addOrRemoveContainedStat(statResolve.getStat());
+
+        containerAttrsPhysical = rootView.findViewById(R.id.containerAttrsPhysical);
+        containerAttrsPhysical.setPanelStats(
+            (LinearLayout) rootView.findViewById(R.id.panelAttrsPhysical));
+        containerAttrsPhysical.setTxtSelectedStats(
+            (TextView) rootView.findViewById(R.id.txtSelectedPhysicalAttribute));
+        containerAttrsPhysical.setLblSelectedStats(
+            (TextView) rootView.findViewById(R.id.labelAttrsPhysical));
+        containerAttrsPhysical.addOrRemoveContainedStat(statStrength.getStat());
+        containerAttrsPhysical.addOrRemoveContainedStat(statDexterity.getStat());
+        containerAttrsPhysical.addOrRemoveContainedStat(statStamina.getStat());
+
+        containerAttrsSocial = rootView.findViewById(R.id.containerAttrsSocial);
+        containerAttrsSocial.setPanelStats(
+            (LinearLayout) rootView.findViewById(R.id.panelAttrsSocial));
+        containerAttrsSocial.setTxtSelectedStats(
+            (TextView) rootView.findViewById(R.id.txtSelectedSocialAttribute));
+        containerAttrsSocial.setLblSelectedStats(
+            (TextView) rootView.findViewById(R.id.labelAttrsSocial));
+        containerAttrsSocial.addOrRemoveContainedStat(statPresence.getStat());
+        containerAttrsSocial.addOrRemoveContainedStat(statManipulation.getStat());
+        containerAttrsSocial.addOrRemoveContainedStat(statComposure.getStat());
     }
 
     private void spawnNoDiceAlert() {
@@ -270,8 +317,9 @@ public class CharacterSheetFragment
     }
 
     @Override
-    public void changeDicePool(String statName, int value) {
+    public void changeDicePool(String statName, int value, int colorSelected) {
         presenter.addOrRemoveStat(new Pair<>(statName, value));
+        presenter.getStatDetails(statName);
     }
 
     @Override
@@ -280,16 +328,8 @@ public class CharacterSheetFragment
                 .create();
         ad.setCancelable(true);
 
-        /*
-            Likely cases:
-            successes > 0 and isExtended -> successful extended roll
-            successes == 0 and isExtended -> failed extended roll
-            successes > 0 and !isExtended -> successful normal roll
-            successes = 0 and !isExtended -> failed normal roll
-         */
-
         if (successes == 0 && isExtended) {
-            ad.setMessage("Roll failed!");
+            ad.setMessage(getString(R.string.alert_roll_failed));
         } else {
             Iterator iterator = rolls.iterator();
 
@@ -305,9 +345,61 @@ public class CharacterSheetFragment
                 }
             }
 
-            ad.setTitle(String.valueOf(successes) + " successes");
+            ad.setTitle(String.valueOf(getString(R.string.label_successes_report, successes)));
             ad.setMessage(getString(R.string.label_roll_report, rollString));
         }
         ad.show();
+    }
+
+    @Override
+    public void addSelectedStatToPanel(Stat stat)
+    {
+        if (containerAttrsMental.shouldContain(stat))
+        {
+            containerAttrsMental.addOrRemovePickedStat(stat);
+        }
+        else if (containerAttrsSocial.shouldContain(stat))
+        {
+            containerAttrsSocial.addOrRemovePickedStat(stat);
+        }
+        else if (containerAttrsPhysical.shouldContain(stat))
+        {
+            containerAttrsPhysical.addOrRemovePickedStat(stat);
+        }
+    }
+
+    @Override
+    public void setStatPanelColor(Stat stat)
+    {
+        String type = stat.getType();
+        String category = stat.getCategory();
+
+        StatLayout target = null;
+
+        if (category.equals(getString(R.string.stat_category_attr)))
+        {
+            switch (type)
+            {
+                case "Mental":
+                {
+                    target = containerAttrsMental;
+
+                    break;
+                }
+                case "Physical":
+                {
+                    target = containerAttrsPhysical;
+
+                    break;
+                }
+                case "Social":
+                {
+                    target = containerAttrsSocial;
+
+                    break;
+                }
+            }
+            target.setPanelColor();
+        }
     }
 }

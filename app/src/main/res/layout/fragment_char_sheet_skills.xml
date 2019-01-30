@@ -2,13 +2,12 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".activities.MainActivity"
     tools:showIn="@layout/fragment_char_sheet"
-    android:orientation="vertical"
     >
 
     <TextView
@@ -47,64 +46,80 @@
                 android:id="@+id/skillAcademics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_academics"
-                custom:statValue="0"/>
+                app:statName="@string/skill_academics"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_mental"
+                app:statValue="0"/>
 
             <!-- Crafts -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillCrafts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_crafts"
-                custom:statValue="0"/>
+                app:statName="@string/skill_crafts"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_mental"
+                app:statValue="0"/>
 
             <!-- Computer -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillComputer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_computer"
-                custom:statValue="0"/>
+                app:statName="@string/skill_computer"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_mental"
+                app:statValue="0"/>
 
             <!-- Investigation -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillInvestigation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_investigation"
-                custom:statValue="0"/>
+                app:statName="@string/skill_investigation"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_mental"
+                app:statValue="0"/>
 
             <!-- Medicine -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillMedicine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_medicine"
-                custom:statValue="0"/>
+                app:statName="@string/skill_medicine"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_mental"
+                app:statValue="0"/>
 
             <!-- Occult -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillOccult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_occult"
-                custom:statValue="0"/>
+                app:statName="@string/skill_occult"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_mental"
+                app:statValue="0"/>
 
             <!-- Politics -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillPolitics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_politics"
-                custom:statValue="0"/>
+                app:statName="@string/skill_politics"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_mental"
+                app:statValue="0"/>
 
             <!-- Science -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillScience"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_science"
-                custom:statValue="0"/>
+                app:statName="@string/skill_science"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_mental"
+                app:statValue="0"/>
         </LinearLayout>
 
         <!--Physical skills -->
@@ -127,64 +142,80 @@
                 android:id="@+id/skillAthletics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_athletics"
-                custom:statValue="0"/>
+                app:statName="@string/skill_athletics"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Brawl -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillBrawl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_brawl"
-                custom:statValue="0"/>
+                app:statName="@string/skill_brawl"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Drive -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillDrive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_drive"
-                custom:statValue="0"/>
+                app:statName="@string/skill_drive"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Firearms -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillFirearms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_guns"
-                custom:statValue="0"/>
+                app:statName="@string/skill_guns"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Larceny -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillLarceny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_larceny"
-                custom:statValue="0"/>
+                app:statName="@string/skill_larceny"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Stealth -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillStealth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_stealth"
-                custom:statValue="0"/>
+                app:statName="@string/skill_stealth"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Survival -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillSurvival"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_survival"
-                custom:statValue="0"/>
+                app:statName="@string/skill_survival"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Weaponry -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillWeaponry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_weaponry"
-                custom:statValue="0"/>
+                app:statName="@string/skill_weaponry"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
         </LinearLayout>
 
         <!--Social skills -->
@@ -207,64 +238,80 @@
                 android:id="@+id/skillAnimalKen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_animal_ken"
-                custom:statValue="0"/>
+                app:statName="@string/skill_animal_ken"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_social"
+                app:statValue="0"/>
 
             <!-- Empathy -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillEmpathy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_empathy"
-                custom:statValue="0"/>
+                app:statName="@string/skill_empathy"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Expression -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillExpression"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_expression"
-                custom:statValue="0"/>
+                app:statName="@string/skill_expression"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Intimidation -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillIntimidation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_intimidation"
-                custom:statValue="0"/>
+                app:statName="@string/skill_intimidation"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Persuasion -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillPersuasion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_persuasion"
-                custom:statValue="0"/>
+                app:statName="@string/skill_persuasion"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Socialize -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillSocialize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_socialize"
-                custom:statValue="0"/>
+                app:statName="@string/skill_socialize"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Streetwise -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillStreetwise"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_streetwise"
-                custom:statValue="0"/>
+                app:statName="@string/skill_streetwise"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
 
             <!-- Subterfuge -->
             <com.callisto.diceroller.views.StatBox
                 android:id="@+id/skillSubterfuge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                custom:statName="@string/skill_subterfuge"
-                custom:statValue="0"/>
+                app:statName="@string/skill_subterfuge"
+                app:statCategory="@string/stat_category_skill"
+                app:statType="@string/stat_type_physical"
+                app:statValue="0"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

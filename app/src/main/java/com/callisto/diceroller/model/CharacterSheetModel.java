@@ -1,6 +1,10 @@
 package com.callisto.diceroller.model;
 
+import android.content.Context;
 import android.util.Pair;
+
+import com.callisto.diceroller.beans.Stat;
+import com.callisto.diceroller.tools.XMLParser;
 
 import java.util.ArrayList;
 
@@ -8,13 +12,19 @@ public class CharacterSheetModel {
     private int diceNumber = 0;
     private int rerollThreshold = 0;
 
+    private ArrayList<Stat> statistics;
+
     private ArrayList<Pair<String, Integer>> stats;
 
     private final DiceRoller diceRoller;
 
-    public CharacterSheetModel() {
+    public CharacterSheetModel(Context context) {
         this.diceRoller = new DiceRoller();
         this.stats = new ArrayList<>();
+
+        this.statistics = new ArrayList<>();
+
+        statistics = XMLParser.parseStats(context);
     }
 
     public int getDiceNumber() {
@@ -64,7 +74,19 @@ public class CharacterSheetModel {
         return diceRoller.getSuccessesCofd(rolls);
     }
 
-    public void addOrRemoveStat(Pair<String, Integer> pair) {
+    public void addOrRemoveStat(Stat stat)
+    {
+        if (statistics.contains(stat))
+        {
+            statistics.remove(stat);
+        }
+        else
+        {
+            statistics.add(stat);
+        }
+    }
+
+    public void addOrRemovePair(Pair<String, Integer> pair) {
         if (stats.contains(pair)) {
             stats.remove(pair);
         } else {
@@ -80,5 +102,17 @@ public class CharacterSheetModel {
 
     public ArrayList<Integer> rollExtended(int threshold) {
         return diceRoller.rollExtended(threshold, diceNumber);
+    }
+
+    public Stat getStat(String statName)
+    {
+        for (Stat stat : statistics)
+        {
+            if (stat.getName().equals(statName)) {
+                return stat;
+            }
+        }
+
+        return null;
     }
 }

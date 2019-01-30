@@ -23,6 +23,9 @@
 
     <string name="label_skills">Skills (untrained penalty)</string>
     <string name="label_skills_mental">Mental (-3)</string>
+    <string name="label_skills_physical">Physical (-1)</string>
+    <string name="label_skills_social">Social (-1)</string>
+
     <string name="skill_academics">Academics</string>
     <string name="skill_crafts">Crafts</string>
     <string name="skill_computer">Computer</string>
@@ -31,7 +34,6 @@
     <string name="skill_occult">Occult</string>
     <string name="skill_politics">Politics</string>
     <string name="skill_science">Science</string>
-    <string name="label_skills_physical">Physical (-1)</string>
     <string name="skill_athletics">Athletics</string>
     <string name="skill_brawl">Brawl</string>
     <string name="skill_drive">Drive</string>
@@ -40,10 +42,6 @@
     <string name="skill_stealth">Stealth</string>
     <string name="skill_survival">Survival</string>
     <string name="skill_weaponry">Weaponry</string>
-    <string name="label_skills_social">Social (-1)</string>
-    <string name="label_stat_edition">Stat edition</string>
-    <string name="prompt_stat_edition">Set new value for %1$s</string>
-    <string name="label_btn_ok">OK</string>
     <string name="skill_animal_ken">Animal Ken</string>
     <string name="skill_empathy">Empathy</string>
     <string name="skill_expression">Expression</string>
@@ -52,13 +50,32 @@
     <string name="skill_socialize">Socialize</string>
     <string name="skill_streetwise">Streetwise</string>
     <string name="skill_subterfuge">Subterfuge</string>
+
+    <string name="stat_type_mental">Mental</string>
+    <string name="stat_type_physical">Physical</string>
+    <string name="stat_type_social">Social</string>
+
+    <string name="stat_kind_power">Power</string>
+    <string name="stat_kind_finesse">Finesse</string>
+    <string name="stat_kind_resistance">Resistance</string>
+
     <string name="alert_no_dice">There are no dice to roll!</string>
     <string name="label_dice_pool">Dice pool:</string>
     <string name="label_extended_roll">Extended roll</string>
     <string name="label_btn_roll">Roll</string>
     <string name="label_dice_roll">Dice roll</string>
-    <string name="label_roll_report">The rolls were %1$s</string>
     <string name="label_attrs_mental">Mental</string>
     <string name="label_attrs_physical">Physical</string>
     <string name="label_attrs_social">Social</string>
+    <string name="alert_roll_failed">Roll failed!</string>
+    <string name="label_roll_report">The rolls were %1$s</string>
+    <string name="label_successes_report">%1$d successes</string>
+
+    <string name="label_stat_edition">Stat edition</string>
+    <string name="prompt_stat_edition">Set new value for %1$s</string>
+    <string name="label_btn_ok">OK</string>
+
+    <string name="stat_category_attr">Attribute</string>
+    <string name="stat_category_skill">Skill</string>
+
 </resources>

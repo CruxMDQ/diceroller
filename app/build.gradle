@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 //def AAVersion = '4.5.2'
 //def roboGuiceVersion = '4.5.2'
@@ -46,4 +48,7 @@ dependencies {
 
 //    implementation "com.jakewharton:butterknife:$butterKnifeVersion"
 //    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+}
+repositories {
+    mavenCentral()
 }
