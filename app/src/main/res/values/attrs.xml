@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="StatBox">
+        <attr name="isEditionAllowed" format="boolean" />
         <attr name="statName" format="string" />
         <attr name="statCategory" format="string" />
         <attr name="statType" format="string" />

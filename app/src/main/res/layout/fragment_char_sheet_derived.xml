@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.MainActivity"
+    tools:showIn="@layout/fragment_char_sheet">
+
+    <TextView
+        android:id="@+id/lblCalculatedStats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_small"
+        android:text="@string/label_derived_stats"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <com.callisto.diceroller.views.StatLayout
+        android:id="@+id/containerAttrsMental"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/margin_small"
+        android:padding="@dimen/margin_small"
+        android:background="@drawable/background_dark"
+        app:isOpen="false"
+        >
+
+        <!-- Size: defaults to 5 for a normal human -->
+        <!-- Observers: Health -->
+        <com.callisto.diceroller.views.StatBox
+            android:id="@+id/statSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:statName="@string/label_derived_size"
+            app:statCategory="@string/stat_category_derived"
+            app:statValue="5"/>
+
+        <!-- Defense: lowest of Dexterity or Wits -->
+        <com.callisto.diceroller.views.StatBox
+            android:id="@+id/derivedDefense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:isEditionAllowed="false"
+            app:statName="@string/label_derived_defense"
+            app:statCategory="@string/stat_category_derived"
+            app:statValue="3"/>
+
+        <!-- Health = Stamina + Size -->
+        <!-- - Must account for bashing, lethal and aggravated damage -->
+        <!-- - Has both a temporary and a permanent score -->
+        <com.callisto.diceroller.views.StatBox
+            android:id="@+id/derivedHealth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:isEditionAllowed="false"
+            app:statName="@string/label_derived_health"
+            app:statCategory="@string/stat_category_derived"
+            app:statValue="8"/>
+
+        <!-- Initiative mod = Dexterity + Composure -->
+        <com.callisto.diceroller.views.StatBox
+            android:id="@+id/derivedInitiative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:isEditionAllowed="false"
+            app:statName="@string/label_derived_initiative"
+            app:statCategory="@string/stat_category_derived"
+            app:statValue="6"/>
+
+        <!-- Speed = Strength + Dexterity + 5 -->
+        <com.callisto.diceroller.views.StatBox
+            android:id="@+id/derivedSpeed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:isEditionAllowed="false"
+            app:statName="@string/label_derived_speed"
+            app:statCategory="@string/stat_category_derived"
+            app:statValue="11"/>
+
+        <!-- Willpower: Resolve + Composure -->
+        <com.callisto.diceroller.views.StatBox
+            android:id="@+id/derivedWillpower"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:isEditionAllowed="false"
+            app:statName="@string/label_derived_willpower"
+            app:statCategory="@string/stat_category_derived"
+            app:statValue="6"/>
+
+    </com.callisto.diceroller.views.StatLayout>
+
+    <!-- VAMPIRE-EXCLUSIVE STATS -->
+    <!-- - Starting humanity: 7 -->
+    <!-- - Vitae = d10 roll -->
+</LinearLayout>

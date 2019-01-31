@@ -5,10 +5,6 @@ public class Constants {
         throw new AssertionError("This class is NOT MEANT FOR INSTANTIATION!");
     }
 
-    public static String TAG_TYPE_MENTAL = "Mental";
-    public static String TAG_TYPE_PHYSICAL = "Physical";
-    public static String TAG_TYPE_SOCIAL = "Social";
-
     public enum Systems {
         FIFTH_EDITION("5E"),
         OWOD("Old World of Darkness"),
@@ -26,6 +22,7 @@ public class Constants {
     }
 
     public enum Values {
+        COFD_SPEED_BASE(5),
         COFD_DIE_SIZE(10),
         COFD_BASE_DIFFICULTY_THRESHOLD(8),
         COFD_BASE_ROLL_AGAIN_THRESHOLD(10);
@@ -38,23 +35,6 @@ public class Constants {
 
         public int getValue() {
             return value;
-        }
-    }
-
-    public enum Tags {
-        TAG_TYPE_MENTAL("Mental"),
-        TAG_TYPE_PHYSICAL("Physical"),
-        TAG_TYPE_SOCIAL("Social");
-
-        private String text;
-
-        Tags(String text) {
-            this.text = text;
-        }
-
-        public String getText()
-        {
-            return text;
         }
     }
 

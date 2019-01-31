@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.text.InputType;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +19,7 @@ import android.widget.Toast;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.beans.Stat;
-import com.callisto.diceroller.interfaces.StatObserver;
+import com.callisto.diceroller.interfaces.ViewWatcher;
 import com.callisto.diceroller.interfaces.StatusObserver;
 import com.callisto.diceroller.presenters.CharacterSheetPresenter;
 import com.callisto.diceroller.viewmanagers.CharacterSheet;
@@ -32,7 +33,7 @@ public class CharacterSheetFragment
     extends BaseFragment
     implements
         CharacterSheet.View,
-        StatObserver,
+    ViewWatcher,
         StatusObserver
 {
 
@@ -89,6 +90,14 @@ public class CharacterSheetFragment
     private StatBox skillSocialize;
     private StatBox skillStreetwise;
     private StatBox skillSubterfuge;
+
+    // Derived stats
+    private StatBox statSize;
+    private StatBox derivedWillpower;
+    private StatBox derivedSpeed;
+    private StatBox derivedInitiative;
+    private StatBox derivedHealth;
+    private StatBox derivedDefense;
 
     @Override
     protected int getLayout() {
@@ -248,6 +257,46 @@ public class CharacterSheetFragment
         statContainers.add(containerSkillsMental);
         statContainers.add(containerSkillsPhysical);
         statContainers.add(containerSkillsSocial);
+
+        statSize = rootView.findViewById(R.id.statSize);
+        derivedDefense = rootView.findViewById(R.id.derivedDefense);
+        derivedHealth = rootView.findViewById(R.id.derivedHealth);
+        derivedInitiative = rootView.findViewById(R.id.derivedInitiative);
+        derivedSpeed = rootView.findViewById(R.id.derivedSpeed);
+        derivedWillpower = rootView.findViewById(R.id.derivedWillpower);
+
+        setWatches();
+    }
+
+    private void setWatches()
+    {
+        // TODO Figure out a way to handle defense
+
+        derivedHealth
+            .addOrRemoveWatchedStat(statStamina)
+            .addOrRemoveWatchedStat(statSize);
+        statStamina.addOrRemoveStatWatcher(derivedHealth);
+        statSize.addOrRemoveStatWatcher(derivedHealth);
+
+        derivedInitiative
+            .addOrRemoveWatchedStat(statDexterity)
+            .addOrRemoveWatchedStat(statComposure);
+        statDexterity.addOrRemoveStatWatcher(derivedInitiative);
+        statComposure.addOrRemoveStatWatcher(derivedInitiative);
+
+        derivedWillpower
+            .addOrRemoveWatchedStat(statResolve)
+            .addOrRemoveWatchedStat(statComposure);
+        statResolve.addOrRemoveStatWatcher(derivedWillpower);
+        statComposure.addOrRemoveStatWatcher(derivedWillpower);
+
+        // TODO Figure out best way to pass on base value (in this case 5)
+        derivedSpeed
+            .addOrRemoveWatchedStat(statStrength)
+            .addOrRemoveWatchedStat(statDexterity);
+        statStrength.addOrRemoveStatWatcher(derivedSpeed);
+        statDexterity.addOrRemoveStatWatcher(derivedSpeed);
+
     }
 
     private void spawnNoDiceAlert() {
@@ -255,40 +304,47 @@ public class CharacterSheetFragment
     }
 
     public void observeBoxes() {
-        statIntelligence.setObserver(this);
-        statWits.setObserver(this);
-        statResolve.setObserver(this);
-        statStrength.setObserver(this);
-        statDexterity.setObserver(this);
-        statStamina.setObserver(this);
-        statPresence.setObserver(this);
-        statManipulation.setObserver(this);
-        statComposure.setObserver(this);
+        statIntelligence.setViewWatcher(this);
+        statWits.setViewWatcher(this);
+        statResolve.setViewWatcher(this);
+        statStrength.setViewWatcher(this);
+        statDexterity.setViewWatcher(this);
+        statStamina.setViewWatcher(this);
+        statPresence.setViewWatcher(this);
+        statManipulation.setViewWatcher(this);
+        statComposure.setViewWatcher(this);
 
-        skillAcademics.setObserver(this);
-        skillAnimalKen.setObserver(this);
-        skillAthletics.setObserver(this);
-        skillBrawl.setObserver(this);
-        skillComputer.setObserver(this);
-        skillCrafts.setObserver(this);
-        skillDrive.setObserver(this);
-        skillEmpathy.setObserver(this);
-        skillExpression.setObserver(this);
-        skillFirearms.setObserver(this);
-        skillIntimidation.setObserver(this);
-        skillInvestigation.setObserver(this);
-        skillLarceny.setObserver(this);
-        skillMedicine.setObserver(this);
-        skillOccult.setObserver(this);
-        skillPersuasion.setObserver(this);
-        skillPolitics.setObserver(this);
-        skillScience.setObserver(this);
-        skillSocialize.setObserver(this);
-        skillStealth.setObserver(this);
-        skillStreetwise.setObserver(this);
-        skillSubterfuge.setObserver(this);
-        skillSurvival.setObserver(this);
-        skillWeaponry.setObserver(this);
+        skillAcademics.setViewWatcher(this);
+        skillAnimalKen.setViewWatcher(this);
+        skillAthletics.setViewWatcher(this);
+        skillBrawl.setViewWatcher(this);
+        skillComputer.setViewWatcher(this);
+        skillCrafts.setViewWatcher(this);
+        skillDrive.setViewWatcher(this);
+        skillEmpathy.setViewWatcher(this);
+        skillExpression.setViewWatcher(this);
+        skillFirearms.setViewWatcher(this);
+        skillIntimidation.setViewWatcher(this);
+        skillInvestigation.setViewWatcher(this);
+        skillLarceny.setViewWatcher(this);
+        skillMedicine.setViewWatcher(this);
+        skillOccult.setViewWatcher(this);
+        skillPersuasion.setViewWatcher(this);
+        skillPolitics.setViewWatcher(this);
+        skillScience.setViewWatcher(this);
+        skillSocialize.setViewWatcher(this);
+        skillStealth.setViewWatcher(this);
+        skillStreetwise.setViewWatcher(this);
+        skillSubterfuge.setViewWatcher(this);
+        skillSurvival.setViewWatcher(this);
+        skillWeaponry.setViewWatcher(this);
+
+        statSize.setViewWatcher(this);
+        derivedDefense.setViewWatcher(this);
+        derivedHealth.setViewWatcher(this);
+        derivedInitiative.setViewWatcher(this);
+        derivedSpeed.setViewWatcher(this);
+        derivedWillpower.setViewWatcher(this);
     }
 
     // TODO Think up a logic to account for equipment-based penalties
@@ -434,35 +490,42 @@ public class CharacterSheetFragment
     @Override
     public void setStatPanelColor(Stat stat)
     {
-        String type = stat.getType();
-        String category = stat.getCategory();
-
-        StatLayout target = null;
-
-        if (category.equals(getString(R.string.stat_category_attr)))
+        try
         {
-            switch (type)
+            String type = stat.getType();
+            String category = stat.getCategory();
+
+            StatLayout target = null;
+
+            if (category.equals(getString(R.string.stat_category_attr)))
             {
-                case "Mental":
+                switch (type)
                 {
-                    target = containerAttrsMental;
+                    case "Mental":
+                    {
+                        target = containerAttrsMental;
 
-                    break;
-                }
-                case "Physical":
-                {
-                    target = containerAttrsPhysical;
+                        break;
+                    }
+                    case "Physical":
+                    {
+                        target = containerAttrsPhysical;
 
-                    break;
-                }
-                case "Social":
-                {
-                    target = containerAttrsSocial;
+                        break;
+                    }
+                    case "Social":
+                    {
+                        target = containerAttrsSocial;
 
-                    break;
+                        break;
+                    }
                 }
+                target.setPanelColor();
             }
-            target.setPanelColor();
+        }
+        catch (NullPointerException e)
+        {
+            Log.e(this.getClass().getName(), "Stat object has null fields");
         }
     }
 

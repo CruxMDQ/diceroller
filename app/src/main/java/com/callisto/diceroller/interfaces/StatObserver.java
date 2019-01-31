@@ -1,7 +1,8 @@
 package com.callisto.diceroller.interfaces;
 
-public interface StatObserver {
-    void spawnStatEditionDialog(int id, String statName);
+import com.callisto.diceroller.beans.Stat;
 
-    void changeDicePool(String statName, int value, int colorSelected);
+public interface StatObserver
+{
+    void processNewValue(Stat stat);
 }

@@ -15,19 +15,45 @@ import android.widget.TextView;
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.beans.Stat;
 import com.callisto.diceroller.interfaces.StatObserver;
+import com.callisto.diceroller.interfaces.ViewWatcher;
 
-public class StatBox extends LinearLayout {
+import java.util.ArrayList;
+
+public class StatBox
+    extends LinearLayout
+    implements StatObserver,
+    StatObservable
+{
 
     private TextView lblStat;
 
     private LinearLayout panelValue;
 
-    private int currentValue;
+//    private int currentValue;
     private int colorSelected;
 
     private boolean isSelected = false;
 
-    private StatObserver observer;
+    public boolean isEditionAllowed()
+    {
+        return isEditionAllowed;
+    }
+
+    public StatBox setEditionAllowed(boolean editionAllowed)
+    {
+        isEditionAllowed = editionAllowed;
+
+        return this;
+    }
+
+    private boolean isEditionAllowed = true;
+
+    private ViewWatcher viewWatcher;
+
+    // Those I'm looking at
+    private ArrayList<StatObserver> watchers;
+    // Those looking at me
+    private ArrayList<StatObservable> observedStats;
 
     private Stat stat;
 
@@ -49,8 +75,16 @@ public class StatBox extends LinearLayout {
 
         stat = Stat.newInstance()
             .setName(args.getString(R.styleable.StatBox_statName))
-            .setCategory(args.getString(R.styleable.StatBox_statCategory))
-            .setType(args.getString(R.styleable.StatBox_statType));
+            .setCategory(args.getString(R.styleable.StatBox_statCategory));
+
+        try
+        {
+            stat.setType(args.getString(R.styleable.StatBox_statType));
+        }
+        catch (Exception e)
+        {
+            Log.e("Statbox error", e.getLocalizedMessage());
+        }
 
         try {
             int color = args.getColor(
@@ -71,6 +105,11 @@ public class StatBox extends LinearLayout {
 
         final String statValue = args.getString(R.styleable.StatBox_statValue);
 
+        isEditionAllowed = args.getBoolean(R.styleable.StatBox_isEditionAllowed, true);
+
+        watchers = new ArrayList<>();
+        observedStats = new ArrayList<>();
+
         args.recycle();
 
         setOrientation(LinearLayout.HORIZONTAL);
@@ -88,23 +127,39 @@ public class StatBox extends LinearLayout {
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleSelected(context);
+//                if (isEditionAllowed())
+//                {
+                    toggleSelected(context);
+//                }
             }
         });
 
         setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                observer.spawnStatEditionDialog(v.getId(), stat.getName());
-
+                if (isEditionAllowed())
+                {
+                    viewWatcher.spawnStatEditionDialog(v.getId(), stat.getName());
+                }
                 return true;
             }
         });
     }
 
-    public void setValue(String statValue) {
-        currentValue = Integer.parseInt(statValue);
+    public void setValue(int statValue) {
+        stat.setValue(statValue);
+
         refreshPointsPanel(!isSelected);
+
+        notifyObservers();
+    }
+
+    public void setValue(String statValue) {
+        stat.setValue(Integer.parseInt(statValue));
+//        currentValue = Integer.parseInt(statValue);
+        refreshPointsPanel(!isSelected);
+
+        notifyObservers();
     }
 
     private void setName(String statName) {
@@ -137,9 +192,9 @@ public class StatBox extends LinearLayout {
     }
 
     private void changeDicePool() {
-        observer.changeDicePool(
+        viewWatcher.changeDicePool(
             lblStat.getText().toString(),
-            currentValue,
+            stat.getValue(),
             colorSelected);
     }
 
@@ -157,14 +212,14 @@ public class StatBox extends LinearLayout {
         panelValue = findViewById(R.id.panelValue);
     }
 
-    public void setObserver(StatObserver observer) {
-        this.observer = observer;
+    public void setViewWatcher(ViewWatcher viewWatcher) {
+        this.viewWatcher = viewWatcher;
     }
 
     private void refreshPointsPanel(boolean isBlack) {
         panelValue.removeAllViews();
 
-        for (int i = 0; i < currentValue; i++) {
+        for (int i = 0; i < stat.getValue(); i++) {
             RadioButton rdb = new RadioButton(getContext());
 
             rdb.setChecked(isBlack);
@@ -175,6 +230,57 @@ public class StatBox extends LinearLayout {
         }
     }
 
+    public StatBox addOrRemoveWatchedStat(StatObservable observable)
+    {
+        if (observedStats.contains(observable))
+        {
+            observedStats.remove(observable);
+        }
+        else
+        {
+            observedStats.add(observable);
+        }
+
+        return this;
+    }
+
+    public void addOrRemoveStatWatcher(StatObserver observer)
+    {
+        if (watchers.contains(observer))
+        {
+            watchers.remove(observer);
+        }
+        else
+        {
+            watchers.add(observer);
+        }
+
+    }
+
+    @Override
+    public void notifyObservers()
+    {
+        for(StatObserver observer : watchers)
+        {
+            observer.processNewValue(getStat());
+        }
+    }
+
+    // TODO THIS OPERATION BELONGS IN THE MODEL. FIND A WAY TO PUT IT THERE.
+    @Override
+    public void processNewValue(Stat stat)
+    {
+        int newScore = 0;
+
+        for(StatObservable observable : observedStats)
+        {
+            newScore += observable.getStat().getValue();
+        }
+
+        setValue(newScore);
+    }
+
+    @Override
     public Stat getStat()
     {
         return stat;

@@ -77,5 +77,14 @@
 
     <string name="stat_category_attr">Attribute</string>
     <string name="stat_category_skill">Skill</string>
+    <string name="stat_category_derived">Derived</string>
+
+    <string name="label_derived_stats">Derived stats</string>
+    <string name="label_derived_size">Size</string>
+    <string name="label_derived_defense">Defense</string>
+    <string name="label_derived_health">Health</string>
+    <string name="label_derived_initiative">Initiative</string>
+    <string name="label_derived_speed">Speed</string>
+    <string name="label_derived_willpower">Willpower</string>
 
 </resources>

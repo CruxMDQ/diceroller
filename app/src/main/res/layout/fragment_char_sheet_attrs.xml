@@ -84,6 +84,7 @@
                     app:colorSelected="@color/color_red_dark"/>
 
                 <!-- Wits -->
+                <!-- Observers: Defense -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statWits"
                     android:layout_width="match_parent"
@@ -98,6 +99,7 @@
                     />
 
                 <!-- Resolve -->
+                <!-- Observers: Willpower -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statResolve"
                     android:layout_width="match_parent"
@@ -171,6 +173,7 @@
                     />
 
                 <!-- Dexterity -->
+                <!-- Observers: Defense, Initiative, Speed -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statDexterity"
                     android:layout_width="match_parent"
@@ -185,6 +188,7 @@
                     />
 
                 <!-- Stamina -->
+                <!-- Observers: Health -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statStamina"
                     android:layout_width="match_parent"
@@ -273,6 +277,7 @@
                     />
 
                 <!-- Composure -->
+                <!-- Observers: Initiative, Willpower -->
                 <com.callisto.diceroller.views.StatBox
                     android:id="@+id/statComposure"
                     android:layout_width="match_parent"
