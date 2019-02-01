@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.beans.Stat;
-import com.callisto.diceroller.interfaces.ViewWatcher;
 import com.callisto.diceroller.interfaces.StatusObserver;
+import com.callisto.diceroller.interfaces.ViewWatcher;
 import com.callisto.diceroller.presenters.CharacterSheetPresenter;
 import com.callisto.diceroller.viewmanagers.CharacterSheet;
 import com.callisto.diceroller.views.StatBox;
@@ -112,7 +112,60 @@ public class CharacterSheetFragment
 
         presenter = new CharacterSheetPresenter(this, getContext());
 
+        setUpContainers();
+
         observeBoxes();
+
+        // This needs to be here because it links up stuff that isn't ready any sooner
+        presenter.setWatches();
+    }
+
+    private void setUpContainers()
+    {
+        containerAttrsMental.addOrRemoveContainedStat(presenter.getStatByTag(statIntelligence.getTag()));
+        containerAttrsMental.addOrRemoveContainedStat(presenter.getStatByTag(statWits.getTag()));
+        containerAttrsMental.addOrRemoveContainedStat(presenter.getStatByTag(statResolve.getTag()));
+        containerAttrsMental.setObserver(this);
+
+        containerAttrsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(statStrength.getTag()));
+        containerAttrsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(statDexterity.getTag()));
+        containerAttrsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(statStamina.getTag()));
+        containerAttrsPhysical.setObserver(this);
+
+        containerAttrsSocial.addOrRemoveContainedStat(presenter.getStatByTag(statPresence.getTag()));
+        containerAttrsSocial.addOrRemoveContainedStat(presenter.getStatByTag(statManipulation.getTag()));
+        containerAttrsSocial.addOrRemoveContainedStat(presenter.getStatByTag(statComposure.getTag()));
+        containerAttrsSocial.setObserver(this);
+
+        containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillAcademics.getTag()));
+        containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillComputer.getTag()));
+        containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillCrafts.getTag()));
+        containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillInvestigation.getTag()));
+        containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillMedicine.getTag()));
+        containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillOccult.getTag()));
+        containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillPolitics.getTag()));
+        containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillScience.getTag()));
+        containerSkillsMental.setObserver(this);
+
+        containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillAthletics.getTag()));
+        containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillBrawl.getTag()));
+        containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillDrive.getTag()));
+        containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillFirearms.getTag()));
+        containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillLarceny.getTag()));
+        containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillStealth.getTag()));
+        containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillSurvival.getTag()));
+        containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillWeaponry.getTag()));
+        containerSkillsPhysical.setObserver(this);
+
+        containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillAnimalKen.getTag()));
+        containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillEmpathy.getTag()));
+        containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillExpression.getTag()));
+        containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillIntimidation.getTag()));
+        containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillPersuasion.getTag()));
+        containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillSocialize.getTag()));
+        containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillStreetwise.getTag()));
+        containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillSubterfuge.getTag()));
+        containerSkillsSocial.setObserver(this);
     }
 
     protected void findViews() {
@@ -170,10 +223,6 @@ public class CharacterSheetFragment
             (TextView) rootView.findViewById(R.id.txtSelectedMentalAttribute));
         containerAttrsMental.setLblSelectedStats(
             (TextView) rootView.findViewById(R.id.labelAttrsMental));
-        containerAttrsMental.addOrRemoveContainedStat(statIntelligence.getStat());
-        containerAttrsMental.addOrRemoveContainedStat(statWits.getStat());
-        containerAttrsMental.addOrRemoveContainedStat(statResolve.getStat());
-        containerAttrsMental.setObserver(this);
 
         containerAttrsPhysical = rootView.findViewById(R.id.containerAttrsPhysical);
         containerAttrsPhysical.setPanelStats(
@@ -182,10 +231,6 @@ public class CharacterSheetFragment
             (TextView) rootView.findViewById(R.id.txtSelectedPhysicalAttribute));
         containerAttrsPhysical.setLblSelectedStats(
             (TextView) rootView.findViewById(R.id.labelAttrsPhysical));
-        containerAttrsPhysical.addOrRemoveContainedStat(statStrength.getStat());
-        containerAttrsPhysical.addOrRemoveContainedStat(statDexterity.getStat());
-        containerAttrsPhysical.addOrRemoveContainedStat(statStamina.getStat());
-        containerAttrsPhysical.setObserver(this);
 
         containerAttrsSocial = rootView.findViewById(R.id.containerAttrsSocial);
         containerAttrsSocial.setPanelStats(
@@ -194,11 +239,6 @@ public class CharacterSheetFragment
             (TextView) rootView.findViewById(R.id.txtSelectedSocialAttribute));
         containerAttrsSocial.setLblSelectedStats(
             (TextView) rootView.findViewById(R.id.labelAttrsSocial));
-        containerAttrsSocial.addOrRemoveContainedStat(statPresence.getStat());
-        containerAttrsSocial.addOrRemoveContainedStat(statManipulation.getStat());
-        containerAttrsSocial.addOrRemoveContainedStat(statComposure.getStat());
-        containerAttrsSocial.setObserver(this);
-
         containerSkillsMental = rootView.findViewById(R.id.containerSkillsMental);
         containerSkillsMental.setPanelStats(
             (LinearLayout) rootView.findViewById(R.id.panelSkillsMental));
@@ -206,15 +246,6 @@ public class CharacterSheetFragment
             (TextView) rootView.findViewById(R.id.txtSelectedMentalSkill));
         containerSkillsMental.setLblSelectedStats(
             (TextView) rootView.findViewById(R.id.lblSkillsMental));
-        containerSkillsMental.addOrRemoveContainedStat(skillAcademics.getStat());
-        containerSkillsMental.addOrRemoveContainedStat(skillComputer.getStat());
-        containerSkillsMental.addOrRemoveContainedStat(skillCrafts.getStat());
-        containerSkillsMental.addOrRemoveContainedStat(skillInvestigation.getStat());
-        containerSkillsMental.addOrRemoveContainedStat(skillMedicine.getStat());
-        containerSkillsMental.addOrRemoveContainedStat(skillOccult.getStat());
-        containerSkillsMental.addOrRemoveContainedStat(skillPolitics.getStat());
-        containerSkillsMental.addOrRemoveContainedStat(skillScience.getStat());
-        containerSkillsMental.setObserver(this);
 
         containerSkillsPhysical = rootView.findViewById(R.id.containerSkillsPhysical);
         containerSkillsPhysical.setPanelStats(
@@ -223,15 +254,6 @@ public class CharacterSheetFragment
             (TextView) rootView.findViewById(R.id.txtSelectedPhysicalSkill));
         containerSkillsPhysical.setLblSelectedStats(
             (TextView) rootView.findViewById(R.id.lblSkillsPhysical));
-        containerSkillsPhysical.addOrRemoveContainedStat(skillAthletics.getStat());
-        containerSkillsPhysical.addOrRemoveContainedStat(skillBrawl.getStat());
-        containerSkillsPhysical.addOrRemoveContainedStat(skillDrive.getStat());
-        containerSkillsPhysical.addOrRemoveContainedStat(skillFirearms.getStat());
-        containerSkillsPhysical.addOrRemoveContainedStat(skillLarceny.getStat());
-        containerSkillsPhysical.addOrRemoveContainedStat(skillStealth.getStat());
-        containerSkillsPhysical.addOrRemoveContainedStat(skillSurvival.getStat());
-        containerSkillsPhysical.addOrRemoveContainedStat(skillWeaponry.getStat());
-        containerSkillsPhysical.setObserver(this);
 
         containerSkillsSocial = rootView.findViewById(R.id.containerSkillsSocial);
         containerSkillsSocial.setPanelStats(
@@ -240,15 +262,6 @@ public class CharacterSheetFragment
             (TextView) rootView.findViewById(R.id.txtSelectedSocialSkill));
         containerSkillsSocial.setLblSelectedStats(
             (TextView) rootView.findViewById(R.id.lblSkillsSocial));
-        containerSkillsSocial.addOrRemoveContainedStat(skillAnimalKen.getStat());
-        containerSkillsSocial.addOrRemoveContainedStat(skillEmpathy.getStat());
-        containerSkillsSocial.addOrRemoveContainedStat(skillExpression.getStat());
-        containerSkillsSocial.addOrRemoveContainedStat(skillIntimidation.getStat());
-        containerSkillsSocial.addOrRemoveContainedStat(skillPersuasion.getStat());
-        containerSkillsSocial.addOrRemoveContainedStat(skillSocialize.getStat());
-        containerSkillsSocial.addOrRemoveContainedStat(skillStreetwise.getStat());
-        containerSkillsSocial.addOrRemoveContainedStat(skillSubterfuge.getStat());
-        containerSkillsSocial.setObserver(this);
 
         statContainers = new ArrayList<>();
         statContainers.add(containerAttrsMental);
@@ -264,39 +277,6 @@ public class CharacterSheetFragment
         derivedInitiative = rootView.findViewById(R.id.derivedInitiative);
         derivedSpeed = rootView.findViewById(R.id.derivedSpeed);
         derivedWillpower = rootView.findViewById(R.id.derivedWillpower);
-
-        setWatches();
-    }
-
-    private void setWatches()
-    {
-        // TODO Figure out a way to handle defense
-
-        derivedHealth
-            .addOrRemoveWatchedStat(statStamina)
-            .addOrRemoveWatchedStat(statSize);
-        statStamina.addOrRemoveStatWatcher(derivedHealth);
-        statSize.addOrRemoveStatWatcher(derivedHealth);
-
-        derivedInitiative
-            .addOrRemoveWatchedStat(statDexterity)
-            .addOrRemoveWatchedStat(statComposure);
-        statDexterity.addOrRemoveStatWatcher(derivedInitiative);
-        statComposure.addOrRemoveStatWatcher(derivedInitiative);
-
-        derivedWillpower
-            .addOrRemoveWatchedStat(statResolve)
-            .addOrRemoveWatchedStat(statComposure);
-        statResolve.addOrRemoveStatWatcher(derivedWillpower);
-        statComposure.addOrRemoveStatWatcher(derivedWillpower);
-
-        // TODO Figure out best way to pass on base value (in this case 5)
-        derivedSpeed
-            .addOrRemoveWatchedStat(statStrength)
-            .addOrRemoveWatchedStat(statDexterity);
-        statStrength.addOrRemoveStatWatcher(derivedSpeed);
-        statDexterity.addOrRemoveStatWatcher(derivedSpeed);
-
     }
 
     private void spawnNoDiceAlert() {
@@ -429,6 +409,8 @@ public class CharacterSheetFragment
                 StatBox statBox = rootView.findViewById(id);
 
                 statBox.setValue(newValue);
+
+                presenter.persistChanges();
             }
         });
 
@@ -439,6 +421,18 @@ public class CharacterSheetFragment
     public void changeDicePool(String statName, int value, int colorSelected) {
         presenter.addOrRemoveStat(new Pair<>(statName, value));
         presenter.getStatDetails(statName);
+    }
+
+    @Override
+    public void setStatContainer(Object tag)
+    {
+        Log.v("Assigning container", "Setting container for " + tag.toString());
+
+        Stat stat = presenter.getStatByTag(tag);
+
+        StatBox view = rootView.findViewWithTag(tag);
+        stat.setContainer(view);
+        view.setStat(stat);
     }
 
     @Override

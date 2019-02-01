@@ -1,8 +1,11 @@
 package com.callisto.diceroller.model;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 
+import com.callisto.diceroller.R;
+import com.callisto.diceroller.application.App;
 import com.callisto.diceroller.beans.Stat;
 import com.callisto.diceroller.tools.XMLParser;
 
@@ -25,6 +28,48 @@ public class CharacterSheetModel {
         this.statistics = new ArrayList<>();
 
         statistics = XMLParser.parseStats(context);
+    }
+
+    // Doesn't this kind of relation actually work better in a database?
+    public void setWatches()
+    {
+        Stat composure = getStat(App.getRes().getString(R.string.label_attr_com));
+        Stat dexterity = getStat(App.getRes().getString(R.string.label_attr_dex));
+        Stat health = getStat(App.getRes().getString(R.string.label_derived_health));
+        Stat initiative = getStat(App.getRes().getString(R.string.label_derived_initiative));
+        Stat resolve = getStat(App.getRes().getString(R.string.label_attr_res));
+        Stat speed = getStat(App.getRes().getString(R.string.label_derived_speed));
+        Stat stamina = getStat(App.getRes().getString(R.string.label_attr_sta));
+        Stat strength = getStat(App.getRes().getString(R.string.label_attr_str));
+        Stat size = getStat(App.getRes().getString(R.string.label_derived_size));
+        Stat willpower = getStat(App.getRes().getString(R.string.label_derived_willpower));
+
+        // TODO Get defense working
+
+        health
+            .addOrRemoveObservedStat(stamina)
+            .addOrRemoveObservedStat(size);
+        stamina.addOrRemoveObserver(health);
+        size.addOrRemoveObserver(health);
+
+        initiative
+            .addOrRemoveObservedStat(dexterity)
+            .addOrRemoveObservedStat(composure);
+        dexterity.addOrRemoveObserver(initiative);
+        composure.addOrRemoveObserver(initiative);
+
+        // TODO Figure out best way to pass on base value (in this case 5)
+        speed
+            .addOrRemoveObservedStat(strength)
+            .addOrRemoveObservedStat(dexterity);
+        strength.addOrRemoveObserver(speed);
+        dexterity.addOrRemoveObserver(speed);
+
+        willpower
+            .addOrRemoveObservedStat(resolve)
+            .addOrRemoveObservedStat(composure);
+        resolve.addOrRemoveObserver(willpower);
+        composure.addOrRemoveObserver(willpower);
     }
 
     public int getDiceNumber() {
@@ -114,5 +159,29 @@ public class CharacterSheetModel {
         }
 
         return null;
+    }
+
+    public Stat getStatByTag(Object tag)
+    {
+        try
+        {
+            for (Stat stat : statistics)
+            {
+                if (stat.getName().equals(tag.toString()))
+                {
+                    return stat;
+                }
+            }
+        }
+        catch (NullPointerException npe)
+        {
+            Log.e(this.getClass().getName(), "Null tag!");
+        }
+        return null;
+    }
+
+    public void persistChanges()
+    {
+        // TODO Implement Realm persistence here
     }
 }

@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,46 +13,31 @@ import android.widget.TextView;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.beans.Stat;
-import com.callisto.diceroller.interfaces.StatObserver;
+import com.callisto.diceroller.interfaces.StatContainer;
 import com.callisto.diceroller.interfaces.ViewWatcher;
-
-import java.util.ArrayList;
 
 public class StatBox
     extends LinearLayout
-    implements StatObserver,
-    StatObservable
+    implements
+//    StatObserver,
+//    StatObservable,
+    StatContainer
 {
 
     private TextView lblStat;
 
     private LinearLayout panelValue;
 
-//    private int currentValue;
     private int colorSelected;
 
     private boolean isSelected = false;
 
-    public boolean isEditionAllowed()
-    {
-        return isEditionAllowed;
-    }
-
-    public StatBox setEditionAllowed(boolean editionAllowed)
-    {
-        isEditionAllowed = editionAllowed;
-
-        return this;
-    }
+    private final int statValue;
+    private final String statBoxName;
 
     private boolean isEditionAllowed = true;
 
     private ViewWatcher viewWatcher;
-
-    // Those I'm looking at
-    private ArrayList<StatObserver> watchers;
-    // Those looking at me
-    private ArrayList<StatObservable> observedStats;
 
     private Stat stat;
 
@@ -73,42 +57,19 @@ public class StatBox
                 R.color.color_purple_dark)
         );
 
-        stat = Stat.newInstance()
-            .setName(args.getString(R.styleable.StatBox_statName))
-            .setCategory(args.getString(R.styleable.StatBox_statCategory));
+        setTag(args.getString(R.styleable.StatBox_statName));
+        statBoxName = args.getString(R.styleable.StatBox_statName);
 
-        try
-        {
-            stat.setType(args.getString(R.styleable.StatBox_statType));
-        }
-        catch (Exception e)
-        {
-            Log.e("Statbox error", e.getLocalizedMessage());
-        }
+        colorSelected = args.getColor(
+            R.styleable.StatBox_colorSelected,
+            ContextCompat.getColor(
+                getContext(),
+                R.color.color_purple_dark)
+        );
 
-        try {
-            int color = args.getColor(
-                R.styleable.StatBox_colorSelected,
-                ContextCompat.getColor(
-                    getContext(),
-                    R.color.color_purple_dark)
-            );
-
-            stat.setKind(args.getString(R.styleable.StatBox_statKind))
-                .setColor(color);
-
-        }
-        catch (Exception e)
-        {
-            Log.e("Statbox error", e.getLocalizedMessage());
-        }
-
-        final String statValue = args.getString(R.styleable.StatBox_statValue);
+        statValue = Integer.parseInt(args.getString(R.styleable.StatBox_statValue));
 
         isEditionAllowed = args.getBoolean(R.styleable.StatBox_isEditionAllowed, true);
-
-        watchers = new ArrayList<>();
-        observedStats = new ArrayList<>();
 
         args.recycle();
 
@@ -118,9 +79,6 @@ public class StatBox
         inflateLayout();
 
         resolveViews();
-
-        setName(stat.getName());
-        setValue(statValue);
 
         setBackgroundColor(ContextCompat.getColor(context, R.color.color_light_gray));
 
@@ -146,20 +104,25 @@ public class StatBox
         });
     }
 
-    public void setValue(int statValue) {
-        stat.setValue(statValue);
-
-        refreshPointsPanel(!isSelected);
-
-        notifyObservers();
+    public void setValue(String statValue) {
+        setValue(Integer.parseInt(statValue));
     }
 
-    public void setValue(String statValue) {
-        stat.setValue(Integer.parseInt(statValue));
-//        currentValue = Integer.parseInt(statValue);
-        refreshPointsPanel(!isSelected);
+    @Override
+    public void setValue(int statValue) {
+        stat.setValue(statValue);
+        stat.notifyObservers();
 
-        notifyObservers();
+        refreshPointsPanel(!isSelected);
+    }
+
+    @Override
+    public void setStat(Stat stat)
+    {
+        this.stat = stat;
+
+        setName(stat.getName());
+        setValue(stat.getValue());
     }
 
     private void setName(String statName) {
@@ -212,8 +175,11 @@ public class StatBox
         panelValue = findViewById(R.id.panelValue);
     }
 
-    public void setViewWatcher(ViewWatcher viewWatcher) {
+    public StatBox setViewWatcher(ViewWatcher viewWatcher) {
         this.viewWatcher = viewWatcher;
+        this.viewWatcher.setStatContainer(this.getTag());
+
+        return this;
     }
 
     private void refreshPointsPanel(boolean isBlack) {
@@ -230,59 +196,73 @@ public class StatBox
         }
     }
 
-    public StatBox addOrRemoveWatchedStat(StatObservable observable)
+    public boolean isEditionAllowed()
     {
-        if (observedStats.contains(observable))
-        {
-            observedStats.remove(observable);
-        }
-        else
-        {
-            observedStats.add(observable);
-        }
+        return isEditionAllowed;
+    }
+
+    public StatBox setEditionAllowed(boolean editionAllowed)
+    {
+        isEditionAllowed = editionAllowed;
 
         return this;
     }
 
-    public void addOrRemoveStatWatcher(StatObserver observer)
-    {
-        if (watchers.contains(observer))
-        {
-            watchers.remove(observer);
-        }
-        else
-        {
-            watchers.add(observer);
-        }
+//    public StatBox addOrRemoveWatchedStat(StatObservable observable)
+//    {
+//        if (observedStats.contains(observable))
+//        {
+//            observedStats.remove(observable);
+//        }
+//        else
+//        {
+//            observedStats.add(observable);
+//        }
+//
+//        return this;
+//    }
+//
+//    public void addOrRemoveStatWatcher(StatObserver observer)
+//    {
+//        if (watchers.contains(observer))
+//        {
+//            watchers.remove(observer);
+//        }
+//        else
+//        {
+//            watchers.add(observer);
+//        }
+//
+//    }
 
-    }
-
-    @Override
-    public void notifyObservers()
-    {
-        for(StatObserver observer : watchers)
-        {
-            observer.processNewValue(getStat());
-        }
-    }
-
-    // TODO THIS OPERATION BELONGS IN THE MODEL. FIND A WAY TO PUT IT THERE.
-    @Override
-    public void processNewValue(Stat stat)
-    {
-        int newScore = 0;
-
-        for(StatObservable observable : observedStats)
-        {
-            newScore += observable.getStat().getValue();
-        }
-
-        setValue(newScore);
-    }
-
-    @Override
-    public Stat getStat()
-    {
-        return stat;
-    }
+//    @Override
+//    public void notifyObservers()
+//    {
+//        for(StatObserver observer : watchers)
+//        {
+//            observer.processNewValue(getStat());
+//        }
+//    }
+//
+//    // TODO THIS OPERATION BELONGS IN THE MODEL. FIND A WAY TO PUT IT THERE.
+//    @Override
+//    public void processNewValue(Stat stat)
+//    {
+//        // Calculate new value
+//        int newScore = 0;
+//
+//        for(StatObservable observable : observedStats)
+//        {
+//            newScore += observable.getStat().getValue();
+//        }
+//
+//        // Set value on view
+//        setValue(newScore);
+//    }
+//
+//    @Override
+//    public Stat getStat()
+//    {
+//        return null;
+//    }
 }

@@ -91,4 +91,19 @@ public class CharacterSheetPresenter
     {
         model.addOrRemoveStat(stat);
     }
+
+    public Stat getStatByTag(Object tag)
+    {
+        return model.getStatByTag(tag);
+    }
+
+    public void setWatches()
+    {
+        model.setWatches();
+    }
+
+    public void persistChanges()
+    {
+        model.persistChanges();
+    }
 }

@@ -31,7 +31,8 @@ public class XMLParser
             parser.setInput(is, null);
 
             return processParsing(parser);
-        } catch (XmlPullParserException e)
+        }
+        catch (XmlPullParserException e)
         {
             e.printStackTrace();
         } catch (IOException e)

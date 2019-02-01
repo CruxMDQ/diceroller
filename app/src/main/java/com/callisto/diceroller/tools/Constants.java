@@ -44,7 +44,8 @@ public class Constants {
         TAG_STAT_FIELD_CATEGORY("category"),
         TAG_STAT_FIELD_TYPE("type"),
         TAG_STAT_FIELD_KIND("kind"),
-        TAG_STAT_FIELD_COLOR("color");
+        TAG_STAT_FIELD_COLOR("color"),
+        TAG_STAT_FIELD_VALUE("value");
 
         private String text;
 

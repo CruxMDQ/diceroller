@@ -1,8 +1,8 @@
-package com.callisto.diceroller.views;
+package com.callisto.diceroller.interfaces;
 
 import com.callisto.diceroller.beans.Stat;
 
-interface StatObservable
+public interface StatObservable
 {
     void notifyObservers();
     Stat getStat();

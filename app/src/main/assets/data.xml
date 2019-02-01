@@ -183,4 +183,29 @@
         <category>Skill</category>
         <type>Social</type>
     </stat>
+    <stat>
+        <name>Defense</name>
+        <category>Derived</category>
+    </stat>
+    <stat>
+        <name>Health</name>
+        <category>Derived</category>
+    </stat>
+    <stat>
+        <name>Initiative</name>
+        <category>Derived</category>
+    </stat>
+    <stat>
+        <name>Size</name>
+        <category>Derived</category>
+        <value>5</value>
+    </stat>
+    <stat>
+        <name>Speed</name>
+        <category>Derived</category>
+    </stat>
+    <stat>
+        <name>Willpower</name>
+        <category>Derived</category>
+    </stat>
 </stats>
