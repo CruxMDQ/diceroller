@@ -1,7 +1,6 @@
 package com.callisto.diceroller.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,7 +32,7 @@ public class CharacterSheetFragment
     extends BaseFragment
     implements
         CharacterSheet.View,
-    ViewWatcher,
+        ViewWatcher,
         StatusObserver
 {
 
@@ -115,9 +114,6 @@ public class CharacterSheetFragment
         setUpContainers();
 
         observeBoxes();
-
-        // This needs to be here because it links up stuff that isn't ready any sooner
-        presenter.setWatches();
     }
 
     private void setUpContainers()
@@ -205,14 +201,12 @@ public class CharacterSheetFragment
         skillWeaponry = rootView.findViewById(R.id.skillWeaponry);
 
         FloatingActionButton fabRoll = rootView.findViewById(R.id.fabRoll);
-        fabRoll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (presenter.hasDiceToRoll()) {
-                    spawnCustomDiceRollDialog(presenter.getStats());
-                } else {
-                    spawnNoDiceAlert();
-                }
+        fabRoll.setOnClickListener(v ->
+        {
+            if (presenter.hasDiceToRoll()) {
+                spawnCustomDiceRollDialog(presenter.getStats());
+            } else {
+                spawnNoDiceAlert();
             }
         });
 
@@ -401,17 +395,15 @@ public class CharacterSheetFragment
 
         dialogBuilder.setView(input);
 
-        dialogBuilder.setPositiveButton(getString(R.string.label_btn_ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String newValue = input.getText().toString();
+        dialogBuilder.setPositiveButton(getString(R.string.label_btn_ok), (dialog, which) ->
+        {
+            String newValue = input.getText().toString();
 
-                StatBox statBox = rootView.findViewById(id);
+            StatBox statBox = rootView.findViewById(id);
 
-                statBox.setValue(newValue);
+            statBox.setValue(newValue);
 
-                presenter.persistChanges();
-            }
+            presenter.persistChanges();
         });
 
         dialogBuilder.show();
@@ -431,7 +423,7 @@ public class CharacterSheetFragment
         Stat stat = presenter.getStatByTag(tag);
 
         StatBox view = rootView.findViewWithTag(tag);
-        stat.setContainer(view);
+
         view.setStat(stat);
     }
 

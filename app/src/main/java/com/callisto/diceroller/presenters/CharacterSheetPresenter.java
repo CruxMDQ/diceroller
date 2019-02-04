@@ -97,10 +97,10 @@ public class CharacterSheetPresenter
         return model.getStatByTag(tag);
     }
 
-    public void setWatches()
-    {
-        model.setWatches();
-    }
+//    public void setWatches()
+//    {
+//        model.setWatches();
+//    }
 
     public void persistChanges()
     {

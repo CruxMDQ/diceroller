@@ -11,20 +11,21 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+
+import io.realm.RealmList;
 
 public class XMLParser
 {
-    public static ArrayList parseStats(Context context)
+    public static RealmList<Stat> parseStats(Context context)
     {
-        XmlPullParserFactory factory = null;
+        XmlPullParserFactory factory;
         try
         {
             factory = XmlPullParserFactory.newInstance();
 
             XmlPullParser parser = factory.newPullParser();
 
-            InputStream is = context.getAssets().open("data.xml");
+            InputStream is = context.getAssets().open("cofdrules.xml");
 
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 
@@ -43,9 +44,9 @@ public class XMLParser
         return null;
     }
 
-    private static ArrayList<Stat> processParsing(XmlPullParser parser) throws XmlPullParserException, IOException
+    private static RealmList<Stat> processParsing(XmlPullParser parser) throws XmlPullParserException, IOException
     {
-        ArrayList<Stat> stats = new ArrayList<>();
+        RealmList<Stat> stats = new RealmList<>();
 
         int eventType = parser.getEventType();
 
@@ -53,7 +54,7 @@ public class XMLParser
 
         while (eventType != XmlPullParser.END_DOCUMENT)
         {
-            String eltName = null;
+            String eltName;
 
             switch (eventType)
             {
@@ -84,8 +85,17 @@ public class XMLParser
                         {
                             currentStat.setKind(parser.nextText());
                         }
-                        else if (Constants.XmlTags.TAG_STAT_FIELD_COLOR.getText().equals(eltName)) {
+                        else if (Constants.XmlTags.TAG_STAT_FIELD_COLOR.getText().equals(eltName))
+                        {
                             currentStat.setColor(Color.parseColor(parser.nextText()));
+                        }
+                        else if (Constants.XmlTags.TAG_STAT_FIELD_OBSERVER.getText().equals(eltName))
+                        {
+                            currentStat.addWatcher(parser.nextText());
+                        }
+                        else if (Constants.XmlTags.TAG_STAT_FIELD_OBSERVES.getText().equals(eltName))
+                        {
+                            currentStat.addWatchedStat(parser.nextText());
                         }
                     }
                     break;

@@ -6,16 +6,27 @@ import android.util.Pair;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.application.App;
+import com.callisto.diceroller.beans.Character;
 import com.callisto.diceroller.beans.Stat;
+import com.callisto.diceroller.bus.BusProvider;
+import com.callisto.diceroller.bus.events.StatChangedEvent;
+import com.callisto.diceroller.bus.events.StatUpdatedEvent;
+import com.callisto.diceroller.persistence.RealmHelper;
+import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.tools.XMLParser;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+
+import io.realm.RealmList;
 
 public class CharacterSheetModel {
     private int diceNumber = 0;
     private int rerollThreshold = 0;
 
-    private ArrayList<Stat> statistics;
+    private Character activeCharacter;
+
+    private RealmList<Stat> statistics;
 
     private ArrayList<Pair<String, Integer>> stats;
 
@@ -25,59 +36,45 @@ public class CharacterSheetModel {
         this.diceRoller = new DiceRoller();
         this.stats = new ArrayList<>();
 
-        this.statistics = new ArrayList<>();
+        this.statistics = new RealmList<>();
 
-        statistics = XMLParser.parseStats(context);
+        subscribeToEvents();
+
+        activeCharacter = RealmHelper.getInstance().get(Character.class, "Test character");
+
+        if (activeCharacter == null)
+        {
+            statistics = XMLParser.parseStats(context);
+
+            saveStatModels();
+
+            activeCharacter = new Character("Test character", statistics);
+        }
     }
 
-    // Doesn't this kind of relation actually work better in a database?
-    public void setWatches()
+    private void subscribeToEvents()
     {
-        Stat composure = getStat(App.getRes().getString(R.string.label_attr_com));
-        Stat dexterity = getStat(App.getRes().getString(R.string.label_attr_dex));
-        Stat health = getStat(App.getRes().getString(R.string.label_derived_health));
-        Stat initiative = getStat(App.getRes().getString(R.string.label_derived_initiative));
-        Stat resolve = getStat(App.getRes().getString(R.string.label_attr_res));
-        Stat speed = getStat(App.getRes().getString(R.string.label_derived_speed));
-        Stat stamina = getStat(App.getRes().getString(R.string.label_attr_sta));
-        Stat strength = getStat(App.getRes().getString(R.string.label_attr_str));
-        Stat size = getStat(App.getRes().getString(R.string.label_derived_size));
-        Stat willpower = getStat(App.getRes().getString(R.string.label_derived_willpower));
+        BusProvider.getInstance().register(this);
+    }
 
-        // TODO Get defense working
+    private void saveStatModels()
+    {
+        RealmHelper realm = RealmHelper.getInstance();
 
-        health
-            .addOrRemoveObservedStat(stamina)
-            .addOrRemoveObservedStat(size);
-        stamina.addOrRemoveObserver(health);
-        size.addOrRemoveObserver(health);
+        for (Stat stat : statistics)
+        {
+            if (!realm.exists(Stat.class, stat.getName()))
+            {
+                stat.setId(realm.getLastId(Stat.class));
 
-        initiative
-            .addOrRemoveObservedStat(dexterity)
-            .addOrRemoveObservedStat(composure);
-        dexterity.addOrRemoveObserver(initiative);
-        composure.addOrRemoveObserver(initiative);
+                realm.save(stat);
+            }
+        }
 
-        // TODO Figure out best way to pass on base value (in this case 5)
-        speed
-            .addOrRemoveObservedStat(strength)
-            .addOrRemoveObservedStat(dexterity);
-        strength.addOrRemoveObserver(speed);
-        dexterity.addOrRemoveObserver(speed);
-
-        willpower
-            .addOrRemoveObservedStat(resolve)
-            .addOrRemoveObservedStat(composure);
-        resolve.addOrRemoveObserver(willpower);
-        composure.addOrRemoveObserver(willpower);
     }
 
     public int getDiceNumber() {
         return diceNumber;
-    }
-
-    public void setDiceNumber(int diceNumber) {
-        this.diceNumber = diceNumber;
     }
 
     private void calculateDiceNumber() {
@@ -94,14 +91,6 @@ public class CharacterSheetModel {
         this.diceNumber += value;
     }
 
-    public int getRerollThreshold() {
-        return rerollThreshold;
-    }
-
-    public void setRerollThreshold(int rerollThreshold) {
-        this.rerollThreshold = rerollThreshold;
-    }
-
     public ArrayList<Integer> rollDice(int rerollThreshold, int dicePool) {
         return diceRoller.rollDice(rerollThreshold, dicePool);
     }
@@ -114,20 +103,19 @@ public class CharacterSheetModel {
         return diceRoller.rollDice(rerollThreshold, diceNumber);
     }
 
-
     public int getSuccessesCofd(ArrayList<Integer> rolls) {
         return diceRoller.getSuccessesCofd(rolls);
     }
 
     public void addOrRemoveStat(Stat stat)
     {
-        if (statistics.contains(stat))
+        if (activeCharacter.getStats().contains(stat))
         {
-            statistics.remove(stat);
+            activeCharacter.getStats().remove(stat);
         }
         else
         {
-            statistics.add(stat);
+            activeCharacter.getStats().add(stat);
         }
     }
 
@@ -151,7 +139,7 @@ public class CharacterSheetModel {
 
     public Stat getStat(String statName)
     {
-        for (Stat stat : statistics)
+        for (Stat stat : activeCharacter.getStats())
         {
             if (stat.getName().equals(statName)) {
                 return stat;
@@ -165,7 +153,7 @@ public class CharacterSheetModel {
     {
         try
         {
-            for (Stat stat : statistics)
+            for (Stat stat : activeCharacter.getStats())
             {
                 if (stat.getName().equals(tag.toString()))
                 {
@@ -182,6 +170,69 @@ public class CharacterSheetModel {
 
     public void persistChanges()
     {
-        // TODO Implement Realm persistence here
+        RealmHelper.getInstance().save(activeCharacter);
+    }
+
+    @Subscribe public void updateStatValue(StatChangedEvent event)
+    {
+        Stat stat = getStat(event.name);
+
+        RealmHelper.getInstance().getRealm().beginTransaction();
+        stat.setValue(event.value);
+        RealmHelper.getInstance().getRealm().commitTransaction();
+
+        int newScore;
+
+        for (String watcher : stat.getObservers())
+        {
+            Stat observer = getStat(watcher);
+
+            newScore = updateStatScore(observer);
+
+            RealmHelper.getInstance().getRealm().beginTransaction();
+            observer.setValue(newScore);
+            RealmHelper.getInstance().getRealm().commitTransaction();
+
+            BusProvider.getInstance().post(new StatUpdatedEvent(observer.getName(), newScore));
+        }
+    }
+
+    private int updateStatScore(Stat observer)
+    {
+        int newScore;
+        ArrayList<Stat> observedStats = new ArrayList<>();
+
+        for (String watchedStat : observer.getObservedStats())
+        {
+            observedStats.add(getStat(watchedStat));
+        }
+
+        if (observer.getName().equals(App.getRes().getString(R.string.label_derived_defense)))
+        {
+            newScore = 100;
+
+            for (Stat observedStat : observedStats)
+            {
+                if (observedStat.getValue() < newScore)
+                {
+                    newScore = observedStat.getValue();
+                }
+            }
+        }
+        else
+        {
+            newScore = 0;
+
+            for (Stat observedStat : observedStats)
+            {
+                newScore += observedStat.getValue();
+            }
+
+            if (observer.getName().equals(App.getRes().getString(R.string.label_derived_speed)))
+            {
+                newScore += Constants.Values.COFD_SPEED_BASE.getValue();
+            }
+        }
+        return newScore;
     }
 }

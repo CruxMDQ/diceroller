@@ -6,21 +6,22 @@ import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.beans.Stat;
+import com.callisto.diceroller.bus.BusProvider;
+import com.callisto.diceroller.bus.events.StatChangedEvent;
+import com.callisto.diceroller.bus.events.StatUpdatedEvent;
 import com.callisto.diceroller.interfaces.StatContainer;
 import com.callisto.diceroller.interfaces.ViewWatcher;
+import com.squareup.otto.Subscribe;
 
 public class StatBox
     extends LinearLayout
     implements
-//    StatObserver,
-//    StatObservable,
     StatContainer
 {
 
@@ -32,14 +33,12 @@ public class StatBox
 
     private boolean isSelected = false;
 
-    private final int statValue;
-    private final String statBoxName;
+    private int statValue;
+    private String statBoxName;
 
     private boolean isEditionAllowed = true;
 
     private ViewWatcher viewWatcher;
-
-    private Stat stat;
 
     public StatBox(final Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -82,25 +81,21 @@ public class StatBox
 
         setBackgroundColor(ContextCompat.getColor(context, R.color.color_light_gray));
 
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        setOnClickListener(v ->
+        {
 //                if (isEditionAllowed())
 //                {
-                    toggleSelected(context);
+                toggleSelected(context);
 //                }
-            }
         });
 
-        setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (isEditionAllowed())
-                {
-                    viewWatcher.spawnStatEditionDialog(v.getId(), stat.getName());
-                }
-                return true;
+        setOnLongClickListener(v ->
+        {
+            if (isEditionAllowed())
+            {
+                viewWatcher.spawnStatEditionDialog(v.getId(), statBoxName);
             }
+            return true;
         });
     }
 
@@ -110,19 +105,26 @@ public class StatBox
 
     @Override
     public void setValue(int statValue) {
-        stat.setValue(statValue);
-        stat.notifyObservers();
-
-        refreshPointsPanel(!isSelected);
+        this.statValue = statValue;
     }
 
     @Override
     public void setStat(Stat stat)
     {
-        this.stat = stat;
+        statBoxName = stat.getName();
+        statValue = stat.getValue();
 
-        setName(stat.getName());
-        setValue(stat.getValue());
+        setName(statBoxName);
+        setValue(statValue);
+
+        postStatChange();
+
+        refreshPointsPanel(!isSelected);
+    }
+
+    private void postStatChange()
+    {
+        BusProvider.getInstance().post(new StatChangedEvent(statBoxName, statValue));
     }
 
     private void setName(String statName) {
@@ -138,7 +140,6 @@ public class StatBox
             lblStat.setTypeface(Typeface.DEFAULT);
 
             isSelected = false;
-
         }
         else
         {
@@ -157,7 +158,7 @@ public class StatBox
     private void changeDicePool() {
         viewWatcher.changeDicePool(
             lblStat.getText().toString(),
-            stat.getValue(),
+            statValue,
             colorSelected);
     }
 
@@ -179,13 +180,15 @@ public class StatBox
         this.viewWatcher = viewWatcher;
         this.viewWatcher.setStatContainer(this.getTag());
 
+        subscribeToEvents();
+
         return this;
     }
 
     private void refreshPointsPanel(boolean isBlack) {
         panelValue.removeAllViews();
 
-        for (int i = 0; i < stat.getValue(); i++) {
+        for (int i = 0; i < statValue; i++) {
             RadioButton rdb = new RadioButton(getContext());
 
             rdb.setChecked(isBlack);
@@ -208,61 +211,25 @@ public class StatBox
         return this;
     }
 
-//    public StatBox addOrRemoveWatchedStat(StatObservable observable)
-//    {
-//        if (observedStats.contains(observable))
-//        {
-//            observedStats.remove(observable);
-//        }
-//        else
-//        {
-//            observedStats.add(observable);
-//        }
-//
-//        return this;
-//    }
-//
-//    public void addOrRemoveStatWatcher(StatObserver observer)
-//    {
-//        if (watchers.contains(observer))
-//        {
-//            watchers.remove(observer);
-//        }
-//        else
-//        {
-//            watchers.add(observer);
-//        }
-//
-//    }
+    @Subscribe public void updateStatValue(StatUpdatedEvent event)
+    {
+        try
+        {
+            if (event.name.equals(statBoxName))
+            {
+                this.statValue = event.value;
 
-//    @Override
-//    public void notifyObservers()
-//    {
-//        for(StatObserver observer : watchers)
-//        {
-//            observer.processNewValue(getStat());
-//        }
-//    }
-//
-//    // TODO THIS OPERATION BELONGS IN THE MODEL. FIND A WAY TO PUT IT THERE.
-//    @Override
-//    public void processNewValue(Stat stat)
-//    {
-//        // Calculate new value
-//        int newScore = 0;
-//
-//        for(StatObservable observable : observedStats)
-//        {
-//            newScore += observable.getStat().getValue();
-//        }
-//
-//        // Set value on view
-//        setValue(newScore);
-//    }
-//
-//    @Override
-//    public Stat getStat()
-//    {
-//        return null;
-//    }
+                refreshPointsPanel(!isSelected);
+            }
+        }
+        catch (NullPointerException ignored)
+        {
+
+        }
+    }
+
+    private void subscribeToEvents()
+    {
+        BusProvider.getInstance().register(this);
+    }
 }

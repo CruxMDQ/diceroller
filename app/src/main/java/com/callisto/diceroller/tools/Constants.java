@@ -39,13 +39,16 @@ public class Constants {
     }
 
     public enum XmlTags {
+        TAG_STAT_ID("id"),
         TAG_STAT_SINGLE("stat"),
         TAG_STAT_FIELD_NAME("name"),
         TAG_STAT_FIELD_CATEGORY("category"),
         TAG_STAT_FIELD_TYPE("type"),
         TAG_STAT_FIELD_KIND("kind"),
         TAG_STAT_FIELD_COLOR("color"),
-        TAG_STAT_FIELD_VALUE("value");
+        TAG_STAT_FIELD_VALUE("value"),
+        TAG_STAT_FIELD_OBSERVER("observer"),
+        TAG_STAT_FIELD_OBSERVES("observes");
 
         private String text;
 

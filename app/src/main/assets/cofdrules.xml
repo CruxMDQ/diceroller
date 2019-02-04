@@ -13,6 +13,7 @@
         <type>Mental</type>
         <kind>Finesse</kind>
         <color>#18722A</color>
+        <observer>Defense</observer>
     </stat>
     <stat>
         <name>Resolve</name>
@@ -20,6 +21,7 @@
         <type>Mental</type>
         <kind>Resistance</kind>
         <color>#183A72</color>
+        <observer>Willpower</observer>
     </stat>
     <stat>
         <name>Strength</name>
@@ -27,6 +29,7 @@
         <type>Physical</type>
         <kind>Power</kind>
         <color>#721820</color>
+        <observer>Speed</observer>
     </stat>
     <stat>
         <name>Dexterity</name>
@@ -34,6 +37,9 @@
         <type>Physical</type>
         <kind>Finesse</kind>
         <color>#18722A</color>
+        <observer>Initiative</observer>
+        <observer>Speed</observer>
+        <observer>Defense</observer>
     </stat>
     <stat>
         <name>Stamina</name>
@@ -41,6 +47,7 @@
         <type>Physical</type>
         <kind>Resistance</kind>
         <color>#183A72</color>
+        <observer>Health</observer>
     </stat>
     <stat>
         <name>Presence</name>
@@ -62,6 +69,8 @@
         <type>Social</type>
         <kind>Resistance</kind>
         <color>#183A72</color>
+        <observer>Initiative</observer>
+        <observer>Willpower</observer>
     </stat>
     <stat>
         <name>Academics</name>
@@ -186,26 +195,37 @@
     <stat>
         <name>Defense</name>
         <category>Derived</category>
+        <observes>Dexterity</observes>
+        <observes>Wits</observes>
     </stat>
     <stat>
         <name>Health</name>
         <category>Derived</category>
+        <observes>Size</observes>
+        <observes>Stamina</observes>
     </stat>
     <stat>
         <name>Initiative</name>
         <category>Derived</category>
+        <observes>Composure</observes>
+        <observes>Dexterity</observes>
     </stat>
     <stat>
         <name>Size</name>
         <category>Derived</category>
         <value>5</value>
+        <observer>Health</observer>
     </stat>
     <stat>
         <name>Speed</name>
         <category>Derived</category>
+        <observes>Dexterity</observes>
+        <observes>Strength</observes>
     </stat>
     <stat>
         <name>Willpower</name>
         <category>Derived</category>
+        <observes>Composure</observes>
+        <observes>Resolve</observes>
     </stat>
 </stats>

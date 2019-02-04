@@ -1,24 +1,23 @@
 package com.callisto.diceroller.beans;
 
 import com.callisto.diceroller.interfaces.StatContainer;
-import com.callisto.diceroller.interfaces.StatObservable;
-import com.callisto.diceroller.interfaces.StatObserver;
-import com.callisto.diceroller.model.GameLogic;
 
-import java.util.ArrayList;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class Stat
-    implements StatObserver,
-    StatObservable
+    extends RealmObject
 {
+    @PrimaryKey
+    long id;
+
     private String name, category, type, kind;
 
     private int color, value;
 
-    private StatContainer container;
-    
-    private ArrayList<StatObserver> observers;
-    private ArrayList<StatObservable> observedStats;
+    private RealmList<String> observers;
+    private RealmList<String> observed;
 
     public static Stat newInstance()
     {
@@ -27,14 +26,15 @@ public class Stat
 
     public Stat()
     {
-        this.observers = new ArrayList<>();
-        this.observedStats = new ArrayList<>();
+        this.observers = new RealmList<>();
+        this.observed = new RealmList<>();
     }
 
     public Stat(String name, String category, int value)
     {
-        this.observers = new ArrayList<>();
-        this.observedStats = new ArrayList<>();
+        this.observers = new RealmList<>();
+        this.observed = new RealmList<>();
+
         this.name = name;
         this.category = category;
         this.value = value;
@@ -42,8 +42,9 @@ public class Stat
 
     public Stat(String name, String category, String type)
     {
-        this.observers = new ArrayList<>();
-        this.observedStats = new ArrayList<>();
+        this.observers = new RealmList<>();
+        this.observed = new RealmList<>();
+
         this.name = name;
         this.category = category;
         this.type = type;
@@ -51,8 +52,9 @@ public class Stat
 
     public Stat(String name, String category, String type, String kind, int color)
     {
-        this.observers = new ArrayList<>();
-        this.observedStats = new ArrayList<>();
+        this.observers = new RealmList<>();
+        this.observed = new RealmList<>();
+
         this.name = name;
         this.category = category;
         this.type = type;
@@ -62,8 +64,9 @@ public class Stat
 
     public Stat(String name, String category, String type, String kind, int color, int value)
     {
-        this.observers = new ArrayList<>();
-        this.observedStats = new ArrayList<>();
+        this.observers = new RealmList<>();
+        this.observed = new RealmList<>();
+
         this.name = name;
         this.category = category;
         this.type = type;
@@ -164,61 +167,52 @@ public class Stat
         return this;
     }
 
-    public void addOrRemoveObserver(StatObserver observer)
-    {
-        if (observers.contains(observer))
-        {
-            observers.remove(observer);
-        }
-        else
-        {
-            observers.add(observer);
-        }
-
-    }
-
-    public Stat addOrRemoveObservedStat(StatObservable observedStat)
-    {
-        if (observedStats.contains(observedStat))
-        {
-            observedStats.remove(observedStat);
-        }
-        else
-        {
-            observedStats.add(observedStat);
-        }
-
-        return this;
-    }
-
-    @Override
-    public void notifyObservers()
-    {
-        for (StatObserver observer : observers)
-        {
-            observer.processNewValue(getStat());
-        }
-    }
-
-    @Override
     public Stat getStat()
     {
         return this;
     }
 
-    public ArrayList<StatObservable> getObservedStats()
-    {
-        return observedStats;
-    }
-
-    @Override
-    public void processNewValue(Stat stat)
-    {
-        container.setValue(GameLogic.processNewValue(this, stat));
-    }
-
     public void setContainer(StatContainer container)
     {
-        this.container = container;
+    }
+
+    public long getId()
+    {
+        return id;
+    }
+
+    public void setId(long id)
+    {
+        this.id = id;
+    }
+
+    public void addWatcher(String observer)
+    {
+        observers.add(observer);
+    }
+
+    public void removeWatcher(String observer)
+    {
+        if (observers.contains(observer))
+        {
+            observers.remove(observer);
+        }
+    }
+
+    public Stat addWatchedStat(String observedStat)
+    {
+        observed.add(observedStat);
+
+        return this;
+    }
+
+    public RealmList<String> getObservedStats()
+    {
+        return observed;
+    }
+
+    public RealmList<String> getObservers()
+    {
+        return observers;
     }
 }
