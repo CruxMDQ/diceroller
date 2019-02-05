@@ -193,10 +193,7 @@ public class Stat
 
     public void removeWatcher(String observer)
     {
-        if (observers.contains(observer))
-        {
-            observers.remove(observer);
-        }
+        observers.remove(observer);
     }
 
     public Stat addWatchedStat(String observedStat)

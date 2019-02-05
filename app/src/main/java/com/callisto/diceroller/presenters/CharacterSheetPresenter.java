@@ -24,30 +24,28 @@ public class CharacterSheetPresenter
         int dicePool,           // How many dice are rolled?
         int rerollThreshold)    // What is the minimum die roll required for rerolls?
     {
-
-        ArrayList<Integer> rolls = model.rollDice(rerollThreshold, dicePool);
-
-        int successes = model.getSuccessesCofd(rolls);
-
-        view.showResults(rolls, successes, false);
+        showRolls(model.rollDice(rerollThreshold, dicePool));
     }
 
     public void rollDice(int threshold)
     {
-        ArrayList<Integer> rolls = model.rollDice(threshold);
-
-        int successes = model.getSuccessesCofd(rolls);
-
-        view.showResults(rolls, successes, false);
+        showRolls(model.rollDice(threshold));
     }
 
     public void rollDice()
     {
-        ArrayList<Integer> rolls = model.rollDice();
+        showRolls(model.rollDice());
+    }
 
-        int successes = model.getSuccessesCofd(rolls);
+    public void rollExtended(int threshold)
+    {
+        ArrayList<Integer> rolls = model.rollExtended(threshold);
 
-        view.showResults(rolls, successes, false);
+        view.showResults(rolls, model.getSuccessesCofd(rolls), true);
+    }
+
+    public void showRolls(ArrayList<Integer> rolls) {
+        view.showResults(rolls, model.getSuccessesCofd(rolls), false);
     }
 
     public void changeDicePool(int value)
@@ -70,15 +68,6 @@ public class CharacterSheetPresenter
         return model.getDiceNumber() > 0;
     }
 
-    public void rollExtended(int threshold)
-    {
-        ArrayList<Integer> rolls = model.rollExtended(threshold);
-
-        int successes = model.getSuccessesCofd(rolls);
-
-        view.showResults(rolls, successes, true);
-    }
-
     public void getStatDetails(String statName)
     {
         Stat stat = model.getStat(statName);
@@ -96,11 +85,6 @@ public class CharacterSheetPresenter
     {
         return model.getStatByTag(tag);
     }
-
-//    public void setWatches()
-//    {
-//        model.setWatches();
-//    }
 
     public void persistChanges()
     {

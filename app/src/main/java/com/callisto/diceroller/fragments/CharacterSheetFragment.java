@@ -27,6 +27,7 @@ import com.callisto.diceroller.views.StatLayout;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class CharacterSheetFragment
     extends BaseFragment
@@ -212,50 +213,50 @@ public class CharacterSheetFragment
 
         containerAttrsMental = rootView.findViewById(R.id.containerAttrsMental);
         containerAttrsMental.setPanelStats(
-            (LinearLayout) rootView.findViewById(R.id.panelAttrsMental));
+            rootView.findViewById(R.id.panelAttrsMental));
         containerAttrsMental.setTxtSelectedStats(
-            (TextView) rootView.findViewById(R.id.txtSelectedMentalAttribute));
+            rootView.findViewById(R.id.txtSelectedMentalAttribute));
         containerAttrsMental.setLblSelectedStats(
-            (TextView) rootView.findViewById(R.id.labelAttrsMental));
+            rootView.findViewById(R.id.labelAttrsMental));
 
         containerAttrsPhysical = rootView.findViewById(R.id.containerAttrsPhysical);
         containerAttrsPhysical.setPanelStats(
-            (LinearLayout) rootView.findViewById(R.id.panelAttrsPhysical));
+            rootView.findViewById(R.id.panelAttrsPhysical));
         containerAttrsPhysical.setTxtSelectedStats(
-            (TextView) rootView.findViewById(R.id.txtSelectedPhysicalAttribute));
+            rootView.findViewById(R.id.txtSelectedPhysicalAttribute));
         containerAttrsPhysical.setLblSelectedStats(
-            (TextView) rootView.findViewById(R.id.labelAttrsPhysical));
+            rootView.findViewById(R.id.labelAttrsPhysical));
 
         containerAttrsSocial = rootView.findViewById(R.id.containerAttrsSocial);
         containerAttrsSocial.setPanelStats(
-            (LinearLayout) rootView.findViewById(R.id.panelAttrsSocial));
+            rootView.findViewById(R.id.panelAttrsSocial));
         containerAttrsSocial.setTxtSelectedStats(
-            (TextView) rootView.findViewById(R.id.txtSelectedSocialAttribute));
+            rootView.findViewById(R.id.txtSelectedSocialAttribute));
         containerAttrsSocial.setLblSelectedStats(
-            (TextView) rootView.findViewById(R.id.labelAttrsSocial));
+            rootView.findViewById(R.id.labelAttrsSocial));
         containerSkillsMental = rootView.findViewById(R.id.containerSkillsMental);
         containerSkillsMental.setPanelStats(
-            (LinearLayout) rootView.findViewById(R.id.panelSkillsMental));
+            rootView.findViewById(R.id.panelSkillsMental));
         containerSkillsMental.setTxtSelectedStats(
-            (TextView) rootView.findViewById(R.id.txtSelectedMentalSkill));
+            rootView.findViewById(R.id.txtSelectedMentalSkill));
         containerSkillsMental.setLblSelectedStats(
-            (TextView) rootView.findViewById(R.id.lblSkillsMental));
+            rootView.findViewById(R.id.lblSkillsMental));
 
         containerSkillsPhysical = rootView.findViewById(R.id.containerSkillsPhysical);
         containerSkillsPhysical.setPanelStats(
-            (LinearLayout) rootView.findViewById(R.id.panelSkillsPhysical));
+            rootView.findViewById(R.id.panelSkillsPhysical));
         containerSkillsPhysical.setTxtSelectedStats(
-            (TextView) rootView.findViewById(R.id.txtSelectedPhysicalSkill));
+            rootView.findViewById(R.id.txtSelectedPhysicalSkill));
         containerSkillsPhysical.setLblSelectedStats(
-            (TextView) rootView.findViewById(R.id.lblSkillsPhysical));
+            rootView.findViewById(R.id.lblSkillsPhysical));
 
         containerSkillsSocial = rootView.findViewById(R.id.containerSkillsSocial);
         containerSkillsSocial.setPanelStats(
-            (LinearLayout) rootView.findViewById(R.id.panelSkillsSocial));
+            rootView.findViewById(R.id.panelSkillsSocial));
         containerSkillsSocial.setTxtSelectedStats(
-            (TextView) rootView.findViewById(R.id.txtSelectedSocialSkill));
+            rootView.findViewById(R.id.txtSelectedSocialSkill));
         containerSkillsSocial.setLblSelectedStats(
-            (TextView) rootView.findViewById(R.id.lblSkillsSocial));
+            rootView.findViewById(R.id.lblSkillsSocial));
 
         statContainers = new ArrayList<>();
         statContainers.add(containerAttrsMental);
@@ -360,19 +361,17 @@ public class CharacterSheetFragment
         // Store dialog reference to later be able to dismiss it
         final AlertDialog dialog = dialogBuilder.show();
 
-        btnRoll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int threshold = Integer.parseInt(inputRerollThreshold.getText().toString());
+        btnRoll.setOnClickListener(view1 ->
+        {
+            int threshold = Integer.parseInt(inputRerollThreshold.getText().toString());
 
-                if (!chkExtendedRoll.isChecked()) {
-                    presenter.rollDice(threshold);
-                } else {
-                    presenter.rollExtended(threshold);
-                }
-
-                dialog.cancel();
+            if (!chkExtendedRoll.isChecked()) {
+                presenter.rollDice(threshold);
+            } else {
+                presenter.rollExtended(threshold);
             }
+
+            dialog.cancel();
         });
 
     }
@@ -416,10 +415,8 @@ public class CharacterSheetFragment
     }
 
     @Override
-    public void setStatContainer(Object tag)
+    public void setStatOnView(Object tag)
     {
-        Log.v("Assigning container", "Setting container for " + tag.toString());
-
         Stat stat = presenter.getStatByTag(tag);
 
         StatBox view = rootView.findViewWithTag(tag);
@@ -506,7 +503,7 @@ public class CharacterSheetFragment
                         break;
                     }
                 }
-                target.setPanelColor();
+                Objects.requireNonNull(target).setPanelColor();
             }
         }
         catch (NullPointerException e)

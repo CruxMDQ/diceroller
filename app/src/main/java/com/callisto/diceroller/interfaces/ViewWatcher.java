@@ -6,5 +6,5 @@ public interface ViewWatcher
 
     void changeDicePool(String statName, int value, int colorSelected);
 
-    void setStatContainer(Object tag);
+    void setStatOnView(Object tag);
 }

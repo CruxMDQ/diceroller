@@ -178,7 +178,7 @@ public class StatBox
 
     public StatBox setViewWatcher(ViewWatcher viewWatcher) {
         this.viewWatcher = viewWatcher;
-        this.viewWatcher.setStatContainer(this.getTag());
+        this.viewWatcher.setStatOnView(this.getTag());
 
         subscribeToEvents();
 

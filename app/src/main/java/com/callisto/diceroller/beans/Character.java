@@ -9,8 +9,8 @@ public class Character
 {
     @PrimaryKey
     long id;
-    String name;
-    RealmList<Stat> stats;
+    private String name;
+    private RealmList<Stat> stats;
 
     public Character() {}
 
@@ -23,5 +23,30 @@ public class Character
     public RealmList<Stat> getStats()
     {
         return stats;
+    }
+
+    public void setStats(RealmList<Stat> stats)
+    {
+        this.stats = stats;
+    }
+
+    public long getId()
+    {
+        return id;
+    }
+
+    public void setId(long id)
+    {
+        this.id = id;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 }
