@@ -99,6 +99,15 @@ public class StatBox
         });
     }
 
+    public void performStatChange(String statValue)
+    {
+        setValue(statValue);
+
+        refreshPointsPanel();
+
+        postStatChange();
+    }
+
     public void setValue(String statValue) {
         setValue(Integer.parseInt(statValue));
     }
@@ -119,10 +128,10 @@ public class StatBox
 
         postStatChange();
 
-        refreshPointsPanel(!isSelected);
+        refreshPointsPanel();
     }
 
-    private void postStatChange()
+    public void postStatChange()
     {
         BusProvider.getInstance().post(new StatChangedEvent(statBoxName, statValue));
     }
@@ -150,7 +159,7 @@ public class StatBox
             isSelected = true;
         }
 
-        refreshPointsPanel(!isSelected);
+        refreshPointsPanel();
 
         changeDicePool();
     }
@@ -185,13 +194,13 @@ public class StatBox
         return this;
     }
 
-    private void refreshPointsPanel(boolean isBlack) {
+    public void refreshPointsPanel() {
         panelValue.removeAllViews();
 
         for (int i = 0; i < statValue; i++) {
             RadioButton rdb = new RadioButton(getContext());
 
-            rdb.setChecked(isBlack);
+            rdb.setChecked(!isSelected);
 
             rdb.setButtonDrawable(ContextCompat.getDrawable(getContext(), R.drawable.selector_points));
 
@@ -219,7 +228,7 @@ public class StatBox
             {
                 this.statValue = event.value;
 
-                refreshPointsPanel(!isSelected);
+                refreshPointsPanel();
             }
         }
         catch (NullPointerException ignored)

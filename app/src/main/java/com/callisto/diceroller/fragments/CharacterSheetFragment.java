@@ -400,7 +400,7 @@ public class CharacterSheetFragment
 
             StatBox statBox = rootView.findViewById(id);
 
-            statBox.setValue(newValue);
+            statBox.performStatChange(newValue);
 
             presenter.persistChanges();
         });
