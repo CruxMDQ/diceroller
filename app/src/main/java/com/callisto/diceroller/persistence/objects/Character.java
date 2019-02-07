@@ -1,4 +1,4 @@
-package com.callisto.diceroller.beans;
+package com.callisto.diceroller.persistence.objects;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

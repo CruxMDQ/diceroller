@@ -3,7 +3,7 @@ package com.callisto.diceroller.presenters;
 import android.content.Context;
 import android.util.Pair;
 
-import com.callisto.diceroller.beans.Stat;
+import com.callisto.diceroller.persistence.objects.Stat;
 import com.callisto.diceroller.model.CharacterSheetModel;
 import com.callisto.diceroller.viewmanagers.CharacterSheet;
 

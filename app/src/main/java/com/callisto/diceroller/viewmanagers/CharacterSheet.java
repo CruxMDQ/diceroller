@@ -1,6 +1,6 @@
 package com.callisto.diceroller.viewmanagers;
 
-import com.callisto.diceroller.beans.Stat;
+import com.callisto.diceroller.persistence.objects.Stat;
 
 import java.util.ArrayList;
 

@@ -17,13 +17,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.callisto.diceroller.R;
-import com.callisto.diceroller.beans.Stat;
-import com.callisto.diceroller.interfaces.StatusObserver;
+import com.callisto.diceroller.bus.BusProvider;
+import com.callisto.diceroller.bus.events.PanelTappedEvent;
+import com.callisto.diceroller.interfaces.StatContainer;
 import com.callisto.diceroller.interfaces.ViewWatcher;
+import com.callisto.diceroller.persistence.objects.Stat;
 import com.callisto.diceroller.presenters.CharacterSheetPresenter;
 import com.callisto.diceroller.viewmanagers.CharacterSheet;
+import com.callisto.diceroller.views.ResourceLayout;
 import com.callisto.diceroller.views.StatBox;
 import com.callisto.diceroller.views.StatLayout;
+import com.callisto.diceroller.views.UnfoldingLayout;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,10 +38,8 @@ public class CharacterSheetFragment
     extends BaseFragment
     implements
         CharacterSheet.View,
-        ViewWatcher,
-        StatusObserver
+        ViewWatcher
 {
-
     CharacterSheetPresenter presenter;
 
     private StatLayout containerAttrsMental;
@@ -47,7 +50,10 @@ public class CharacterSheetFragment
     private StatLayout containerSkillsPhysical;
     private StatLayout containerSkillsSocial;
 
-    private ArrayList<StatLayout> statContainers;
+    private ResourceLayout resourcePanelHealth;
+    private ResourceLayout resourcePanelWillpower;
+
+    private ArrayList<UnfoldingLayout> statContainers;
 
     // Attributes
     private StatBox statIntelligence;
@@ -93,10 +99,8 @@ public class CharacterSheetFragment
 
     // Derived stats
     private StatBox statSize;
-    private StatBox derivedWillpower;
     private StatBox derivedSpeed;
     private StatBox derivedInitiative;
-    private StatBox derivedHealth;
     private StatBox derivedDefense;
 
     @Override
@@ -115,6 +119,8 @@ public class CharacterSheetFragment
         setUpContainers();
 
         observeBoxes();
+
+        subscribeToEvents();
     }
 
     private void setUpContainers()
@@ -122,17 +128,14 @@ public class CharacterSheetFragment
         containerAttrsMental.addOrRemoveContainedStat(presenter.getStatByTag(statIntelligence.getTag()));
         containerAttrsMental.addOrRemoveContainedStat(presenter.getStatByTag(statWits.getTag()));
         containerAttrsMental.addOrRemoveContainedStat(presenter.getStatByTag(statResolve.getTag()));
-        containerAttrsMental.setObserver(this);
 
         containerAttrsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(statStrength.getTag()));
         containerAttrsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(statDexterity.getTag()));
         containerAttrsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(statStamina.getTag()));
-        containerAttrsPhysical.setObserver(this);
 
         containerAttrsSocial.addOrRemoveContainedStat(presenter.getStatByTag(statPresence.getTag()));
         containerAttrsSocial.addOrRemoveContainedStat(presenter.getStatByTag(statManipulation.getTag()));
         containerAttrsSocial.addOrRemoveContainedStat(presenter.getStatByTag(statComposure.getTag()));
-        containerAttrsSocial.setObserver(this);
 
         containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillAcademics.getTag()));
         containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillComputer.getTag()));
@@ -142,7 +145,6 @@ public class CharacterSheetFragment
         containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillOccult.getTag()));
         containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillPolitics.getTag()));
         containerSkillsMental.addOrRemoveContainedStat(presenter.getStatByTag(skillScience.getTag()));
-        containerSkillsMental.setObserver(this);
 
         containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillAthletics.getTag()));
         containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillBrawl.getTag()));
@@ -152,7 +154,6 @@ public class CharacterSheetFragment
         containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillStealth.getTag()));
         containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillSurvival.getTag()));
         containerSkillsPhysical.addOrRemoveContainedStat(presenter.getStatByTag(skillWeaponry.getTag()));
-        containerSkillsPhysical.setObserver(this);
 
         containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillAnimalKen.getTag()));
         containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillEmpathy.getTag()));
@@ -162,7 +163,6 @@ public class CharacterSheetFragment
         containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillSocialize.getTag()));
         containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillStreetwise.getTag()));
         containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillSubterfuge.getTag()));
-        containerSkillsSocial.setObserver(this);
     }
 
     protected void findViews() {
@@ -258,6 +258,9 @@ public class CharacterSheetFragment
         containerSkillsSocial.setLblSelectedStats(
             rootView.findViewById(R.id.lblSkillsSocial));
 
+        resourcePanelHealth = rootView.findViewById(R.id.panelHealth);
+        resourcePanelWillpower = rootView.findViewById(R.id.panelWillpower);
+
         statContainers = new ArrayList<>();
         statContainers.add(containerAttrsMental);
         statContainers.add(containerAttrsPhysical);
@@ -265,13 +268,16 @@ public class CharacterSheetFragment
         statContainers.add(containerSkillsMental);
         statContainers.add(containerSkillsPhysical);
         statContainers.add(containerSkillsSocial);
+        statContainers.add(resourcePanelHealth);
+        statContainers.add(resourcePanelWillpower);
 
         statSize = rootView.findViewById(R.id.statSize);
         derivedDefense = rootView.findViewById(R.id.derivedDefense);
-        derivedHealth = rootView.findViewById(R.id.derivedHealth);
         derivedInitiative = rootView.findViewById(R.id.derivedInitiative);
         derivedSpeed = rootView.findViewById(R.id.derivedSpeed);
-        derivedWillpower = rootView.findViewById(R.id.derivedWillpower);
+
+//        derivedWillpower = rootView.findViewById(R.id.derivedWillpower);
+//        derivedHealth = rootView.findViewById(R.id.derivedHealth);
     }
 
     private void spawnNoDiceAlert() {
@@ -316,10 +322,14 @@ public class CharacterSheetFragment
 
         statSize.setViewWatcher(this);
         derivedDefense.setViewWatcher(this);
-        derivedHealth.setViewWatcher(this);
         derivedInitiative.setViewWatcher(this);
         derivedSpeed.setViewWatcher(this);
-        derivedWillpower.setViewWatcher(this);
+
+        resourcePanelHealth.setViewWatcher(this);
+        resourcePanelWillpower.setViewWatcher(this);
+
+//        derivedWillpower.setViewWatcher(this);
+//        derivedHealth.setViewWatcher(this);
     }
 
     // TODO Think up a logic to account for equipment-based penalties
@@ -396,11 +406,11 @@ public class CharacterSheetFragment
 
         dialogBuilder.setPositiveButton(getString(R.string.label_btn_ok), (dialog, which) ->
         {
-            String newValue = input.getText().toString();
+            int newValue = Integer.parseInt(input.getText().toString());
 
-            StatBox statBox = rootView.findViewById(id);
+            StatContainer container = rootView.findViewById(id);
 
-            statBox.performStatChange(newValue);
+            container.performValueChange(newValue);
 
             presenter.persistChanges();
         });
@@ -419,9 +429,9 @@ public class CharacterSheetFragment
     {
         Stat stat = presenter.getStatByTag(tag);
 
-        StatBox view = rootView.findViewWithTag(tag);
+        StatContainer statContainer = rootView.findViewWithTag(tag);
 
-        view.setStat(stat);
+        statContainer.setStat(stat);
     }
 
     @Override
@@ -512,15 +522,20 @@ public class CharacterSheetFragment
         }
     }
 
-    @Override
-    public void togglePanels(int id)
+    @Subscribe
+    public void togglePanels(PanelTappedEvent event)
     {
-        for (StatLayout statLayout : statContainers)
+        for (UnfoldingLayout layout : statContainers)
         {
-            if (statLayout.getId() != id)
+            if (layout.getId() != event.getViewId())
             {
-                statLayout.toggleStatPanel(View.GONE, false);
+                layout.toggleStatPanel(View.GONE, false);
             }
         }
+    }
+
+    private void subscribeToEvents()
+    {
+        BusProvider.getInstance().register(this);
     }
 }

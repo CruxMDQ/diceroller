@@ -55,14 +55,15 @@
         <!-- Health = Stamina + Size -->
         <!-- - Must account for bashing, lethal and aggravated damage -->
         <!-- - Has both a temporary and a permanent score -->
-        <com.callisto.diceroller.views.StatBox
-            android:id="@+id/derivedHealth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:isEditionAllowed="false"
-            app:statName="@string/label_derived_health"
-            app:statCategory="@string/stat_category_derived"
-            app:statValue="8"/>
+        <!--<com.callisto.diceroller.views.StatBox-->
+            <!--android:id="@+id/derivedHealth"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:visibility="gone"-->
+            <!--app:isEditionAllowed="false"-->
+            <!--app:statName="@string/label_derived_health"-->
+            <!--app:statCategory="@string/stat_category_derived"-->
+            <!--app:statValue="8"/>-->
 
         <!-- Initiative mod = Dexterity + Composure -->
         <com.callisto.diceroller.views.StatBox
@@ -85,14 +86,14 @@
             app:statValue="11"/>
 
         <!-- Willpower: Resolve + Composure -->
-        <com.callisto.diceroller.views.StatBox
-            android:id="@+id/derivedWillpower"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:isEditionAllowed="false"
-            app:statName="@string/label_derived_willpower"
-            app:statCategory="@string/stat_category_derived"
-            app:statValue="6"/>
+        <!--<com.callisto.diceroller.views.StatBox-->
+            <!--android:id="@+id/derivedWillpower"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:isEditionAllowed="false"-->
+            <!--app:statName="@string/label_derived_willpower"-->
+            <!--app:statCategory="@string/stat_category_derived"-->
+            <!--app:statValue="6"/>-->
 
     </com.callisto.diceroller.views.StatLayout>
 

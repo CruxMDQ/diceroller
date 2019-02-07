@@ -11,7 +11,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.callisto.diceroller.R;
-import com.callisto.diceroller.beans.Stat;
+import com.callisto.diceroller.persistence.objects.Stat;
 import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.StatChangedEvent;
 import com.callisto.diceroller.bus.events.StatUpdatedEvent;
@@ -82,12 +82,8 @@ public class StatBox
         setBackgroundColor(ContextCompat.getColor(context, R.color.color_light_gray));
 
         setOnClickListener(v ->
-        {
-//                if (isEditionAllowed())
-//                {
-                toggleSelected(context);
-//                }
-        });
+            toggleSelected(context)
+        );
 
         setOnLongClickListener(v ->
         {
@@ -99,11 +95,11 @@ public class StatBox
         });
     }
 
-    public void performStatChange(String statValue)
+    public void performValueChange(int statValue)
     {
         setValue(statValue);
 
-        refreshPointsPanel();
+        refreshValuePanel();
 
         postStatChange();
     }
@@ -128,7 +124,7 @@ public class StatBox
 
         postStatChange();
 
-        refreshPointsPanel();
+        refreshValuePanel();
     }
 
     public void postStatChange()
@@ -159,7 +155,7 @@ public class StatBox
             isSelected = true;
         }
 
-        refreshPointsPanel();
+        refreshValuePanel();
 
         changeDicePool();
     }
@@ -194,7 +190,7 @@ public class StatBox
         return this;
     }
 
-    public void refreshPointsPanel() {
+    public void refreshValuePanel() {
         panelValue.removeAllViews();
 
         for (int i = 0; i < statValue; i++) {
@@ -228,7 +224,7 @@ public class StatBox
             {
                 this.statValue = event.value;
 
-                refreshPointsPanel();
+                refreshValuePanel();
             }
         }
         catch (NullPointerException ignored)

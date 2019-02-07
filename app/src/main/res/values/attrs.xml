@@ -15,4 +15,15 @@
         <attr name="selectedStat" format="string" />
         <attr name="isOpen" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="ResourceLayout">
+        <attr name="panelName" format="string" />
+        <attr name="panelValue" format="integer" />
+        <attr name="isPanelOpen" format="boolean" />
+        <attr name="boxesHaveMultipleStates" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="ResourceBox">
+        <attr name="hasMultipleStates" format="boolean" />
+    </declare-styleable>
 </resources>

@@ -34,6 +34,33 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/panelAttributes"/>
 
+            <!-- Health = Stamina + Size -->
+            <!-- - Must account for bashing, lethal and aggravated damage -->
+            <!-- - Has both a temporary and a permanent score -->
+            <com.callisto.diceroller.views.ResourceLayout
+                android:id="@+id/panelHealth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/panelSkills"
+                app:boxesHaveMultipleStates="true"
+                app:panelName="@string/label_derived_health"
+                app:panelValue="5"/>
+
+            <!-- Willpower = Resolve + Composure -->
+            <!-- - Has both a temporary and a permanent score -->
+            <com.callisto.diceroller.views.ResourceLayout
+                android:id="@+id/panelWillpower"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/panelHealth"
+                app:boxesHaveMultipleStates="false"
+                app:panelName="@string/label_derived_willpower"
+                app:panelValue="5"/>
+
             <include
                 android:id="@+id/panelDerived"
                 layout="@layout/fragment_char_sheet_derived"
@@ -41,7 +68,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/panelSkills"
+                app:layout_constraintTop_toBottomOf="@+id/panelWillpower"
                 />
 
         </android.support.constraint.ConstraintLayout>

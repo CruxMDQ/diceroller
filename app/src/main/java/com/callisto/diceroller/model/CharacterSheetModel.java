@@ -6,8 +6,8 @@ import android.util.Pair;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.application.App;
-import com.callisto.diceroller.beans.Character;
-import com.callisto.diceroller.beans.Stat;
+import com.callisto.diceroller.persistence.objects.Character;
+import com.callisto.diceroller.persistence.objects.Stat;
 import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.StatChangedEvent;
 import com.callisto.diceroller.bus.events.StatUpdatedEvent;

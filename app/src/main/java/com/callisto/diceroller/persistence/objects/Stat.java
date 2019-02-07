@@ -1,4 +1,4 @@
-package com.callisto.diceroller.beans;
+package com.callisto.diceroller.persistence.objects;
 
 import com.callisto.diceroller.interfaces.StatContainer;
 

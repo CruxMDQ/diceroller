@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context=".activities.MainActivity"
-    tools:showIn="@layout/fragment_char_sheet">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:orientation="vertical"
+              tools:context=".activities.MainActivity"
+              tools:showIn="@layout/fragment_char_sheet">
 
     <TextView
         android:id="@+id/lblAttributes"
@@ -32,10 +33,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical"
             android:layout_margin="@dimen/margin_small"
-            android:padding="@dimen/margin_small"
             android:background="@drawable/background_dark"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_small"
             app:isOpen="false"
             >
 
@@ -52,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/label_attrs_mental"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"/>
 
                 <TextView
                     android:id="@+id/txtSelectedMentalAttribute"
@@ -75,13 +76,13 @@
                     android:id="@+id/statIntelligence"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:statName="@string/label_attr_int"
+                    app:colorSelected="@color/color_red_dark"
                     app:statCategory="@string/stat_category_attr"
-                    app:statType="@string/stat_type_mental"
-                    app:statKind="@string/stat_kind_power"
                     app:statColor="@color/color_red_dark"
-                    app:statValue="3"
-                    app:colorSelected="@color/color_red_dark"/>
+                    app:statKind="@string/stat_kind_power"
+                    app:statName="@string/label_attr_int"
+                    app:statType="@string/stat_type_mental"
+                    app:statValue="3"/>
 
                 <!-- Wits -->
                 <!-- Observers: Defense -->
@@ -89,13 +90,13 @@
                     android:id="@+id/statWits"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:statName="@string/label_attr_wits"
-                    app:statCategory="@string/stat_category_attr"
-                    app:statType="@string/stat_type_mental"
-                    app:statKind="@string/stat_kind_finesse"
-                    app:statColor="@color/color_green_dark"
-                    app:statValue="3"
                     app:colorSelected="@color/color_green_dark"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statColor="@color/color_green_dark"
+                    app:statKind="@string/stat_kind_finesse"
+                    app:statName="@string/label_attr_wits"
+                    app:statType="@string/stat_type_mental"
+                    app:statValue="3"
                     />
 
                 <!-- Resolve -->
@@ -104,13 +105,13 @@
                     android:id="@+id/statResolve"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:statName="@string/label_attr_res"
-                    app:statCategory="@string/stat_category_attr"
-                    app:statType="@string/stat_type_mental"
-                    app:statKind="@string/stat_kind_resistance"
-                    app:statColor="@color/color_blue_dark"
-                    app:statValue="3"
                     app:colorSelected="@color/color_blue_dark"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statColor="@color/color_blue_dark"
+                    app:statKind="@string/stat_kind_resistance"
+                    app:statName="@string/label_attr_res"
+                    app:statType="@string/stat_type_mental"
+                    app:statValue="3"
                     />
             </LinearLayout>
         </com.callisto.diceroller.views.StatLayout>
@@ -121,10 +122,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical"
             android:layout_margin="@dimen/margin_small"
-            android:padding="@dimen/margin_small"
             android:background="@drawable/background_dark"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_small"
             app:isOpen="false"
             >
 
@@ -141,7 +142,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/label_attrs_physical"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"/>
 
                 <TextView
                     android:id="@+id/txtSelectedPhysicalAttribute"
@@ -163,13 +164,13 @@
                     android:id="@+id/statStrength"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:statName="@string/label_attr_str"
-                    app:statCategory="@string/stat_category_attr"
-                    app:statType="@string/stat_type_physical"
-                    app:statKind="@string/stat_kind_power"
-                    app:statColor="@color/color_red_dark"
-                    app:statValue="3"
                     app:colorSelected="@color/color_red_dark"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statColor="@color/color_red_dark"
+                    app:statKind="@string/stat_kind_power"
+                    app:statName="@string/label_attr_str"
+                    app:statType="@string/stat_type_physical"
+                    app:statValue="3"
                     />
 
                 <!-- Dexterity -->
@@ -178,13 +179,13 @@
                     android:id="@+id/statDexterity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:statName="@string/label_attr_dex"
-                    app:statCategory="@string/stat_category_attr"
-                    app:statType="@string/stat_type_physical"
-                    app:statKind="@string/stat_kind_finesse"
-                    app:statColor="@color/color_green_dark"
-                    app:statValue="3"
                     app:colorSelected="@color/color_green_dark"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statColor="@color/color_green_dark"
+                    app:statKind="@string/stat_kind_finesse"
+                    app:statName="@string/label_attr_dex"
+                    app:statType="@string/stat_type_physical"
+                    app:statValue="3"
                     />
 
                 <!-- Stamina -->
@@ -193,27 +194,27 @@
                     android:id="@+id/statStamina"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:statName="@string/label_attr_sta"
-                    app:statCategory="@string/stat_category_attr"
-                    app:statType="@string/stat_type_physical"
-                    app:statKind="@string/stat_kind_resistance"
-                    app:statColor="@color/color_blue_dark"
-                    app:statValue="3"
                     app:colorSelected="@color/color_blue_dark"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statColor="@color/color_blue_dark"
+                    app:statKind="@string/stat_kind_resistance"
+                    app:statName="@string/label_attr_sta"
+                    app:statType="@string/stat_type_physical"
+                    app:statValue="3"
                     />
             </LinearLayout>
         </com.callisto.diceroller.views.StatLayout>
 
         <!-- Social attributes -->
         <com.callisto.diceroller.views.StatLayout
+            android:id="@+id/containerAttrsSocial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/containerAttrsSocial"
             android:layout_gravity="center"
-            android:orientation="vertical"
             android:layout_margin="@dimen/margin_small"
-            android:padding="@dimen/margin_small"
             android:background="@drawable/background_dark"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_small"
             app:isOpen="false"
             >
 
@@ -230,7 +231,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/label_attrs_social"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"/>
 
                 <TextView
                     android:id="@+id/txtSelectedSocialAttribute"
@@ -253,13 +254,13 @@
                     android:id="@+id/statPresence"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:statName="@string/label_attr_pre"
-                    app:statCategory="@string/stat_category_attr"
-                    app:statType="@string/stat_type_social"
-                    app:statKind="@string/stat_kind_power"
-                    app:statColor="@color/color_red_dark"
-                    app:statValue="3"
                     app:colorSelected="@color/color_red_dark"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statColor="@color/color_red_dark"
+                    app:statKind="@string/stat_kind_power"
+                    app:statName="@string/label_attr_pre"
+                    app:statType="@string/stat_type_social"
+                    app:statValue="3"
                     />
 
                 <!-- Manipulation -->
@@ -267,13 +268,13 @@
                     android:id="@+id/statManipulation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:statName="@string/label_attr_man"
-                    app:statCategory="@string/stat_category_attr"
-                    app:statType="@string/stat_type_social"
-                    app:statKind="@string/stat_kind_finesse"
-                    app:statColor="@color/color_green_dark"
-                    app:statValue="3"
                     app:colorSelected="@color/color_green_dark"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statColor="@color/color_green_dark"
+                    app:statKind="@string/stat_kind_finesse"
+                    app:statName="@string/label_attr_man"
+                    app:statType="@string/stat_type_social"
+                    app:statValue="3"
                     />
 
                 <!-- Composure -->
@@ -282,13 +283,13 @@
                     android:id="@+id/statComposure"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:statName="@string/label_attr_com"
-                    app:statCategory="@string/stat_category_attr"
-                    app:statType="@string/stat_type_social"
-                    app:statKind="@string/stat_kind_resistance"
-                    app:statColor="@color/color_blue_dark"
-                    app:statValue="3"
                     app:colorSelected="@color/color_blue_dark"
+                    app:statCategory="@string/stat_category_attr"
+                    app:statColor="@color/color_blue_dark"
+                    app:statKind="@string/stat_kind_resistance"
+                    app:statName="@string/label_attr_com"
+                    app:statType="@string/stat_type_social"
+                    app:statValue="3"
                     />
             </LinearLayout>
         </com.callisto.diceroller.views.StatLayout>

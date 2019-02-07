@@ -3,7 +3,7 @@ package com.callisto.diceroller.tools;
 import android.content.Context;
 import android.graphics.Color;
 
-import com.callisto.diceroller.beans.Stat;
+import com.callisto.diceroller.persistence.objects.Stat;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
