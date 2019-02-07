@@ -21,7 +21,7 @@
     <string name="label_attr_man">Manipulation</string>
     <string name="label_attr_com">Composure</string>
 
-    <string name="label_skills">Skills (untrained penalty)</string>
+    <string name="label_skills">Skills</string>
     <string name="label_skills_mental">Mental (-3)</string>
     <string name="label_skills_physical">Physical (-1)</string>
     <string name="label_skills_social">Social (-1)</string>

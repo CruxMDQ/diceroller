@@ -1,5 +1,6 @@
 package com.callisto.diceroller.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -9,7 +10,10 @@ import com.callisto.diceroller.R;
 import com.callisto.diceroller.fragments.BaseFragment;
 import com.callisto.diceroller.fragments.CharacterSheetFragment;
 import com.callisto.diceroller.presenters.MainActivityPresenter;
+import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.viewmanagers.MainActivityNavigation;
+
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class MainActivity extends AppCompatActivity
     implements MainActivityNavigation.View {
@@ -23,8 +27,12 @@ public class MainActivity extends AppCompatActivity
 
         presenter = new MainActivityPresenter(this);
 
-//        setFragment(new DiceRollerFragment());
-        setFragment(new CharacterSheetFragment());
+        CharacterSheetFragment sheet = CharacterSheetFragment
+            .newInstance(
+                Constants.Fonts.CEZANNE.getText()
+            );
+
+        setFragment(sheet);
     }
 
     @Override
@@ -57,5 +65,10 @@ public class MainActivity extends AppCompatActivity
             .beginTransaction()
             .replace(R.id.flContent, fragment)
             .commit();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 }

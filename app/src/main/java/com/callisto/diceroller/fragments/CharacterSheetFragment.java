@@ -17,12 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.callisto.diceroller.R;
+import com.callisto.diceroller.application.App;
 import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.PanelTappedEvent;
 import com.callisto.diceroller.interfaces.StatContainer;
 import com.callisto.diceroller.interfaces.ViewWatcher;
 import com.callisto.diceroller.persistence.objects.Stat;
 import com.callisto.diceroller.presenters.CharacterSheetPresenter;
+import com.callisto.diceroller.tools.Constants;
+import com.callisto.diceroller.tools.TypefaceSpanBuilder;
 import com.callisto.diceroller.viewmanagers.CharacterSheet;
 import com.callisto.diceroller.views.ResourceLayout;
 import com.callisto.diceroller.views.StatBox;
@@ -103,9 +106,23 @@ public class CharacterSheetFragment
     private StatBox derivedInitiative;
     private StatBox derivedDefense;
 
+    private TextView lblAttributes;
+    private TextView lblSkills;
+    private TextView lblDerived;
+
+    private String font;
+
     @Override
     protected int getLayout() {
         return R.layout.fragment_char_sheet;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+        font = getArguments().getString(Constants.Parameters.FONT.getText());
     }
 
     @Override
@@ -121,6 +138,47 @@ public class CharacterSheetFragment
         observeBoxes();
 
         subscribeToEvents();
+
+        setTypefacesOnTitles();
+    }
+
+    public static CharacterSheetFragment newInstance(String font)
+    {
+        CharacterSheetFragment myFragment = new CharacterSheetFragment();
+
+        Bundle args = new Bundle();
+
+        args.putString(Constants.Parameters.FONT.getText(), font);
+
+        myFragment.setArguments(args);
+
+        return myFragment;
+    }
+
+    private void setTypefacesOnTitles()
+    {
+//        font = Constants.Fonts.CEZANNE.getText();
+
+        TypefaceSpanBuilder.setTypefacedTitle(
+            lblAttributes,
+            App.getRes().getString(R.string.label_attributes),
+            font,
+            Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
+        );
+
+        TypefaceSpanBuilder.setTypefacedTitle(
+            lblSkills,
+            App.getRes().getString(R.string.label_skills),
+            font,
+            Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
+        );
+
+        TypefaceSpanBuilder.setTypefacedTitle(
+            lblDerived,
+            App.getRes().getString(R.string.label_derived_stats),
+            font,
+            Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
+        );
     }
 
     private void setUpContainers()
@@ -214,7 +272,7 @@ public class CharacterSheetFragment
         containerAttrsMental = rootView.findViewById(R.id.containerAttrsMental);
         containerAttrsMental.setPanelStats(
             rootView.findViewById(R.id.panelAttrsMental));
-        containerAttrsMental.setTxtSelectedStats(
+        containerAttrsMental.setTxtSummary(
             rootView.findViewById(R.id.txtSelectedMentalAttribute));
         containerAttrsMental.setLblSelectedStats(
             rootView.findViewById(R.id.labelAttrsMental));
@@ -222,7 +280,7 @@ public class CharacterSheetFragment
         containerAttrsPhysical = rootView.findViewById(R.id.containerAttrsPhysical);
         containerAttrsPhysical.setPanelStats(
             rootView.findViewById(R.id.panelAttrsPhysical));
-        containerAttrsPhysical.setTxtSelectedStats(
+        containerAttrsPhysical.setTxtSummary(
             rootView.findViewById(R.id.txtSelectedPhysicalAttribute));
         containerAttrsPhysical.setLblSelectedStats(
             rootView.findViewById(R.id.labelAttrsPhysical));
@@ -230,14 +288,14 @@ public class CharacterSheetFragment
         containerAttrsSocial = rootView.findViewById(R.id.containerAttrsSocial);
         containerAttrsSocial.setPanelStats(
             rootView.findViewById(R.id.panelAttrsSocial));
-        containerAttrsSocial.setTxtSelectedStats(
+        containerAttrsSocial.setTxtSummary(
             rootView.findViewById(R.id.txtSelectedSocialAttribute));
         containerAttrsSocial.setLblSelectedStats(
             rootView.findViewById(R.id.labelAttrsSocial));
         containerSkillsMental = rootView.findViewById(R.id.containerSkillsMental);
         containerSkillsMental.setPanelStats(
             rootView.findViewById(R.id.panelSkillsMental));
-        containerSkillsMental.setTxtSelectedStats(
+        containerSkillsMental.setTxtSummary(
             rootView.findViewById(R.id.txtSelectedMentalSkill));
         containerSkillsMental.setLblSelectedStats(
             rootView.findViewById(R.id.lblSkillsMental));
@@ -245,7 +303,7 @@ public class CharacterSheetFragment
         containerSkillsPhysical = rootView.findViewById(R.id.containerSkillsPhysical);
         containerSkillsPhysical.setPanelStats(
             rootView.findViewById(R.id.panelSkillsPhysical));
-        containerSkillsPhysical.setTxtSelectedStats(
+        containerSkillsPhysical.setTxtSummary(
             rootView.findViewById(R.id.txtSelectedPhysicalSkill));
         containerSkillsPhysical.setLblSelectedStats(
             rootView.findViewById(R.id.lblSkillsPhysical));
@@ -253,7 +311,7 @@ public class CharacterSheetFragment
         containerSkillsSocial = rootView.findViewById(R.id.containerSkillsSocial);
         containerSkillsSocial.setPanelStats(
             rootView.findViewById(R.id.panelSkillsSocial));
-        containerSkillsSocial.setTxtSelectedStats(
+        containerSkillsSocial.setTxtSummary(
             rootView.findViewById(R.id.txtSelectedSocialSkill));
         containerSkillsSocial.setLblSelectedStats(
             rootView.findViewById(R.id.lblSkillsSocial));
@@ -276,8 +334,9 @@ public class CharacterSheetFragment
         derivedInitiative = rootView.findViewById(R.id.derivedInitiative);
         derivedSpeed = rootView.findViewById(R.id.derivedSpeed);
 
-//        derivedWillpower = rootView.findViewById(R.id.derivedWillpower);
-//        derivedHealth = rootView.findViewById(R.id.derivedHealth);
+        lblAttributes = rootView.findViewById(R.id.lblAttributes);
+        lblSkills = rootView.findViewById(R.id.lblSkills);
+        lblDerived = rootView.findViewById(R.id.lblDerived);
     }
 
     private void spawnNoDiceAlert() {

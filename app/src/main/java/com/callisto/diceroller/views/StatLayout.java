@@ -33,7 +33,7 @@ public class StatLayout
     private LinearLayout panelStats;
 
     private TextView lblSelectedStats;
-    private TextView txtSelectedStats;
+    private TextView txtSummary;
 
     private StatusObserver observer;
 
@@ -214,11 +214,11 @@ public class StatLayout
     {
         if (getPickedStatsCount() > 0)
         {
-            txtSelectedStats.setVisibility(VISIBLE);
-            txtSelectedStats.setText(getSelectedStatsString());
+            txtSummary.setVisibility(VISIBLE);
+            txtSummary.setText(getSelectedStatsString());
         } else
         {
-            txtSelectedStats.setVisibility(GONE);
+            txtSummary.setVisibility(GONE);
         }
     }
 
@@ -266,9 +266,9 @@ public class StatLayout
         this.panelStats = panelStats;
     }
 
-    public void setTxtSelectedStats(TextView txtSelectedStats)
+    public void setTxtSummary(TextView txtSummary)
     {
-        this.txtSelectedStats = txtSelectedStats;
+        this.txtSummary = txtSummary;
     }
 
     public void setPanelColor()
@@ -300,7 +300,7 @@ public class StatLayout
 
     private void setTextViewsColor(int color)
     {
-        txtSelectedStats.setTextColor(color);
+        txtSummary.setTextColor(color);
         lblSelectedStats.setTextColor(color);
     }
 

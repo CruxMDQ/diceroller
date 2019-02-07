@@ -5,6 +5,8 @@ public class Constants {
         throw new AssertionError("This class is NOT MEANT FOR INSTANTIATION!");
     }
 
+    private static String FONT_DIR = "fonts/";
+
     public enum Systems {
         FIFTH_EDITION("5E"),
         OWOD("Old World of Darkness"),
@@ -25,7 +27,8 @@ public class Constants {
         COFD_SPEED_BASE(5),
         COFD_DIE_SIZE(10),
         COFD_BASE_DIFFICULTY_THRESHOLD(8),
-        COFD_BASE_ROLL_AGAIN_THRESHOLD(10);
+        COFD_BASE_ROLL_AGAIN_THRESHOLD(10),
+        STAT_CONTAINER_FONT_TITLE(30);
 
         private int value;
 
@@ -35,6 +38,35 @@ public class Constants {
 
         public int getValue() {
             return value;
+        }
+    }
+
+    public enum Fonts {
+        CEZANNE("Cezanne.TTF");
+
+        private String text;
+
+        Fonts(String text) {
+            this.text = text;
+        }
+
+        public String getText() {
+            return FONT_DIR + text;
+        }
+    }
+
+    public enum Parameters {
+        CHARACTER_NAME("charname"),
+        FONT("font");
+
+        private String text;
+
+        Parameters(String text) {
+            this.text = text;
+        }
+
+        public String getText() {
+            return FONT_DIR + text;
         }
     }
 

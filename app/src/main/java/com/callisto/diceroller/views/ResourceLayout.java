@@ -18,6 +18,8 @@ import com.callisto.diceroller.bus.events.StatUpdatedEvent;
 import com.callisto.diceroller.interfaces.StatContainer;
 import com.callisto.diceroller.interfaces.ViewWatcher;
 import com.callisto.diceroller.persistence.objects.Stat;
+import com.callisto.diceroller.tools.Constants;
+import com.callisto.diceroller.tools.TypefaceSpanBuilder;
 import com.squareup.otto.Subscribe;
 
 public class ResourceLayout
@@ -157,6 +159,13 @@ public class ResourceLayout
         statValue = stat.getValue();
 
         lblTitle.setText(statName);
+
+        TypefaceSpanBuilder.setTypefacedTitle(
+            lblTitle,
+            statName,
+            Constants.Fonts.CEZANNE.getText(),
+            Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
+        );
 
         refreshValuePanel();
     }
