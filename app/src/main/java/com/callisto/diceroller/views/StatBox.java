@@ -11,17 +11,21 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.callisto.diceroller.R;
-import com.callisto.diceroller.persistence.objects.Stat;
 import com.callisto.diceroller.bus.BusProvider;
+import com.callisto.diceroller.bus.events.DicePoolChangedEvent;
 import com.callisto.diceroller.bus.events.StatChangedEvent;
+import com.callisto.diceroller.bus.events.StatEditionRequestedEvent;
 import com.callisto.diceroller.bus.events.StatUpdatedEvent;
+import com.callisto.diceroller.interfaces.RefreshingView;
 import com.callisto.diceroller.interfaces.StatContainer;
 import com.callisto.diceroller.interfaces.ViewWatcher;
+import com.callisto.diceroller.persistence.objects.Stat;
 import com.squareup.otto.Subscribe;
 
 public class StatBox
     extends LinearLayout
     implements
+    RefreshingView,
     StatContainer
 {
 
@@ -59,19 +63,24 @@ public class StatBox
         setTag(args.getString(R.styleable.StatBox_statName));
         statBoxName = args.getString(R.styleable.StatBox_statName);
 
-        colorSelected = args.getColor(
-            R.styleable.StatBox_colorSelected,
-            ContextCompat.getColor(
-                getContext(),
-                R.color.color_purple_dark)
-        );
-
-        statValue = Integer.parseInt(args.getString(R.styleable.StatBox_statValue));
+        statValue = args.getInteger(R.styleable.StatBox_statValue, 0);
 
         isEditionAllowed = args.getBoolean(R.styleable.StatBox_isEditionAllowed, true);
 
         args.recycle();
 
+        performInflation(context);
+    }
+
+    public StatBox(Context context)
+    {
+        super(context);
+
+        performInflation(context);
+    }
+
+    private void performInflation(Context context)
+    {
         setOrientation(LinearLayout.HORIZONTAL);
         setGravity(Gravity.CENTER_VERTICAL);
 
@@ -89,7 +98,8 @@ public class StatBox
         {
             if (isEditionAllowed())
             {
-                viewWatcher.spawnStatEditionDialog(v.getId(), statBoxName);
+                postStatEditionRequest(v.getId(), statBoxName);
+//                viewWatcher.spawnStatEditionDialog(v.getId(), statBoxName);
             }
             return true;
         });
@@ -99,7 +109,7 @@ public class StatBox
     {
         setValue(statValue);
 
-        refreshValuePanel();
+        performViewRefresh();
 
         postStatChange();
     }
@@ -118,18 +128,33 @@ public class StatBox
     {
         statBoxName = stat.getName();
         statValue = stat.getValue();
+        colorSelected = stat.getColor();
 
         setName(statBoxName);
         setValue(statValue);
 
         postStatChange();
 
-        refreshValuePanel();
+        performViewRefresh();
+    }
+
+    public void postDicePoolChange()
+    {
+        BusProvider.getInstance().post(new DicePoolChangedEvent(
+            lblStat.getText().toString(),
+            statValue,
+            colorSelected
+        ));
     }
 
     public void postStatChange()
     {
         BusProvider.getInstance().post(new StatChangedEvent(statBoxName, statValue));
+    }
+
+    private void postStatEditionRequest(int id, String statBoxName)
+    {
+        BusProvider.getInstance().post(new StatEditionRequestedEvent(id, statBoxName));
     }
 
     private void setName(String statName) {
@@ -155,16 +180,9 @@ public class StatBox
             isSelected = true;
         }
 
-        refreshValuePanel();
+        performViewRefresh();
 
-        changeDicePool();
-    }
-
-    private void changeDicePool() {
-        viewWatcher.changeDicePool(
-            lblStat.getText().toString(),
-            statValue,
-            colorSelected);
+        postDicePoolChange();
     }
 
     private void inflateLayout() {
@@ -190,7 +208,7 @@ public class StatBox
         return this;
     }
 
-    public void refreshValuePanel() {
+    public void performViewRefresh() {
         panelValue.removeAllViews();
 
         for (int i = 0; i < statValue; i++) {
@@ -224,7 +242,7 @@ public class StatBox
             {
                 this.statValue = event.value;
 
-                refreshValuePanel();
+                performViewRefresh();
             }
         }
         catch (NullPointerException ignored)
@@ -233,7 +251,7 @@ public class StatBox
         }
     }
 
-    private void subscribeToEvents()
+    void subscribeToEvents()
     {
         BusProvider.getInstance().register(this);
     }

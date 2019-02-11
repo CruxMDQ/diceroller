@@ -19,7 +19,9 @@ import android.widget.Toast;
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.application.App;
 import com.callisto.diceroller.bus.BusProvider;
+import com.callisto.diceroller.bus.events.DicePoolChangedEvent;
 import com.callisto.diceroller.bus.events.PanelTappedEvent;
+import com.callisto.diceroller.bus.events.StatEditionRequestedEvent;
 import com.callisto.diceroller.interfaces.StatContainer;
 import com.callisto.diceroller.interfaces.ViewWatcher;
 import com.callisto.diceroller.persistence.objects.Stat;
@@ -112,6 +114,8 @@ public class CharacterSheetFragment
 
     private String font;
 
+//    private DynamicStatLayout panelTrialRun;
+
     @Override
     protected int getLayout() {
         return R.layout.fragment_char_sheet;
@@ -140,6 +144,8 @@ public class CharacterSheetFragment
         subscribeToEvents();
 
         setTypefacesOnTitles();
+
+//        setUpTrialPanel();
     }
 
     public static CharacterSheetFragment newInstance(String font)
@@ -157,8 +163,6 @@ public class CharacterSheetFragment
 
     private void setTypefacesOnTitles()
     {
-//        font = Constants.Fonts.CEZANNE.getText();
-
         TypefaceSpanBuilder.setTypefacedTitle(
             lblAttributes,
             App.getRes().getString(R.string.label_attributes),
@@ -223,7 +227,8 @@ public class CharacterSheetFragment
         containerSkillsSocial.addOrRemoveContainedStat(presenter.getStatByTag(skillSubterfuge.getTag()));
     }
 
-    protected void findViews() {
+    protected void findViews()
+    {
         statIntelligence = rootView.findViewById(R.id.statIntelligence);
         statWits = rootView.findViewById(R.id.statWits);
         statResolve = rootView.findViewById(R.id.statResolve);
@@ -262,9 +267,12 @@ public class CharacterSheetFragment
         FloatingActionButton fabRoll = rootView.findViewById(R.id.fabRoll);
         fabRoll.setOnClickListener(v ->
         {
-            if (presenter.hasDiceToRoll()) {
+            if (presenter.hasDiceToRoll())
+            {
                 spawnCustomDiceRollDialog(presenter.getStats());
-            } else {
+            }
+            else
+            {
                 spawnNoDiceAlert();
             }
         });
@@ -337,6 +345,8 @@ public class CharacterSheetFragment
         lblAttributes = rootView.findViewById(R.id.lblAttributes);
         lblSkills = rootView.findViewById(R.id.lblSkills);
         lblDerived = rootView.findViewById(R.id.lblDerived);
+
+//        panelTrialRun = rootView.findViewById(R.id.panelTrialRun);
     }
 
     private void spawnNoDiceAlert() {
@@ -445,6 +455,11 @@ public class CharacterSheetFragment
 
     }
 
+    @Subscribe public void createStatEditionDialog(StatEditionRequestedEvent event)
+    {
+        spawnStatEditionDialog(event.getId(), event.getName());
+    }
+
     @Override
     public void spawnStatEditionDialog(final int id, String statName) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
@@ -477,11 +492,23 @@ public class CharacterSheetFragment
         dialogBuilder.show();
     }
 
-    @Override
-    public void changeDicePool(String statName, int value, int colorSelected) {
-        presenter.addOrRemoveStat(new Pair<>(statName, value));
-        presenter.getStatDetails(statName);
+    @Subscribe public void changeDicePool(DicePoolChangedEvent event)
+    {
+        presenter.addOrRemoveStat(new Pair<>(event.getStatName(), event.getStatValue()));
+        Stat stat = presenter.getStatDetails(event.getStatName());
+
+        addSelectedStatToPanel(stat);
+        setStatPanelColor(stat);
     }
+
+//    @Override
+//    public void changeDicePool(String statName, int value, int colorSelected) {
+//        presenter.addOrRemoveStat(new Pair<>(statName, value));
+//        Stat stat = presenter.getStatDetails(statName);
+//
+//        addSelectedStatToPanel(stat);
+//        setStatPanelColor(stat);
+//    }
 
     @Override
     public void setStatOnView(Object tag)
@@ -537,6 +564,11 @@ public class CharacterSheetFragment
         {
             containerAttrsPhysical.addOrRemovePickedStat(stat);
         }
+
+//        if (panelTrialRun.shouldContain(stat))
+//        {
+//            panelTrialRun.addOrRemovePickedStat(stat);
+//        }
     }
 
     @Override
@@ -547,7 +579,7 @@ public class CharacterSheetFragment
             String type = stat.getType();
             String category = stat.getCategory();
 
-            StatLayout target = null;
+//            StatLayout target = null;
 
             if (category.equals(getString(R.string.stat_category_attr)))
             {
@@ -555,24 +587,28 @@ public class CharacterSheetFragment
                 {
                     case "Mental":
                     {
-                        target = containerAttrsMental;
+//                        target = containerAttrsMental;
+                        Objects.requireNonNull(containerAttrsMental).setPanelColor();
+//                        Objects.requireNonNull(panelTrialRun).setPanelColor();
 
                         break;
                     }
                     case "Physical":
                     {
-                        target = containerAttrsPhysical;
+                        Objects.requireNonNull(containerAttrsPhysical).setPanelColor();
+//                        target = containerAttrsPhysical;
 
                         break;
                     }
                     case "Social":
                     {
-                        target = containerAttrsSocial;
+                        Objects.requireNonNull(containerAttrsSocial).setPanelColor();
+//                        target = containerAttrsSocial;
 
                         break;
                     }
                 }
-                Objects.requireNonNull(target).setPanelColor();
+//                Objects.requireNonNull(target).setPanelColor();
             }
         }
         catch (NullPointerException e)

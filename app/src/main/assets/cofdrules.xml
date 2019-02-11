@@ -76,121 +76,145 @@
         <name>Academics</name>
         <category>Skill</category>
         <type>Mental</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Crafts</name>
         <category>Skill</category>
         <type>Mental</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Computer</name>
         <category>Skill</category>
         <type>Mental</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Investigation</name>
         <category>Skill</category>
         <type>Mental</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Medicine</name>
         <category>Skill</category>
         <type>Mental</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Occult</name>
         <category>Skill</category>
         <type>Mental</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Politics</name>
         <category>Skill</category>
         <type>Mental</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Science</name>
         <category>Skill</category>
         <type>Mental</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Athletics</name>
         <category>Skill</category>
         <type>Physical</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Brawl</name>
         <category>Skill</category>
         <type>Physical</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Drive</name>
         <category>Skill</category>
         <type>Physical</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Firearms</name>
         <category>Skill</category>
         <type>Physical</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Larceny</name>
         <category>Skill</category>
         <type>Physical</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Stealth</name>
         <category>Skill</category>
         <type>Physical</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Survival</name>
         <category>Skill</category>
         <type>Physical</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Weaponry</name>
         <category>Skill</category>
         <type>Physical</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Animal Ken</name>
         <category>Skill</category>
         <type>Social</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Empathy</name>
         <category>Skill</category>
         <type>Social</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Expression</name>
         <category>Skill</category>
         <type>Social</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Intimidation</name>
         <category>Skill</category>
         <type>Social</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Persuasion</name>
         <category>Skill</category>
         <type>Social</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Socialize</name>
         <category>Skill</category>
         <type>Social</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Streetwise</name>
         <category>Skill</category>
         <type>Social</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Subterfuge</name>
         <category>Skill</category>
         <type>Social</type>
+        <color>#632077</color>
     </stat>
     <stat>
         <name>Defense</name>

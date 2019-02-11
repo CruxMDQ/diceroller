@@ -45,8 +45,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/panelSkills"
                 app:boxesHaveMultipleStates="true"
-                app:panelName="@string/label_derived_health"
-                app:panelValue="5"/>
+                app:statName="@string/label_derived_health"
+                app:statValue="5"/>
 
             <!-- Willpower = Resolve + Composure -->
             <!-- - Has both a temporary and a permanent score -->
@@ -58,8 +58,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/panelHealth"
                 app:boxesHaveMultipleStates="false"
-                app:panelName="@string/label_derived_willpower"
-                app:panelValue="5"/>
+                app:statName="@string/label_derived_willpower"
+                app:statValue="5"/>
 
             <include
                 android:id="@+id/panelDerived"
@@ -70,6 +70,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/panelWillpower"
                 />
+
+            <!--<com.callisto.diceroller.views.DynamicStatLayout-->
+                <!--android:id="@+id/panelTrialRun"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/panelDerived"-->
+                <!--app:isOpen="true"-->
+                <!--app:title="@string/label_attrs_mental"-->
+                <!--/>-->
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

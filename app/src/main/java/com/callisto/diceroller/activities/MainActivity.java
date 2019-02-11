@@ -8,7 +8,7 @@ import android.view.MenuItem;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.fragments.BaseFragment;
-import com.callisto.diceroller.fragments.CharacterSheetFragment;
+import com.callisto.diceroller.fragments.DynamicCharacterSheetFragment;
 import com.callisto.diceroller.presenters.MainActivityPresenter;
 import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.viewmanagers.MainActivityNavigation;
@@ -27,7 +27,12 @@ public class MainActivity extends AppCompatActivity
 
         presenter = new MainActivityPresenter(this);
 
-        CharacterSheetFragment sheet = CharacterSheetFragment
+//        CharacterSheetFragment sheet = CharacterSheetFragment
+//            .newInstance(
+//                Constants.Fonts.CEZANNE.getText()
+//            );
+
+        DynamicCharacterSheetFragment sheet = DynamicCharacterSheetFragment
             .newInstance(
                 Constants.Fonts.CEZANNE.getText()
             );
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager()
             .beginTransaction()
             .replace(R.id.flContent, fragment)
+//            .addToBackStack(Constants.FragmentTags.TAG_FRAGMENT_CHAR_CHEET.getText())
             .commit();
     }
 

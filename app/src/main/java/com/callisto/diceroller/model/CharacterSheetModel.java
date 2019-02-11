@@ -235,4 +235,23 @@ public class CharacterSheetModel {
         }
         return newScore;
     }
+
+    public Stat getStatByName(String name)
+    {
+        try
+        {
+            for (Stat stat : activeCharacter.getStats())
+            {
+                if (stat.getName().equals(name))
+                {
+                    return stat;
+                }
+            }
+        }
+        catch (NullPointerException npe)
+        {
+            Log.e(this.getClass().getName(), "Null tag!");
+        }
+        return null;
+    }
 }

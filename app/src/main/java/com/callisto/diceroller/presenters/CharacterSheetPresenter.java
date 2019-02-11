@@ -68,12 +68,9 @@ public class CharacterSheetPresenter
         return model.getDiceNumber() > 0;
     }
 
-    public void getStatDetails(String statName)
+    public Stat getStatDetails(String statName)
     {
-        Stat stat = model.getStat(statName);
-
-        view.addSelectedStatToPanel(stat);
-        view.setStatPanelColor(stat);
+        return model.getStat(statName);
     }
 
     public void addOrRemoveStatistic(Stat stat)
@@ -89,5 +86,10 @@ public class CharacterSheetPresenter
     public void persistChanges()
     {
         model.persistChanges();
+    }
+
+    public Stat getStatByName(String name)
+    {
+        return model.getStatByName(name);
     }
 }

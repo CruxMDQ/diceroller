@@ -70,6 +70,20 @@ public class Constants {
         }
     }
 
+    public enum FragmentTags {
+        TAG_FRAGMENT_CHAR_CHEET("sheet");
+
+        private String text;
+
+        FragmentTags(String text) {
+            this.text = text;
+        }
+
+        public String getText() {
+            return text;
+        }
+    }
+
     public enum XmlTags {
         TAG_STAT_ID("id"),
         TAG_STAT_SINGLE("stat"),

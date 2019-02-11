@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.StatUpdatedEvent;
+import com.callisto.diceroller.interfaces.RefreshingView;
 import com.callisto.diceroller.interfaces.StatContainer;
 import com.callisto.diceroller.interfaces.ViewWatcher;
 import com.callisto.diceroller.persistence.objects.Stat;
@@ -24,7 +25,9 @@ import com.squareup.otto.Subscribe;
 
 public class ResourceLayout
     extends UnfoldingLayout
-    implements StatContainer
+    implements
+    RefreshingView,
+    StatContainer
 {
     private Boolean isOpen;
 
@@ -59,6 +62,8 @@ public class ResourceLayout
         inflateLayout();
 
         resolveViews();
+
+        subscribeToEvents();
     }
 
     private void resolveViews()
@@ -83,7 +88,7 @@ public class ResourceLayout
         return this;
     }
 
-    private void subscribeToEvents()
+    public void subscribeToEvents()
     {
         BusProvider.getInstance().register(this);
     }
@@ -97,7 +102,7 @@ public class ResourceLayout
             {
                 this.statValue = event.value;
 
-                refreshValuePanel();
+                performViewRefresh();
             }
         }
         catch (NullPointerException ignored)
@@ -167,7 +172,7 @@ public class ResourceLayout
             Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
         );
 
-        refreshValuePanel();
+        performViewRefresh();
     }
 
     public LinearLayout getPanel()
@@ -179,7 +184,7 @@ public class ResourceLayout
     {
         if (args != null)
         {
-            isOpen = args.getBoolean(R.styleable.ResourceLayout_isPanelOpen, false);
+            isOpen = args.getBoolean(R.styleable.ResourceLayout_isOpen, false);
         } else
         {
             isOpen = false;
@@ -187,8 +192,8 @@ public class ResourceLayout
 
         boxesHaveMultipleStates = args.getBoolean(R.styleable.ResourceLayout_boxesHaveMultipleStates, true);
 
-        statName = args.getString(R.styleable.ResourceLayout_panelName);
-        statValue = args.getInteger(R.styleable.ResourceLayout_panelValue, 5);
+        statName = args.getString(R.styleable.ResourceLayout_statName);
+        statValue = args.getInteger(R.styleable.ResourceLayout_statValue, 5);
 
         setOnClickListener(v ->
         {
@@ -210,18 +215,18 @@ public class ResourceLayout
             }
         });
 
-        setTag(args.getString(R.styleable.ResourceLayout_panelName));
+        setTag(args.getString(R.styleable.ResourceLayout_statName));
     }
 
     public void performValueChange(int value)
     {
         setValue(value);
 
-        refreshValuePanel();
+        performViewRefresh();
     }
 
     @Override
-    public void refreshValuePanel()
+    public void performViewRefresh()
     {
         boxContainer.removeAllViews();
 
@@ -258,7 +263,7 @@ public class ResourceLayout
         setStatName(ss.name);
         setValue(ss.value);
         requestLayout();
-        refreshValuePanel();
+        performViewRefresh();
     }
 
     static class SavedState extends BaseSavedState

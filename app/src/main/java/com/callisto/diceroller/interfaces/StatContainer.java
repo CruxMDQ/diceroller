@@ -7,5 +7,4 @@ public interface StatContainer
     void setValue(int statValue);
     void setStat(Stat stat);
     void performValueChange(int value);
-    void refreshValuePanel();
 }

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.MainActivity"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/labelAttributes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                android:text="@string/label_attributes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.callisto.diceroller.views.DynamicStatLayout
+                android:id="@+id/panelAttributesMental"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isOpen="false"
+                app:title="@string/label_attrs_mental"
+                />
+
+            <com.callisto.diceroller.views.DynamicStatLayout
+                android:id="@+id/panelAttributesPhysical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isOpen="false"
+                app:title="@string/label_attrs_physical"
+                />
+
+            <com.callisto.diceroller.views.DynamicStatLayout
+                android:id="@+id/panelAttributesSocial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isOpen="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/panelAttributesPhysical"
+                app:title="@string/label_attrs_social"
+                />
+
+            <TextView
+                android:id="@+id/labelSkills"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/label_skills"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/panelAttributesSocial"
+                />
+
+            <com.callisto.diceroller.views.DynamicStatLayout
+                android:id="@+id/panelSkillsMental"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isOpen="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/labelSkills"
+                app:title="@string/label_skills_mental"
+                />
+
+            <com.callisto.diceroller.views.DynamicStatLayout
+                android:id="@+id/panelSkillsPhysical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isOpen="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/panelSkillsMental"
+                app:title="@string/label_skills_physical"
+                />
+
+            <com.callisto.diceroller.views.DynamicStatLayout
+                android:id="@+id/panelSkillsSocial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isOpen="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/panelSkillsPhysical"
+                app:title="@string/label_skills_social"
+                />
+
+            <!-- Health = Stamina + Size -->
+            <!-- - Must account for bashing, lethal and aggravated damage -->
+            <!-- - Has both a temporary and a permanent score -->
+            <com.callisto.diceroller.views.ResourceLayout
+                android:id="@+id/panelHealth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxesHaveMultipleStates="true"
+                app:statName="@string/label_derived_health"
+                app:statValue="5"/>
+
+            <!-- Willpower = Resolve + Composure -->
+            <!-- - Has both a temporary and a permanent score -->
+            <com.callisto.diceroller.views.ResourceLayout
+                android:id="@+id/panelWillpower"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxesHaveMultipleStates="false"
+                app:statName="@string/label_derived_willpower"
+                app:statValue="5"/>
+
+            <TextView
+                android:id="@+id/labelDerived"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                android:text="@string/label_derived_stats"
+                />
+
+            <com.callisto.diceroller.views.DynamicStatLayout
+                android:id="@+id/panelStatsDerived"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isOpen="true"
+                app:isTitleVisible="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/panelSkillsPhysical"
+                app:title="@string/label_derived_stats"
+                />
+        </LinearLayout>
+
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabRoll"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_dialog_email"/>
+
+</android.support.constraint.ConstraintLayout>
