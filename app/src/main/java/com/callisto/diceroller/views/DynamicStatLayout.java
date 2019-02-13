@@ -9,6 +9,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -121,7 +122,9 @@ public class DynamicStatLayout
 
         setOnClickListener(v ->
         {
-            postPanelTapped(v.getId());
+            int id = v.getId();
+
+            postPanelTapped(id);
 
             DynamicStatLayout t = (DynamicStatLayout) v;
 
@@ -248,8 +251,6 @@ public class DynamicStatLayout
 
             statBox.setStat(stat);
 
-            statBox.subscribeToEvents();
-
             panelContainer.addView(statBox);
         }
     }
@@ -287,20 +288,27 @@ public class DynamicStatLayout
 
         String result = "(";
 
-        while (iterator.hasNext())
+        try
         {
-            Stat stat = (Stat) iterator.next();
-
-            result = result.concat(String.valueOf(stat.getName()));
-
-            result = result.concat(" ");
-
-            result = result.concat(String.valueOf(stat.getValue()));
-
-            if (iterator.hasNext())
+            while (iterator.hasNext())
             {
-                result = result.concat(", ");
+                Stat stat = (Stat) iterator.next();
+
+                result = result.concat(String.valueOf(stat.getName()));
+
+                result = result.concat(" ");
+
+                result = result.concat(String.valueOf(stat.getValue()));
+
+                if (iterator.hasNext())
+                {
+                    result = result.concat(", ");
+                }
             }
+        }
+        catch (NullPointerException e)
+        {
+            Log.e(this.getClass().getSimpleName(), "Null array?");
         }
 
         result = result.concat(")");

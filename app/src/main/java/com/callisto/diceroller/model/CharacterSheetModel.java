@@ -26,51 +26,43 @@ public class CharacterSheetModel {
 
     private Character activeCharacter;
 
-    private RealmList<Stat> statistics;
-
     private ArrayList<Pair<String, Integer>> stats;
 
     private final DiceRoller diceRoller;
 
-    public CharacterSheetModel(Context context) {
+    private CharacterSheetModel(Context context, String characterName) {
         this.diceRoller = new DiceRoller();
         this.stats = new ArrayList<>();
 
-        this.statistics = new RealmList<>();
-
         subscribeToEvents();
 
-        activeCharacter = RealmHelper.getInstance().get(Character.class, "Test character");
+        activeCharacter = RealmHelper.getInstance().get(Character.class, characterName);
 
         if (activeCharacter == null)
         {
-            statistics = XMLParser.parseStats(context);
+            RealmList<Stat> statistics = XMLParser.parseStats(context);
 
-            saveStatModels();
+            activeCharacter = new Character(characterName, statistics);
 
-            activeCharacter = new Character("Test character", statistics);
+            activeCharacter.setId(RealmHelper.getInstance().getLastId(Character.class));
+
+            persistChanges();
         }
+    }
+
+    public static CharacterSheetModel newInstance(Context context, String characterName)
+    {
+        return new CharacterSheetModel(context, characterName);
+    }
+
+    public static CharacterSheetModel newInstance(Context context)
+    {
+        return new CharacterSheetModel(context, "Test character");
     }
 
     private void subscribeToEvents()
     {
         BusProvider.getInstance().register(this);
-    }
-
-    private void saveStatModels()
-    {
-        RealmHelper realm = RealmHelper.getInstance();
-
-        for (Stat stat : statistics)
-        {
-            if (!realm.exists(Stat.class, stat.getName()))
-            {
-                stat.setId(realm.getLastId(Stat.class));
-
-                realm.save(stat);
-            }
-        }
-
     }
 
     public int getDiceNumber() {

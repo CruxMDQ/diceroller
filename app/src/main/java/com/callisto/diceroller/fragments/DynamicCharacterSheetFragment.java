@@ -57,11 +57,14 @@ public class DynamicCharacterSheetFragment
         resourcePanelWillpower;
 
     private TextView
+        labelCharacterBio,
         labelAttributes,
         labelSkills,
-        labelDerived;
+        labelDerived,
+        txtCharacterName;
 
     private String font;
+    private String characterName;
 
     private ArrayList<DynamicStatLayout> statContainers;
 
@@ -80,12 +83,28 @@ public class DynamicCharacterSheetFragment
         return myFragment;
     }
 
+    public static DynamicCharacterSheetFragment newInstance(String font, String characterName)
+    {
+        DynamicCharacterSheetFragment myFragment = new DynamicCharacterSheetFragment();
+
+        Bundle args = new Bundle();
+
+        args.putString(Constants.Parameters.FONT.getText(), font);
+        args.putString(Constants.Parameters.CHARACTER_NAME.getText(), characterName);
+
+        myFragment.setArguments(args);
+
+        return myFragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
         font = getArguments().getString(Constants.Parameters.FONT.getText());
+
+        characterName = getArguments().getString(Constants.Parameters.CHARACTER_NAME.getText());
     }
 
     @Override
@@ -94,7 +113,12 @@ public class DynamicCharacterSheetFragment
          @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new CharacterSheetPresenter(this, getContext());
+        if (characterName == null)
+        {
+            characterName = "Test character";
+        }
+
+        presenter = new CharacterSheetPresenter(this, getContext(), characterName);
 
         statContainers = new ArrayList<>();
         refreshingViews = new ArrayList<>();
@@ -104,6 +128,8 @@ public class DynamicCharacterSheetFragment
         subscribeToEvents();
 
         setTypefacesOnTitles();
+
+        txtCharacterName.setText(characterName);
     }
 
     private void setUpContainers()
@@ -187,9 +213,12 @@ public class DynamicCharacterSheetFragment
 
         panelStatsDerived = rootView.findViewById(R.id.panelStatsDerived);
 
+        labelCharacterBio = rootView.findViewById(R.id.labelCharacterBio);
         labelAttributes = rootView.findViewById(R.id.labelAttributes);
         labelSkills = rootView.findViewById(R.id.labelSkills);
         labelDerived = rootView.findViewById(R.id.labelDerived);
+
+        txtCharacterName = rootView.findViewById(R.id.txtCharacterName);
 
         resourcePanelHealth = rootView.findViewById(R.id.panelHealth);
         resourcePanelWillpower = rootView.findViewById(R.id.panelWillpower);
@@ -220,6 +249,13 @@ public class DynamicCharacterSheetFragment
 
     private void setTypefacesOnTitles()
     {
+        TypefaceSpanBuilder.setTypefacedTitle(
+            labelCharacterBio,
+            App.getRes().getString(R.string.label_character_bio),
+            font,
+            Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
+        );
+
         TypefaceSpanBuilder.setTypefacedTitle(
             labelAttributes,
             App.getRes().getString(R.string.label_attributes),
@@ -420,7 +456,6 @@ public class DynamicCharacterSheetFragment
             if (layout.getId() != event.getViewId())
             {
                 layout.toggleStatPanel(View.GONE, false);
-                break;
             }
         }
     }

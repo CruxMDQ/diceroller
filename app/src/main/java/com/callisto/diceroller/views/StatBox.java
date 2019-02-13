@@ -99,10 +99,11 @@ public class StatBox
             if (isEditionAllowed())
             {
                 postStatEditionRequest(v.getId(), statBoxName);
-//                viewWatcher.spawnStatEditionDialog(v.getId(), statBoxName);
             }
             return true;
         });
+
+        subscribeToEvents();
     }
 
     public void performValueChange(int statValue)
@@ -203,7 +204,7 @@ public class StatBox
         this.viewWatcher = viewWatcher;
         this.viewWatcher.setStatOnView(this.getTag());
 
-        subscribeToEvents();
+//        subscribeToEvents();
 
         return this;
     }

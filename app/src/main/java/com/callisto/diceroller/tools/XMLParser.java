@@ -3,6 +3,7 @@ package com.callisto.diceroller.tools;
 import android.content.Context;
 import android.graphics.Color;
 
+import com.callisto.diceroller.persistence.RealmHelper;
 import com.callisto.diceroller.persistence.objects.Stat;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -64,9 +65,18 @@ public class XMLParser
 
                     if (Constants.XmlTags.TAG_STAT_SINGLE.getText().equals(eltName))
                     {
+                        if (currentStat != null)
+                        {
+                            RealmHelper.getInstance().save(currentStat);
+                        }
+
                         currentStat = new Stat();
+
+                        currentStat.setId(RealmHelper.getInstance().getLastId(Stat.class));
+
                         stats.add(currentStat);
-                    } else if (currentStat != null)
+                    }
+                    else if (currentStat != null)
                     {
                         if (Constants.XmlTags.TAG_STAT_FIELD_NAME.getText().equals(eltName))
                         {

@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.callisto.diceroller.R;
+import com.callisto.diceroller.application.App;
 import com.callisto.diceroller.fragments.BaseFragment;
 import com.callisto.diceroller.fragments.DynamicCharacterSheetFragment;
 import com.callisto.diceroller.presenters.MainActivityPresenter;
@@ -34,7 +35,9 @@ public class MainActivity extends AppCompatActivity
 
         DynamicCharacterSheetFragment sheet = DynamicCharacterSheetFragment
             .newInstance(
-                Constants.Fonts.CEZANNE.getText()
+                Constants.Fonts.CEZANNE.getText(),
+//                "Mathias Kreitmann"
+                App.getRes().getString(R.string.sample_character_name)
             );
 
         setFragment(sheet);

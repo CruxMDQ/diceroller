@@ -7,6 +7,9 @@
     <string name="label_results">Results</string>
     <string name="label_successes">Successes</string>
 
+    <string name="sample_character_name">Andrzej Kryszycha</string>
+    <string name="sample_character_player">Storyteller</string>
+
     <string name="text_sample_roll">The rolls were: 5, 4, 8, 9, 1</string>
     <string name="text_sample_successes">2 successes</string>
 
@@ -87,4 +90,7 @@
     <string name="label_derived_speed">Speed</string>
     <string name="label_derived_willpower">Willpower</string>
 
+    <string name="label_character_bio">Bio</string>
+    <string name="label_character_name">Name:</string>
+    <string name="label_character_player">Player:</string>
 </resources>

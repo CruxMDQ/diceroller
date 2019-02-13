@@ -10,7 +10,7 @@ public class Stat
     extends RealmObject
 {
     @PrimaryKey
-    long id;
+    private long id;
 
     private String name, category, type, kind;
 

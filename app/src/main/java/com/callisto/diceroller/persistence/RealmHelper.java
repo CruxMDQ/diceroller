@@ -1,6 +1,7 @@
 package com.callisto.diceroller.persistence;
 
 import com.callisto.diceroller.application.App;
+import com.callisto.diceroller.persistence.modules.StorytellerModule;
 import com.callisto.diceroller.tools.Constants;
 
 import io.realm.Realm;
@@ -26,7 +27,10 @@ public class RealmHelper
         Realm.init(App.getInstance().getApplicationContext());
 
         RealmConfiguration config = new RealmConfiguration.Builder()
-            .deleteRealmIfMigrationNeeded()
+            .name("cofd.realm")
+//            .encryptionKey(getKey())
+            .schemaVersion(0)
+            .modules(new StorytellerModule())
             .build();
 
         realm = Realm.getInstance(config);
@@ -55,6 +59,13 @@ public class RealmHelper
             .findFirst();
 
         return first;
+    }
+
+    public boolean exists(Class klass, long id)
+    {
+        RealmObject realmObject = get(klass, id);
+
+        return realmObject != null;
     }
 
     public boolean exists(Class klass, String name)

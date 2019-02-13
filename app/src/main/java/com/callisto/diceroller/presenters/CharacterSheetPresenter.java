@@ -17,7 +17,13 @@ public class CharacterSheetPresenter
     public CharacterSheetPresenter(CharacterSheet.View view, Context context)
     {
         this.view = view;
-        this.model = new CharacterSheetModel(context);
+        this.model = CharacterSheetModel.newInstance(context);
+    }
+
+    public CharacterSheetPresenter(CharacterSheet.View view, Context context, String characterName)
+    {
+        this.view = view;
+        this.model = CharacterSheetModel.newInstance(context, characterName);
     }
 
     public void rollDice(
