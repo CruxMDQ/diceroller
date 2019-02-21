@@ -15,25 +15,34 @@ public class RealmHelper
     private static RealmHelper instance;
 
     private Realm realm;
+    private final RealmConfiguration config;
 
-    public static RealmHelper getInstance() {
-        if (instance == null) {
+    public static RealmHelper getInstance()
+    {
+        if (instance == null)
+        {
             instance = new RealmHelper();
         }
         return instance;
     }
 
-    private RealmHelper() {
+    private RealmHelper()
+    {
         Realm.init(App.getInstance().getApplicationContext());
 
-        RealmConfiguration config = new RealmConfiguration.Builder()
-            .name("cofd.realm")
-//            .encryptionKey(getKey())
-            .schemaVersion(0)
-            .modules(new StorytellerModule())
-            .build();
+        config = buildRealmConfig();
 
         realm = Realm.getInstance(config);
+    }
+
+    private RealmConfiguration buildRealmConfig()
+    {
+        return new RealmConfiguration.Builder()
+                .name("cofd.realm")
+    //            .encryptionKey(getKey())
+                .schemaVersion(0)
+                .modules(new StorytellerModule())
+                .build();
     }
 
     public <T extends RealmObject> RealmResults<T> getList(Class<T> klass)
@@ -51,8 +60,6 @@ public class RealmHelper
 
     public <T extends RealmObject> T get(Class<T> klass, String name)
     {
-        RealmResults<T> objects = this.getList(klass);
-
         RealmQuery<T> query = realm.where(klass);
 
         T first = query.equalTo(Constants.XmlTags.TAG_STAT_FIELD_NAME.getText(), name)
@@ -75,20 +82,33 @@ public class RealmHelper
         return realmObject != null;
     }
 
-    public <T extends RealmObject> long save(T item) {
+    public <T extends RealmObject> long add(T item)
+    {
+        realm.beginTransaction();
+        realm.copyToRealm(item);
+        realm.commitTransaction();
+        return 0;
+    }
+
+    public <T extends RealmObject> long save(T item)
+    {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(item);
         realm.commitTransaction();
         return 0;
     }
 
-    public long getLastId(Class className) {
+    public long getLastId(Class className)
+    {
         long key;
-        try {
+        try
+        {
             RealmQuery query = realm.where(className);
             Number max = query.max("id");
             key = max != null ? max.longValue() + 1 : 0;
-        } catch (ArrayIndexOutOfBoundsException ex) {
+        }
+        catch (ArrayIndexOutOfBoundsException ex)
+        {
             key = 0;
         }
         return key;

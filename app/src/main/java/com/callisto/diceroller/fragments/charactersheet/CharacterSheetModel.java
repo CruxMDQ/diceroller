@@ -1,17 +1,17 @@
-package com.callisto.diceroller.model;
+package com.callisto.diceroller.fragments.charactersheet;
 
-import android.content.Context;
 import android.util.Log;
 import android.util.Pair;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.application.App;
+import com.callisto.diceroller.bus.BusProvider;
+import com.callisto.diceroller.bus.events.DerivedStatUpdatedEvent;
+import com.callisto.diceroller.bus.events.StatChangedEvent;
+import com.callisto.diceroller.model.DiceRoller;
+import com.callisto.diceroller.persistence.RealmHelper;
 import com.callisto.diceroller.persistence.objects.Character;
 import com.callisto.diceroller.persistence.objects.Stat;
-import com.callisto.diceroller.bus.BusProvider;
-import com.callisto.diceroller.bus.events.StatChangedEvent;
-import com.callisto.diceroller.bus.events.StatUpdatedEvent;
-import com.callisto.diceroller.persistence.RealmHelper;
 import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.tools.XMLParser;
 import com.squareup.otto.Subscribe;
@@ -20,7 +20,8 @@ import java.util.ArrayList;
 
 import io.realm.RealmList;
 
-public class CharacterSheetModel {
+public class CharacterSheetModel
+{
     private int diceNumber = 0;
     private int rerollThreshold = 0;
 
@@ -30,9 +31,14 @@ public class CharacterSheetModel {
 
     private final DiceRoller diceRoller;
 
-    private CharacterSheetModel(Context context, String characterName) {
+    private CharacterSheetPresenter presenter;
+
+    private CharacterSheetModel(String characterName, CharacterSheetPresenter presenter)
+    {
         this.diceRoller = new DiceRoller();
         this.stats = new ArrayList<>();
+
+        this.presenter = presenter;
 
         subscribeToEvents();
 
@@ -40,7 +46,7 @@ public class CharacterSheetModel {
 
         if (activeCharacter == null)
         {
-            RealmList<Stat> statistics = XMLParser.parseStats(context);
+            RealmList<Stat> statistics = XMLParser.parseStats();
 
             activeCharacter = new Character(characterName, statistics);
 
@@ -50,14 +56,14 @@ public class CharacterSheetModel {
         }
     }
 
-    public static CharacterSheetModel newInstance(Context context, String characterName)
+    static CharacterSheetModel newInstance(String characterName, CharacterSheetPresenter presenter)
     {
-        return new CharacterSheetModel(context, characterName);
+        return new CharacterSheetModel(characterName, presenter);
     }
 
-    public static CharacterSheetModel newInstance(Context context)
+    static CharacterSheetModel newInstance(CharacterSheetPresenter presenter)
     {
-        return new CharacterSheetModel(context, "Test character");
+        return new CharacterSheetModel("Test character", presenter);
     }
 
     private void subscribeToEvents()
@@ -65,41 +71,49 @@ public class CharacterSheetModel {
         BusProvider.getInstance().register(this);
     }
 
-    public int getDiceNumber() {
+    int getDiceNumber()
+    {
         return diceNumber;
     }
 
-    private void calculateDiceNumber() {
+    private void calculateDiceNumber()
+    {
         int pool = 0;
 
-        for (Pair<String, Integer> pair : stats) {
+        for (Pair<String, Integer> pair : stats)
+        {
             pool += pair.second;
         }
 
         diceNumber = pool;
     }
 
-    public void changeDiceNumber(int value) {
+    void changeDiceNumber(int value)
+    {
         this.diceNumber += value;
     }
 
-    public ArrayList<Integer> rollDice(int rerollThreshold, int dicePool) {
+    ArrayList<Integer> rollDice(int rerollThreshold, int dicePool)
+    {
         return diceRoller.rollDice(rerollThreshold, dicePool);
     }
 
-    public ArrayList<Integer> rollDice(int rerollThreshold) {
+    ArrayList<Integer> rollDice(int rerollThreshold)
+    {
         return diceRoller.rollDice(rerollThreshold, diceNumber);
     }
 
-    public ArrayList<Integer> rollDice() {
+    ArrayList<Integer> rollDice()
+    {
         return diceRoller.rollDice(rerollThreshold, diceNumber);
     }
 
-    public int getSuccessesCofd(ArrayList<Integer> rolls) {
+    int getSuccessesCofd(ArrayList<Integer> rolls)
+    {
         return diceRoller.getSuccessesCofd(rolls);
     }
 
-    public void addOrRemoveStat(Stat stat)
+    void addOrRemoveStat(Stat stat)
     {
         if (activeCharacter.getStats().contains(stat))
         {
@@ -111,29 +125,36 @@ public class CharacterSheetModel {
         }
     }
 
-    public void addOrRemovePair(Pair<String, Integer> pair) {
-        if (stats.contains(pair)) {
+    void addOrRemovePair(Pair<String, Integer> pair)
+    {
+        if (stats.contains(pair))
+        {
             stats.remove(pair);
-        } else {
+        }
+        else
+        {
             stats.add(pair);
         }
 
         calculateDiceNumber();
     }
 
-    public ArrayList<Pair<String, Integer>> getStats() {
+    ArrayList<Pair<String, Integer>> getStats()
+    {
         return stats;
     }
 
-    public ArrayList<Integer> rollExtended(int threshold) {
+    ArrayList<Integer> rollExtended(int threshold)
+    {
         return diceRoller.rollExtended(threshold, diceNumber);
     }
 
-    public Stat getStat(String statName)
+    Stat getStat(String statName)
     {
         for (Stat stat : activeCharacter.getStats())
         {
-            if (stat.getName().equals(statName)) {
+            if (stat.getName().equals(statName))
+            {
                 return stat;
             }
         }
@@ -141,7 +162,20 @@ public class CharacterSheetModel {
         return null;
     }
 
-    public Stat getStatByTag(Object tag)
+    Stat getStat(long statId)
+    {
+        for (Stat stat : activeCharacter.getStats())
+        {
+            if (stat.getId() == statId)
+            {
+                return stat;
+            }
+        }
+
+        return null;
+    }
+
+    Stat getStatByTag(Object tag)
     {
         try
         {
@@ -160,44 +194,42 @@ public class CharacterSheetModel {
         return null;
     }
 
-    public void persistChanges()
+    void persistChanges()
     {
         RealmHelper.getInstance().save(activeCharacter);
     }
 
-    @Subscribe public void updateStatValue(StatChangedEvent event)
+    @Subscribe
+    public void updateStatValue(StatChangedEvent event)
     {
-        Stat stat = getStat(event.name);
+        Stat stat = getStat(event.statId);
 
-        RealmHelper.getInstance().getRealm().beginTransaction();
-        stat.setValue(event.value);
-        RealmHelper.getInstance().getRealm().commitTransaction();
-
-        int newScore;
-
-        for (String watcher : stat.getObservers())
+        if (stat != null)
         {
-            Stat observer = getStat(watcher);
-
-            newScore = updateStatScore(observer);
-
             RealmHelper.getInstance().getRealm().beginTransaction();
-            observer.setValue(newScore);
+            stat.setValue(event.value);
             RealmHelper.getInstance().getRealm().commitTransaction();
 
-            BusProvider.getInstance().post(new StatUpdatedEvent(observer.getName(), newScore));
+            int newScore;
+
+            for (Stat observer : stat.getObservers())
+            {
+                newScore = updateStatScore(observer);
+
+                RealmHelper.getInstance().getRealm().beginTransaction();
+                observer.setValue(newScore);
+                RealmHelper.getInstance().getRealm().commitTransaction();
+
+                BusProvider.getInstance()
+                    .post(new DerivedStatUpdatedEvent(observer.getName(), observer.getId(), newScore));
+            }
         }
     }
 
     private int updateStatScore(Stat observer)
     {
         int newScore;
-        ArrayList<Stat> observedStats = new ArrayList<>();
-
-        for (String watchedStat : observer.getObservedStats())
-        {
-            observedStats.add(getStat(watchedStat));
-        }
+        RealmList<Stat> observedStats = observer.getObservedStats();
 
         if (observer.getName().equals(App.getRes().getString(R.string.label_derived_defense)))
         {
@@ -228,7 +260,7 @@ public class CharacterSheetModel {
         return newScore;
     }
 
-    public Stat getStatByName(String name)
+    Stat getStatByName(String name)
     {
         try
         {

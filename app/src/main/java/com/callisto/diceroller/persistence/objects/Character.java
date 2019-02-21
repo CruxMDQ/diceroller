@@ -1,5 +1,7 @@
 package com.callisto.diceroller.persistence.objects;
 
+import com.callisto.diceroller.persistence.RealmHelper;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -59,5 +61,11 @@ public class Character
     public void setTemplate(String template)
     {
         this.template = template;
+    }
+
+    @Override
+    public String toString()
+    {
+        return RealmHelper.getInstance().get(Character.class, this.id).getName();
     }
 }

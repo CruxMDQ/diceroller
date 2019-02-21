@@ -1,29 +1,35 @@
 package com.callisto.diceroller.tools;
 
-public class Constants {
-    private Constants() {
+public class Constants
+{
+    private Constants()
+    {
         throw new AssertionError("This class is NOT MEANT FOR INSTANTIATION!");
     }
 
     private static String FONT_DIR = "fonts/";
 
-    public enum Systems {
+    public enum Systems
+    {
         FIFTH_EDITION("5E"),
         OWOD("Old World of Darkness"),
         COFD("Chronicles of Darkness");
 
         private String text;
 
-        Systems(String text) {
+        Systems(String text)
+        {
             this.text = text;
         }
 
-        public String getText() {
+        public String getText()
+        {
             return text;
         }
     }
 
-    public enum Values {
+    public enum Values
+    {
         COFD_SPEED_BASE(5),
         COFD_DIE_SIZE(10),
         COFD_BASE_DIFFICULTY_THRESHOLD(8),
@@ -32,59 +38,76 @@ public class Constants {
 
         private int value;
 
-        Values(int value) {
+        Values(int value)
+        {
             this.value = value;
         }
 
-        public int getValue() {
+        public int getValue()
+        {
             return value;
         }
     }
 
-    public enum Fonts {
+    public enum Fonts
+    {
         CEZANNE("Cezanne.TTF");
 
         private String text;
 
-        Fonts(String text) {
+        Fonts(String text)
+        {
             this.text = text;
         }
 
-        public String getText() {
+        public String getText()
+        {
             return FONT_DIR + text;
         }
     }
 
-    public enum Parameters {
+    public enum Parameters
+    {
+        ID("id"),
         CHARACTER_NAME("charname"),
-        FONT("font");
+        FONT("font"),
+        STAT_ID("statId"),
+        STAT_NAME("statname");
 
         private String text;
 
-        Parameters(String text) {
+        Parameters(String text)
+        {
             this.text = text;
         }
 
-        public String getText() {
+        public String getText()
+        {
             return FONT_DIR + text;
         }
     }
 
-    public enum FragmentTags {
-        TAG_FRAGMENT_CHAR_CHEET("sheet");
+    public enum FragmentTags
+    {
+        TAG_FRAGMENT_CHAR_LIST("list"),
+        TAG_FRAGMENT_CHAR_SHEET("sheet"),
+        TAG_FRAGMENT_DIALOG_STAT_EDIT("edit stat");
 
         private String text;
 
-        FragmentTags(String text) {
+        FragmentTags(String text)
+        {
             this.text = text;
         }
 
-        public String getText() {
+        public String getText()
+        {
             return text;
         }
     }
 
-    public enum XmlTags {
+    public enum XmlTags
+    {
         TAG_STAT_ID("id"),
         TAG_STAT_SINGLE("stat"),
         TAG_STAT_FIELD_NAME("name"),
@@ -98,11 +121,13 @@ public class Constants {
 
         private String text;
 
-        XmlTags(String text) {
+        XmlTags(String text)
+        {
             this.text = text;
         }
 
-        public String getText() {
+        public String getText()
+        {
             return text;
         }
     }

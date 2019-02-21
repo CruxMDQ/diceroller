@@ -4,10 +4,8 @@ import com.callisto.diceroller.fragments.BaseFragment;
 
 public interface MainActivityNavigation {
     interface View {
-        void setFragment(BaseFragment fragment);
-    }
-
-    interface Presenter {
-        void getRandomFragment();
+        void setFragment(BaseFragment fragment, String tag);
+        void loadCharacterList();
+        void loadCharacterSheet(String text, String characterName);
     }
 }

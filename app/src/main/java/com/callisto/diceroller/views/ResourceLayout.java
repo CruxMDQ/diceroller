@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.bus.BusProvider;
-import com.callisto.diceroller.bus.events.StatUpdatedEvent;
+import com.callisto.diceroller.bus.events.DerivedStatUpdatedEvent;
 import com.callisto.diceroller.interfaces.RefreshingView;
 import com.callisto.diceroller.interfaces.StatContainer;
 import com.callisto.diceroller.interfaces.ViewWatcher;
@@ -33,6 +33,7 @@ public class ResourceLayout
 
     private Boolean boxesHaveMultipleStates;
 
+    private long statId;
     private String statName;
     private int statValue;
 
@@ -63,7 +64,7 @@ public class ResourceLayout
 
         resolveViews();
 
-        subscribeToEvents();
+//        subscribeToEvents();
     }
 
     private void resolveViews()
@@ -83,7 +84,7 @@ public class ResourceLayout
         this.viewWatcher = watcher;
         this.viewWatcher.setStatOnView(this.getTag());
 
-        subscribeToEvents();
+//        subscribeToEvents();
 
         return this;
     }
@@ -93,12 +94,18 @@ public class ResourceLayout
         BusProvider.getInstance().register(this);
     }
 
+    @Override
+    public void unsubscribeFromEvents()
+    {
+        BusProvider.getInstance().unregister(this);
+    }
+
     @Subscribe
-    public void updateStatValue(StatUpdatedEvent event)
+    public void updateStatValue(DerivedStatUpdatedEvent event)
     {
         try
         {
-            if (event.name.equals(this.statName))
+            if (event.statId == this.statId)
             {
                 this.statValue = event.value;
 
@@ -160,6 +167,7 @@ public class ResourceLayout
     @Override
     public void setStat(Stat stat)
     {
+        statId = stat.getId();
         statName = stat.getName();
         statValue = stat.getValue();
 

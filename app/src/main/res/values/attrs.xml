@@ -16,11 +16,6 @@
         <attr name="colorSelected" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="StatLayout">
-        <attr name="selectedStat" />
-        <attr name="isOpen" />
-    </declare-styleable>
-
     <declare-styleable name="DynamicStatLayout">
         <attr name="title" format="string" />
         <attr name="selectedStat" />

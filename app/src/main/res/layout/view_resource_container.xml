@@ -10,7 +10,7 @@
     android:layout_margin="@dimen/margin_small"
     android:orientation="vertical"
     tools:context=".activities.MainActivity"
-    tools:showIn="@layout/fragment_char_sheet">
+    tools:showIn="@layout/fragment_char_sheet_dynamic">
 
     <TextView
         android:id="@+id/lblTitle"

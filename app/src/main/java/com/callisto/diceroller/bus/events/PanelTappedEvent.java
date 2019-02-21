@@ -2,7 +2,7 @@ package com.callisto.diceroller.bus.events;
 
 public class PanelTappedEvent
 {
-    final int viewId;
+    private final int viewId;
 
     public PanelTappedEvent(int viewId)
     {
@@ -13,5 +13,4 @@ public class PanelTappedEvent
     {
         return viewId;
     }
-
 }

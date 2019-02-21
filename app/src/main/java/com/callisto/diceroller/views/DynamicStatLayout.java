@@ -138,7 +138,8 @@ public class DynamicStatLayout
                             true,
                             R.color.color_light_gray
                         );
-                } else
+                }
+                else
                 {
                     toggleStatPanel
                         (
@@ -157,7 +158,8 @@ public class DynamicStatLayout
                             View.VISIBLE,
                             true
                         );
-                } else
+                }
+                else
                 {
                     toggleStatPanel
                         (
@@ -212,10 +214,12 @@ public class DynamicStatLayout
         if (background instanceof ShapeDrawable)
         {
             ((ShapeDrawable) background).getPaint().setColor(targetColor);
-        } else if (background instanceof GradientDrawable)
+        }
+        else if (background instanceof GradientDrawable)
         {
             ((GradientDrawable) background).setColor(targetColor);
-        } else if (background instanceof ColorDrawable)
+        }
+        else if (background instanceof ColorDrawable)
         {
             ((ColorDrawable) background).setColor(targetColor);
         }
@@ -231,6 +235,27 @@ public class DynamicStatLayout
     public void performViewRefresh()
     {
         updateSummaryLabel();
+        refreshStatPanel();
+    }
+
+    @Override
+    public void unsubscribeFromEvents()
+    {
+        final int childCount = panelContainer.getChildCount();
+
+        for (int i = 0; i < childCount; i++)
+        {
+            StatBox statBox = (StatBox) panelContainer.getChildAt(i);
+
+            statBox.unsubscribeFromEvents();
+        }
+
+        panelContainer.removeAllViews();
+    }
+
+    @Override
+    public void subscribeToEvents()
+    {
         refreshStatPanel();
     }
 
@@ -251,6 +276,8 @@ public class DynamicStatLayout
 
             statBox.setStat(stat);
 
+            statBox.subscribeToEvents();
+
             panelContainer.addView(statBox);
         }
     }
@@ -260,7 +287,8 @@ public class DynamicStatLayout
         if (pickedStats.contains(stat))
         {
             pickedStats.remove(stat);
-        } else
+        }
+        else
         {
             pickedStats.add(stat);
         }
@@ -386,7 +414,8 @@ public class DynamicStatLayout
         if (isVisible)
         {
             labelTitle.setVisibility(VISIBLE);
-        } else
+        }
+        else
         {
             labelTitle.setVisibility(GONE);
         }

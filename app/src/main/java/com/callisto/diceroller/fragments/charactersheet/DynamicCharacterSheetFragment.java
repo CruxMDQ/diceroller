@@ -1,4 +1,4 @@
-package com.callisto.diceroller.fragments;
+package com.callisto.diceroller.fragments.charactersheet;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -22,24 +22,29 @@ import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.DicePoolChangedEvent;
 import com.callisto.diceroller.bus.events.PanelTappedEvent;
 import com.callisto.diceroller.bus.events.StatEditionRequestedEvent;
+import com.callisto.diceroller.fragments.BaseFragment;
+import com.callisto.diceroller.fragments.StatEditionDialogFragment;
+import com.callisto.diceroller.interfaces.StatEditionCallbackHandler;
 import com.callisto.diceroller.interfaces.RefreshingView;
 import com.callisto.diceroller.interfaces.StatContainer;
 import com.callisto.diceroller.persistence.objects.Stat;
-import com.callisto.diceroller.presenters.CharacterSheetPresenter;
 import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.tools.TypefaceSpanBuilder;
-import com.callisto.diceroller.viewmanagers.CharacterSheet;
 import com.callisto.diceroller.views.DynamicStatLayout;
 import com.callisto.diceroller.views.ResourceLayout;
+import com.callisto.diceroller.views.StatBox;
 import com.callisto.diceroller.views.UnfoldingLayout;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class DynamicCharacterSheetFragment
     extends BaseFragment
-    implements CharacterSheet.View
+    implements CharacterSheet.View,
+        RefreshingView,
+    StatEditionCallbackHandler
 {
     CharacterSheetPresenter presenter;
 
@@ -70,55 +75,47 @@ public class DynamicCharacterSheetFragment
 
     private ArrayList<RefreshingView> refreshingViews;
 
-    public static DynamicCharacterSheetFragment newInstance(String font)
+    @Override
+    public void onResume()
     {
-        DynamicCharacterSheetFragment myFragment = new DynamicCharacterSheetFragment();
+        for (RefreshingView refreshingView : refreshingViews)
+        {
+            Log.d("Dynamic charsheet", "Refreshing view subscribed");
+            refreshingView.subscribeToEvents();
+        }
 
-        Bundle args = new Bundle();
-
-        args.putString(Constants.Parameters.FONT.getText(), font);
-
-        myFragment.setArguments(args);
-
-        return myFragment;
-    }
-
-    public static DynamicCharacterSheetFragment newInstance(String font, String characterName)
-    {
-        DynamicCharacterSheetFragment myFragment = new DynamicCharacterSheetFragment();
-
-        Bundle args = new Bundle();
-
-        args.putString(Constants.Parameters.FONT.getText(), font);
-        args.putString(Constants.Parameters.CHARACTER_NAME.getText(), characterName);
-
-        myFragment.setArguments(args);
-
-        return myFragment;
+        super.onResume();
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
+    public void onDetach()
     {
-        super.onCreate(savedInstanceState);
+        for (RefreshingView refreshingView : refreshingViews)
+        {
+            Log.d("Dynamic charsheet", "Refreshing view unsubscribed");
+            refreshingView.unsubscribeFromEvents();
+        }
 
-        font = getArguments().getString(Constants.Parameters.FONT.getText());
-
-        characterName = getArguments().getString(Constants.Parameters.CHARACTER_NAME.getText());
+        super.onDetach();
     }
 
     @Override
     public void onViewCreated
         (@NonNull android.view.View view,
-         @Nullable Bundle savedInstanceState) {
+         @Nullable Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
+
+        font = getArguments().getString(Constants.Parameters.FONT.getText());
+
+        characterName = getArguments().getString(Constants.Parameters.CHARACTER_NAME.getText());
 
         if (characterName == null)
         {
             characterName = "Test character";
         }
 
-        presenter = new CharacterSheetPresenter(this, getContext(), characterName);
+        presenter = new CharacterSheetPresenter(this, characterName);
 
         statContainers = new ArrayList<>();
         refreshingViews = new ArrayList<>();
@@ -146,52 +143,91 @@ public class DynamicCharacterSheetFragment
         refreshingViews.add(resourcePanelWillpower);
         refreshingViews.add(panelStatsDerived);
 
-        panelAttributesMental.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_attr_int)));
-        panelAttributesMental.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_attr_wits)));
-        panelAttributesMental.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_attr_res)));
+        panelAttributesMental.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_attr_int)));
+        panelAttributesMental.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_attr_wits)));
+        panelAttributesMental.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_attr_res)));
 
-        panelAttributesPhysical.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_attr_str)));
-        panelAttributesPhysical.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_attr_dex)));
-        panelAttributesPhysical.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_attr_sta)));
+        panelAttributesPhysical.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_attr_str)));
+        panelAttributesPhysical.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_attr_dex)));
+        panelAttributesPhysical.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_attr_sta)));
 
-        panelAttributesSocial.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_attr_pre)));
-        panelAttributesSocial.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_attr_man)));
-        panelAttributesSocial.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_attr_com)));
+        panelAttributesSocial.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_attr_pre)));
+        panelAttributesSocial.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_attr_man)));
+        panelAttributesSocial.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_attr_com)));
 
-        panelSkillsMental.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_academics)));
-        panelSkillsMental.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_computer)));
-        panelSkillsMental.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_crafts)));
-        panelSkillsMental.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_investigation)));
-        panelSkillsMental.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_medicine)));
-        panelSkillsMental.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_occult)));
-        panelSkillsMental.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_politics)));
-        panelSkillsMental.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_science)));
+        panelSkillsMental.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_academics)));
+        panelSkillsMental.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_computer)));
+        panelSkillsMental.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_crafts)));
+        panelSkillsMental.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_investigation)));
+        panelSkillsMental.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_medicine)));
+        panelSkillsMental.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_occult)));
+        panelSkillsMental.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_politics)));
+        panelSkillsMental.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_science)));
 
-        panelSkillsPhysical.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_athletics)));
-        panelSkillsPhysical.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_brawl)));
-        panelSkillsPhysical.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_drive)));
-        panelSkillsPhysical.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_guns)));
-        panelSkillsPhysical.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_larceny)));
-        panelSkillsPhysical.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_stealth)));
-        panelSkillsPhysical.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_survival)));
-        panelSkillsPhysical.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_weaponry)));
+        panelSkillsPhysical.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_athletics)));
+        panelSkillsPhysical.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_brawl)));
+        panelSkillsPhysical.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_drive)));
+        panelSkillsPhysical.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_guns)));
+        panelSkillsPhysical.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_larceny)));
+        panelSkillsPhysical.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_stealth)));
+        panelSkillsPhysical.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_survival)));
+        panelSkillsPhysical.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_weaponry)));
 
-        panelSkillsSocial.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_animal_ken)));
-        panelSkillsSocial.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_empathy)));
-        panelSkillsSocial.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_expression)));
-        panelSkillsSocial.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_intimidation)));
-        panelSkillsSocial.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_persuasion)));
-        panelSkillsSocial.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_socialize)));
-        panelSkillsSocial.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_streetwise)));
-        panelSkillsSocial.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.skill_subterfuge)));
+        panelSkillsSocial.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_animal_ken)));
+        panelSkillsSocial.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_empathy)));
+        panelSkillsSocial.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_expression)));
+        panelSkillsSocial.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_intimidation)));
+        panelSkillsSocial.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_persuasion)));
+        panelSkillsSocial.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_socialize)));
+        panelSkillsSocial.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_streetwise)));
+        panelSkillsSocial.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.skill_subterfuge)));
 
-        panelStatsDerived.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_derived_size)));
-        panelStatsDerived.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_derived_defense)));
-        panelStatsDerived.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_derived_initiative)));
-        panelStatsDerived.addSelectableStat(presenter.getStatByName(App.getRes().getString(R.string.label_derived_speed)));
+        panelStatsDerived.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_derived_size)));
+        panelStatsDerived.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_derived_defense)));
+        panelStatsDerived.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_derived_initiative)));
+        panelStatsDerived.addSelectableStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_derived_speed)));
 
-        resourcePanelHealth.setStat(presenter.getStatByName(App.getRes().getString(R.string.label_derived_health)));
-        resourcePanelWillpower.setStat(presenter.getStatByName(App.getRes().getString(R.string.label_derived_willpower)));
+        resourcePanelHealth.setStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_derived_health)));
+        resourcePanelWillpower.setStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_derived_willpower)));
     }
 
     @Override
@@ -242,9 +278,23 @@ public class DynamicCharacterSheetFragment
         });
     }
 
-    private void subscribeToEvents()
+    public void subscribeToEvents()
     {
-        BusProvider.getInstance().register(this);
+        try
+        {
+            BusProvider.getInstance().register(this);
+        }
+        catch (IllegalArgumentException ignored) {}
+    }
+
+    @Override
+    public void unsubscribeFromEvents()
+    {
+        try
+        {
+            BusProvider.getInstance().unregister(this);
+        }
+        catch (IllegalArgumentException ignored) {}
     }
 
     private void setTypefacesOnTitles()
@@ -285,19 +335,24 @@ public class DynamicCharacterSheetFragment
             .create();
         ad.setCancelable(true);
 
-        if (successes == 0 && isExtended) {
+        if (successes == 0 && isExtended)
+        {
             ad.setMessage(getString(R.string.alert_roll_failed));
-        } else {
+        }
+        else
+        {
             Iterator iterator = rolls.iterator();
 
             String rollString = "";
 
-            while (iterator.hasNext()) {
+            while (iterator.hasNext())
+            {
                 int roll = Integer.parseInt(iterator.next().toString());
 
                 rollString = rollString.concat(String.valueOf(roll));
 
-                if (iterator.hasNext()) {
+                if (iterator.hasNext())
+                {
                     rollString = rollString.concat(", ");
                 }
             }
@@ -308,9 +363,9 @@ public class DynamicCharacterSheetFragment
         ad.show();
     }
 
-    public void spawnStatEditionDialog(final int id, String statName)
+    public void spawnStatEditionDialog(final int id, long statId, String statName)
     {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext());
 
         dialogBuilder.setTitle(getString(R.string.label_stat_edition));
         dialogBuilder.setMessage(getString(R.string.prompt_stat_edition, statName));
@@ -334,7 +389,7 @@ public class DynamicCharacterSheetFragment
 
             container.performValueChange(newValue);
 
-            refreshViews();
+            performViewRefresh();
 
             presenter.persistChanges();
         });
@@ -344,8 +399,7 @@ public class DynamicCharacterSheetFragment
 
     public void spawnCustomDiceRollDialog(ArrayList<Pair<String, Integer>> stats)
     {
-
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext());
 
         // Set dialog title
         dialogBuilder.setTitle(getString(R.string.label_dice_roll));
@@ -365,12 +419,14 @@ public class DynamicCharacterSheetFragment
 
         Iterator iterator = stats.iterator();
 
-        while (iterator.hasNext()) {
+        while (iterator.hasNext())
+        {
             Pair<String, Integer> stat = (Pair<String, Integer>) iterator.next();
 
             statList = statList.concat(stat.first);
 
-            if (iterator.hasNext()) {
+            if (iterator.hasNext())
+            {
                 statList = statList.concat(" + ");
             }
         }
@@ -385,9 +441,12 @@ public class DynamicCharacterSheetFragment
         {
             int threshold = Integer.parseInt(inputRerollThreshold.getText().toString());
 
-            if (!chkExtendedRoll.isChecked()) {
+            if (!chkExtendedRoll.isChecked())
+            {
                 presenter.rollDice(threshold);
-            } else {
+            }
+            else
+            {
                 presenter.rollExtended(threshold);
             }
 
@@ -395,20 +454,21 @@ public class DynamicCharacterSheetFragment
         });
     }
 
-    private void spawnNoDiceAlert() {
+    private void spawnNoDiceAlert()
+    {
         Toast.makeText(getContext(), getString(R.string.alert_no_dice), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void setStatPanelColor(Stat stat) 
-    { 
+    public void setStatPanelColor(Stat stat)
+    {
         try
         {
             for (DynamicStatLayout statContainer : statContainers)
             {
                 boolean shouldContain = statContainer.shouldContain(stat);
 
-                if(shouldContain)
+                if (shouldContain)
                 {
                     statContainer.setPanelColor();
                     break;
@@ -419,7 +479,7 @@ public class DynamicCharacterSheetFragment
         {
             Log.e(this.getClass().getName(), "Stat object has null fields");
         }
-    }    
+    }
 
     @Override
     public void addSelectedStatToPanel(Stat stat)
@@ -443,9 +503,28 @@ public class DynamicCharacterSheetFragment
         setStatPanelColor(stat);
     }
 
-    @Subscribe public void createStatEditionDialog(StatEditionRequestedEvent event)
+    @Subscribe
+    public void createStatEditionDialog(StatEditionRequestedEvent event)
     {
-        spawnStatEditionDialog(event.getId(), event.getName());
+        Log.d("Stat tracking", "View: " + event.getViewId() + ", statId: " + event.getStatId()+ ", stat: " + event.getName());
+
+        StatBox target = rootView.findViewById(event.getViewId());
+
+        if (target != null)
+        {
+            StatEditionDialogFragment statEditionDialogFragment =
+                StatEditionDialogFragment.newInstance(
+                    event.getViewId(),
+                    event.getStatId(),
+                    event.getName());
+
+            statEditionDialogFragment.setCallbackHandler(this);
+
+            statEditionDialogFragment.show(
+                Objects.requireNonNull(getFragmentManager()),
+                Constants.FragmentTags.TAG_FRAGMENT_DIALOG_STAT_EDIT.getText()
+            );
+        }
     }
 
     @Subscribe
@@ -460,11 +539,27 @@ public class DynamicCharacterSheetFragment
         }
     }
 
-    private void refreshViews()
+    public void performViewRefresh()
     {
         for (RefreshingView refreshingView : refreshingViews)
         {
             refreshingView.performViewRefresh();
         }
+    }
+
+    @Override
+    public void updateContainer(int viewId, long statId, int newValue)
+    {
+        StatBox target = rootView.findViewById(viewId);
+
+        Log.d("Stat tracking", "View: " + viewId + ", statId: " + statId + ", stat: " + target.getStatBoxName() + ", value: " + newValue);
+
+        target.setValue(newValue);
+
+        target.postStatChange();
+
+        target.performViewRefresh();
+
+        presenter.persistChanges();
     }
 }

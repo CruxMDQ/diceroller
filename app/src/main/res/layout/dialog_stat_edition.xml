@@ -5,28 +5,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/txtNewStatValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/margin_small"
+        android:layout_margin="16dp"
         android:gravity="center"
-        >
-
-        <TextView
-            android:id="@+id/lblDicePool"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/label_dice_pool"
-            />
-
-        <TextView
-            android:id="@+id/txtDicePool"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-    </LinearLayout>
+        android:textSize="@dimen/panel_title_text_size"
+        android:text="Intelligence"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,35 +21,28 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/lblRerollThreshold"
+            android:id="@+id/lblNewStatValue"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/label_reroll_threshold" />
+            android:text="Stat value:" />
 
         <EditText
-            android:id="@+id/inputRerollThreshold"
+            android:id="@+id/inputNewStatValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="number"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
-            android:gravity="center"
-            android:text="10"/>
+            android:gravity="center"/>
     </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/chkExtendedRoll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_extended_roll"
-        />
 
     <Button
-        android:id="@+id/btnRoll"
+        android:id="@+id/btnSetValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_btn_roll"
+        android:text="Set value"
         />
 </LinearLayout>

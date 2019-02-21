@@ -1,7 +1,5 @@
 package com.callisto.diceroller.persistence.objects;
 
-import com.callisto.diceroller.interfaces.StatContainer;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -16,8 +14,11 @@ public class Stat
 
     private int color, value;
 
-    private RealmList<String> observers;
-    private RealmList<String> observed;
+    private RealmList<String> watchers;
+    private RealmList<String> watched;
+
+    private RealmList<Stat> observers;
+    private RealmList<Stat> observed;
 
     public static Stat newInstance()
     {
@@ -26,12 +27,18 @@ public class Stat
 
     public Stat()
     {
+        this.watchers = new RealmList<>();
+        this.watched = new RealmList<>();
+
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
     }
 
     public Stat(String name, String category, int value)
     {
+        this.watchers = new RealmList<>();
+        this.watched = new RealmList<>();
+
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
@@ -40,18 +47,54 @@ public class Stat
         this.value = value;
     }
 
-    public Stat(String name, String category, String type)
+    public Stat(long id, String name, String category, int value)
     {
+        this.watchers = new RealmList<>();
+        this.watched = new RealmList<>();
+
+        this.observers = new RealmList<>();
+        this.observed = new RealmList<>();
+
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.value = value;
+    }
+
+    public Stat(String name, String category, String type, int color)
+    {
+        this.watchers = new RealmList<>();
+        this.watched = new RealmList<>();
+
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
         this.name = name;
         this.category = category;
         this.type = type;
+        this.color = color;
+    }
+
+    public Stat(long id, String name, String category, String type, int color)
+    {
+        this.watchers = new RealmList<>();
+        this.watched = new RealmList<>();
+
+        this.observers = new RealmList<>();
+        this.observed = new RealmList<>();
+
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.type = type;
+        this.color = color;
     }
 
     public Stat(String name, String category, String type, String kind, int color)
     {
+        this.watchers = new RealmList<>();
+        this.watched = new RealmList<>();
+
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
@@ -64,6 +107,9 @@ public class Stat
 
     public Stat(String name, String category, String type, String kind, int color, int value)
     {
+        this.watchers = new RealmList<>();
+        this.watched = new RealmList<>();
+
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
@@ -75,7 +121,25 @@ public class Stat
         this.value = value;
     }
 
-    public boolean equals(Object o) {
+    public Stat(long id, String name, String category, String type, String kind, int color, int value)
+    {
+        this.watchers = new RealmList<>();
+        this.watched = new RealmList<>();
+
+        this.observers = new RealmList<>();
+        this.observed = new RealmList<>();
+
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.type = type;
+        this.kind = kind;
+        this.color = color;
+        this.value = value;
+    }
+
+    public boolean equals(Object o)
+    {
         boolean result = false;
 
         if (o instanceof Stat)
@@ -89,7 +153,8 @@ public class Stat
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 7;
         hash = 17 * hash + (this.name != null ? this.name.hashCode() : 0);
         return hash;
@@ -172,10 +237,6 @@ public class Stat
         return this;
     }
 
-    public void setContainer(StatContainer container)
-    {
-    }
-
     public long getId()
     {
         return id;
@@ -186,30 +247,45 @@ public class Stat
         this.id = id;
     }
 
-    public void addWatcher(String observer)
+    public void addWatcher(String watcher)
+    {
+        watchers.add(watcher);
+    }
+
+    public void addWatchedStat(String watchedStat)
+    {
+        watched.add(watchedStat);
+
+    }
+
+    public void addObserver(Stat observer)
     {
         observers.add(observer);
     }
 
-    public void removeWatcher(String observer)
-    {
-        observers.remove(observer);
-    }
-
-    public Stat addWatchedStat(String observedStat)
+    public void addObservedStat(Stat observedStat)
     {
         observed.add(observedStat);
 
-        return this;
     }
 
-    public RealmList<String> getObservedStats()
+    public RealmList<Stat> getObservers()
+    {
+        return observers;
+    }
+
+    public RealmList<Stat> getObservedStats()
     {
         return observed;
     }
 
-    public RealmList<String> getObservers()
+    public RealmList<String> getWatchedStats()
     {
-        return observers;
+        return watched;
+    }
+
+    public RealmList<String> getWatchers()
+    {
+        return watchers;
     }
 }

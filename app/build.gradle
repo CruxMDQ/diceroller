@@ -49,12 +49,6 @@ dependencies {
     implementation "com.squareup:otto:$ottoVersion"
     implementation "io.github.inflationx:calligraphy3:$calligraphyVersion"
     implementation "io.github.inflationx:viewpump:$calligraphyViewPumpVersion"
-
-//    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
-//    implementation "org.androidannotations:androidannotations-api:$AAVersion"
-
-//    implementation "com.jakewharton:butterknife:$butterKnifeVersion"
-//    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
 }
 repositories {
     mavenCentral()

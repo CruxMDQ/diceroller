@@ -1,4 +1,4 @@
-package com.callisto.diceroller.viewmanagers;
+package com.callisto.diceroller.fragments.charactersheet;
 
 import com.callisto.diceroller.persistence.objects.Stat;
 

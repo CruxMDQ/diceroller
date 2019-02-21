@@ -7,10 +7,10 @@ import com.callisto.diceroller.tools.Constants;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-class DiceRoller {
+public class DiceRoller {
 
     @NonNull
-    ArrayList<Integer> rollDice
+    public ArrayList<Integer> rollDice
         (int rollAgainThreshold,
          int dicePool) {
 
@@ -31,7 +31,7 @@ class DiceRoller {
         return 1 + ThreadLocalRandom.current().nextInt(1, Constants.Values.COFD_DIE_SIZE.getValue());
     }
 
-    int getSuccessesCofd(ArrayList<Integer> rolls) {
+    public int getSuccessesCofd(ArrayList<Integer> rolls) {
         return getSuccessesCofd(rolls, Constants.Values.COFD_BASE_DIFFICULTY_THRESHOLD.getValue());
     }
 
@@ -45,7 +45,7 @@ class DiceRoller {
         return successes;
     }
 
-    ArrayList<Integer> rollExtended(int threshold, int diceNumber) {
+    public ArrayList<Integer> rollExtended(int threshold, int diceNumber) {
         ArrayList<Integer> extendedRoll = new ArrayList<>();
 
         for (int p = 0; p < diceNumber; p++) {

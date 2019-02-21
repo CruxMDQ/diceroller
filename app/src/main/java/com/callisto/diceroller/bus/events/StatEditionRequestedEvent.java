@@ -2,22 +2,29 @@ package com.callisto.diceroller.bus.events;
 
 public class StatEditionRequestedEvent
 {
-    private final int id;
+    private final int viewId;
+    private final long statId;
     private final String name;
 
-    public StatEditionRequestedEvent(int id, String name)
+    public StatEditionRequestedEvent(int id, long statId, String name)
     {
-        this.id = id;
+        this.viewId = id;
+        this.statId = statId;
         this.name = name;
     }
 
-    public int getId()
+    public int getViewId()
     {
-        return id;
+        return viewId;
     }
 
     public String getName()
     {
         return name;
+    }
+
+    public long getStatId()
+    {
+        return statId;
     }
 }

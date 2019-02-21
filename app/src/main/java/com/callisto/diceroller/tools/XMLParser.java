@@ -1,8 +1,8 @@
 package com.callisto.diceroller.tools;
 
-import android.content.Context;
 import android.graphics.Color;
 
+import com.callisto.diceroller.application.App;
 import com.callisto.diceroller.persistence.RealmHelper;
 import com.callisto.diceroller.persistence.objects.Stat;
 
@@ -17,16 +17,17 @@ import io.realm.RealmList;
 
 public class XMLParser
 {
-    public static RealmList<Stat> parseStats(Context context)
+    public static RealmList<Stat> parseStats()
     {
         XmlPullParserFactory factory;
+
         try
         {
             factory = XmlPullParserFactory.newInstance();
 
             XmlPullParser parser = factory.newPullParser();
 
-            InputStream is = context.getAssets().open("cofdrules.xml");
+            InputStream is = App.getRes().getAssets().open("cofdrules.xml");
 
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 
@@ -37,7 +38,8 @@ public class XMLParser
         catch (XmlPullParserException e)
         {
             e.printStackTrace();
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -99,11 +101,13 @@ public class XMLParser
                         {
                             currentStat.setColor(Color.parseColor(parser.nextText()));
                         }
-                        else if (Constants.XmlTags.TAG_STAT_FIELD_OBSERVER.getText().equals(eltName))
+                        else if (Constants.XmlTags.TAG_STAT_FIELD_OBSERVER.getText()
+                            .equals(eltName))
                         {
                             currentStat.addWatcher(parser.nextText());
                         }
-                        else if (Constants.XmlTags.TAG_STAT_FIELD_OBSERVES.getText().equals(eltName))
+                        else if (Constants.XmlTags.TAG_STAT_FIELD_OBSERVES.getText()
+                            .equals(eltName))
                         {
                             currentStat.addWatchedStat(parser.nextText());
                         }
@@ -113,6 +117,33 @@ public class XMLParser
             }
 
             eventType = parser.next();
+        }
+
+        for (Stat stat : stats)
+        {
+            for (String watcher : stat.getWatchers())
+            {
+                for (Stat t : stats)
+                {
+                    if (t.getName().equals(watcher))
+                    {
+                        stat.addObserver(t);
+                    }
+                }
+            }
+            for (String watched : stat.getWatchedStats())
+            {
+                for (Stat t : stats)
+                {
+                    if (t.getName().equals(watched))
+                    {
+                        stat.addObservedStat(t);
+                    }
+                }
+            }
+
+            stat.getWatchers().clear();
+            stat.getWatchedStats().clear();
         }
 
         return stats;

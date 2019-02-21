@@ -8,6 +8,6 @@ public interface FragmentNavigation {
     }
 
     interface Presenter {
-        void addFragment(BaseFragment fragment);
+        void addFragment(BaseFragment fragment, String tag);
     }
 }

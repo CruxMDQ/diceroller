@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -15,7 +16,7 @@ import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.DicePoolChangedEvent;
 import com.callisto.diceroller.bus.events.StatChangedEvent;
 import com.callisto.diceroller.bus.events.StatEditionRequestedEvent;
-import com.callisto.diceroller.bus.events.StatUpdatedEvent;
+import com.callisto.diceroller.bus.events.DerivedStatUpdatedEvent;
 import com.callisto.diceroller.interfaces.RefreshingView;
 import com.callisto.diceroller.interfaces.StatContainer;
 import com.callisto.diceroller.interfaces.ViewWatcher;
@@ -37,6 +38,7 @@ public class StatBox
 
     private boolean isSelected = false;
 
+    private long statId;
     private int statValue;
     private String statBoxName;
 
@@ -98,12 +100,12 @@ public class StatBox
         {
             if (isEditionAllowed())
             {
-                postStatEditionRequest(v.getId(), statBoxName);
+                postStatEditionRequest(v.getId(), statId, statBoxName);
             }
             return true;
         });
 
-        subscribeToEvents();
+//        subscribeToEvents();
     }
 
     public void performValueChange(int statValue)
@@ -128,6 +130,7 @@ public class StatBox
     public void setStat(Stat stat)
     {
         statBoxName = stat.getName();
+        statId = stat.getId();
         statValue = stat.getValue();
         colorSelected = stat.getColor();
 
@@ -150,12 +153,14 @@ public class StatBox
 
     public void postStatChange()
     {
-        BusProvider.getInstance().post(new StatChangedEvent(statBoxName, statValue));
+        BusProvider.getInstance().post(new StatChangedEvent(statId, statBoxName, statValue));
     }
 
-    private void postStatEditionRequest(int id, String statBoxName)
+    private void postStatEditionRequest(int viewId, long statId, String statBoxName)
     {
-        BusProvider.getInstance().post(new StatEditionRequestedEvent(id, statBoxName));
+        Log.d("Stat tracking", "View: " + viewId + ", statId: " + statId + ", stat: " + statBoxName + ", value: " + statValue);
+
+        BusProvider.getInstance().post(new StatEditionRequestedEvent(viewId, statId, statBoxName));
     }
 
     private void setName(String statName) {
@@ -235,12 +240,15 @@ public class StatBox
         return this;
     }
 
-    @Subscribe public void updateStatValue(StatUpdatedEvent event)
+    @Subscribe public void updateStatValue(DerivedStatUpdatedEvent event)
     {
-        try
+       try
         {
-            if (event.name.equals(statBoxName))
+//            if (event.name.equals(statBoxName))
+            if (event.statId == statId)
             {
+                Log.d("Stat box", "DerivedStatUpdatedEvent captured, event statId = " + event.statId + ", container statId = " + statId);
+
                 this.statValue = event.value;
 
                 performViewRefresh();
@@ -252,8 +260,19 @@ public class StatBox
         }
     }
 
-    void subscribeToEvents()
+    public void subscribeToEvents()
     {
         BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void unsubscribeFromEvents()
+    {
+        BusProvider.getInstance().unregister(this);
+    }
+
+    public String getStatBoxName()
+    {
+        return statBoxName;
     }
 }
