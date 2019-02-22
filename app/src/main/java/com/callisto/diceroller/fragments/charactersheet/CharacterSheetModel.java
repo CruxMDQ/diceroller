@@ -13,7 +13,7 @@ import com.callisto.diceroller.persistence.RealmHelper;
 import com.callisto.diceroller.persistence.objects.Character;
 import com.callisto.diceroller.persistence.objects.Stat;
 import com.callisto.diceroller.tools.Constants;
-import com.callisto.diceroller.tools.XMLParser;
+import com.callisto.diceroller.persistence.XMLParser;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -113,18 +113,6 @@ public class CharacterSheetModel
         return diceRoller.getSuccessesCofd(rolls);
     }
 
-    void addOrRemoveStat(Stat stat)
-    {
-        if (activeCharacter.getStats().contains(stat))
-        {
-            activeCharacter.getStats().remove(stat);
-        }
-        else
-        {
-            activeCharacter.getStats().add(stat);
-        }
-    }
-
     void addOrRemovePair(Pair<String, Integer> pair)
     {
         if (stats.contains(pair))
@@ -162,7 +150,7 @@ public class CharacterSheetModel
         return null;
     }
 
-    Stat getStat(long statId)
+    private Stat getStat(long statId)
     {
         for (Stat stat : activeCharacter.getStats())
         {

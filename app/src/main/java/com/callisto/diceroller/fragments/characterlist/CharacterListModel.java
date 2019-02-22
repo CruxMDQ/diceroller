@@ -3,7 +3,7 @@ package com.callisto.diceroller.fragments.characterlist;
 import com.callisto.diceroller.persistence.RealmHelper;
 import com.callisto.diceroller.persistence.objects.Character;
 import com.callisto.diceroller.persistence.objects.Stat;
-import com.callisto.diceroller.tools.XMLParser;
+import com.callisto.diceroller.persistence.XMLParser;
 
 import java.util.ArrayList;
 import java.util.List;

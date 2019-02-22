@@ -19,7 +19,6 @@ import com.callisto.diceroller.bus.events.StatEditionRequestedEvent;
 import com.callisto.diceroller.bus.events.DerivedStatUpdatedEvent;
 import com.callisto.diceroller.interfaces.RefreshingView;
 import com.callisto.diceroller.interfaces.StatContainer;
-import com.callisto.diceroller.interfaces.ViewWatcher;
 import com.callisto.diceroller.persistence.objects.Stat;
 import com.squareup.otto.Subscribe;
 
@@ -43,8 +42,6 @@ public class StatBox
     private String statBoxName;
 
     private boolean isEditionAllowed = true;
-
-    private ViewWatcher viewWatcher;
 
     public StatBox(final Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -203,15 +200,6 @@ public class StatBox
         lblStat = findViewById(R.id.lblStat);
 
         panelValue = findViewById(R.id.panelValue);
-    }
-
-    public StatBox setViewWatcher(ViewWatcher viewWatcher) {
-        this.viewWatcher = viewWatcher;
-        this.viewWatcher.setStatOnView(this.getTag());
-
-//        subscribeToEvents();
-
-        return this;
     }
 
     public void performViewRefresh() {

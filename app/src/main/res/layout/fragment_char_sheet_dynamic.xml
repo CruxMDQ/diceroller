@@ -30,7 +30,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <com.callisto.diceroller.views.DynamicStatLayout
+            <com.callisto.diceroller.views.StatLayout
                 android:id="@+id/panelAttributesMental"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 app:title="@string/label_attrs_mental"
                 />
 
-            <com.callisto.diceroller.views.DynamicStatLayout
+            <com.callisto.diceroller.views.StatLayout
                 android:id="@+id/panelAttributesPhysical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                 app:title="@string/label_attrs_physical"
                 />
 
-            <com.callisto.diceroller.views.DynamicStatLayout
+            <com.callisto.diceroller.views.StatLayout
                 android:id="@+id/panelAttributesSocial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/panelAttributesSocial"
                 />
 
-            <com.callisto.diceroller.views.DynamicStatLayout
+            <com.callisto.diceroller.views.StatLayout
                 android:id="@+id/panelSkillsMental"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                 app:title="@string/label_skills_mental"
                 />
 
-            <com.callisto.diceroller.views.DynamicStatLayout
+            <com.callisto.diceroller.views.StatLayout
                 android:id="@+id/panelSkillsPhysical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                 app:title="@string/label_skills_physical"
                 />
 
-            <com.callisto.diceroller.views.DynamicStatLayout
+            <com.callisto.diceroller.views.StatLayout
                 android:id="@+id/panelSkillsSocial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                 android:text="@string/label_derived_stats"
                 />
 
-            <com.callisto.diceroller.views.DynamicStatLayout
+            <com.callisto.diceroller.views.StatLayout
                 android:id="@+id/panelStatsDerived"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

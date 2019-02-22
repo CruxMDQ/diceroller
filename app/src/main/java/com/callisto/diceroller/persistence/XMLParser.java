@@ -1,10 +1,10 @@
-package com.callisto.diceroller.tools;
+package com.callisto.diceroller.persistence;
 
 import android.graphics.Color;
 
 import com.callisto.diceroller.application.App;
-import com.callisto.diceroller.persistence.RealmHelper;
 import com.callisto.diceroller.persistence.objects.Stat;
+import com.callisto.diceroller.tools.Constants;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

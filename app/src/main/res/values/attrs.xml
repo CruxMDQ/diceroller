@@ -16,7 +16,7 @@
         <attr name="colorSelected" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="DynamicStatLayout">
+    <declare-styleable name="StatLayout">
         <attr name="title" format="string" />
         <attr name="selectedStat" />
         <attr name="isOpen" />

@@ -103,9 +103,7 @@ public class CharacterListFragment
             }
         });
 
-        fabNewCharacter.setOnClickListener(v -> {
-            spawnCharacterCreationDialog();
-        });
+        fabNewCharacter.setOnClickListener(v -> spawnCharacterCreationDialog());
     }
 
     private void spawnCharacterCreationDialog()

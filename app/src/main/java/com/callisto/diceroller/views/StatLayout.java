@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class DynamicStatLayout
+public class StatLayout
     extends UnfoldingLayout
     implements RefreshingView
 {
@@ -38,7 +38,7 @@ public class DynamicStatLayout
     private ArrayList<Stat> containedStats;
     private ArrayList<Stat> pickedStats;
 
-    public DynamicStatLayout(
+    public StatLayout(
         Context context,
         AttributeSet attrs,
         int defStyleAttr)
@@ -47,7 +47,7 @@ public class DynamicStatLayout
 
         TypedArray args = context.obtainStyledAttributes(
             attrs,
-            R.styleable.DynamicStatLayout,
+            R.styleable.StatLayout,
             0,
             0);
 
@@ -65,7 +65,7 @@ public class DynamicStatLayout
         performViewRefresh();
     }
 
-    public DynamicStatLayout(Context context, AttributeSet attrs)
+    public StatLayout(Context context, AttributeSet attrs)
     {
         super(context, attrs);
 
@@ -78,7 +78,7 @@ public class DynamicStatLayout
 
         TypedArray args = context.obtainStyledAttributes(
             attrs,
-            R.styleable.DynamicStatLayout,
+            R.styleable.StatLayout,
             0,
             0);
 
@@ -89,7 +89,7 @@ public class DynamicStatLayout
         performViewRefresh();
     }
 
-    public DynamicStatLayout(Context context)
+    public StatLayout(Context context)
     {
         super(context);
         init(null);
@@ -105,10 +105,10 @@ public class DynamicStatLayout
     {
         if (args != null)
         {
-            isOpen = args.getBoolean(R.styleable.DynamicStatLayout_isOpen, false);
-            labelTitle.setText(args.getString(R.styleable.DynamicStatLayout_title));
+            isOpen = args.getBoolean(R.styleable.StatLayout_isOpen, false);
+            labelTitle.setText(args.getString(R.styleable.StatLayout_title));
 
-            showTitle(args.getBoolean(R.styleable.DynamicStatLayout_isTitleVisible, true));
+            showTitle(args.getBoolean(R.styleable.StatLayout_isTitleVisible, true));
 
             setOpen(isOpen);
         }
@@ -126,7 +126,7 @@ public class DynamicStatLayout
 
             postPanelTapped(id);
 
-            DynamicStatLayout t = (DynamicStatLayout) v;
+            StatLayout t = (StatLayout) v;
 
             if (pickedStats.size() == 0)
             {

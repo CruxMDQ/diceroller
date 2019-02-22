@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.fragments.BaseFragment;
 import com.callisto.diceroller.fragments.characterlist.CharacterListFragment;
-import com.callisto.diceroller.fragments.charactersheet.DynamicCharacterSheetFragment;
+import com.callisto.diceroller.fragments.charactersheet.CharacterSheetFragment;
 import com.callisto.diceroller.presenters.MainActivityPresenter;
 import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.viewmanagers.MainActivityNavigation;
@@ -30,7 +30,7 @@ public class MainActivity
 {
     CharacterListFragment characterList;
 
-    DynamicCharacterSheetFragment characterSheet;
+    CharacterSheetFragment characterSheet;
 
     private MainActivityPresenter presenter;
 
@@ -128,7 +128,7 @@ public class MainActivity
 
         if (characterSheet == null)
         {
-            characterSheet = new DynamicCharacterSheetFragment();
+            characterSheet = new CharacterSheetFragment();
         }
 
         Bundle args = new Bundle();

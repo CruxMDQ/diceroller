@@ -5,14 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.text.InputType;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,13 +22,12 @@ import com.callisto.diceroller.bus.events.PanelTappedEvent;
 import com.callisto.diceroller.bus.events.StatEditionRequestedEvent;
 import com.callisto.diceroller.fragments.BaseFragment;
 import com.callisto.diceroller.fragments.StatEditionDialogFragment;
-import com.callisto.diceroller.interfaces.StatEditionCallbackHandler;
 import com.callisto.diceroller.interfaces.RefreshingView;
-import com.callisto.diceroller.interfaces.StatContainer;
+import com.callisto.diceroller.interfaces.StatEditionCallbackHandler;
 import com.callisto.diceroller.persistence.objects.Stat;
 import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.tools.TypefaceSpanBuilder;
-import com.callisto.diceroller.views.DynamicStatLayout;
+import com.callisto.diceroller.views.StatLayout;
 import com.callisto.diceroller.views.ResourceLayout;
 import com.callisto.diceroller.views.StatBox;
 import com.callisto.diceroller.views.UnfoldingLayout;
@@ -40,15 +37,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class DynamicCharacterSheetFragment
+public class CharacterSheetFragment
     extends BaseFragment
     implements CharacterSheet.View,
         RefreshingView,
-    StatEditionCallbackHandler
+        StatEditionCallbackHandler
 {
     CharacterSheetPresenter presenter;
 
-    private DynamicStatLayout
+    private StatLayout
         panelAttributesMental,
         panelAttributesPhysical,
         panelAttributesSocial,
@@ -71,7 +68,7 @@ public class DynamicCharacterSheetFragment
     private String font;
     private String characterName;
 
-    private ArrayList<DynamicStatLayout> statContainers;
+    private ArrayList<StatLayout> statContainers;
 
     private ArrayList<RefreshingView> refreshingViews;
 
@@ -363,40 +360,6 @@ public class DynamicCharacterSheetFragment
         ad.show();
     }
 
-    public void spawnStatEditionDialog(final int id, long statId, String statName)
-    {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext());
-
-        dialogBuilder.setTitle(getString(R.string.label_stat_edition));
-        dialogBuilder.setMessage(getString(R.string.prompt_stat_edition, statName));
-
-        final EditText input = new EditText(getContext());
-
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
-
-        dialogBuilder.setView(input);
-
-        dialogBuilder.setPositiveButton(getString(R.string.label_btn_ok), (dialog, which) ->
-        {
-            int newValue = Integer.parseInt(input.getText().toString());
-
-            StatContainer container = rootView.findViewById(id);
-
-            container.performValueChange(newValue);
-
-            performViewRefresh();
-
-            presenter.persistChanges();
-        });
-
-        dialogBuilder.show();
-    }
-
     public void spawnCustomDiceRollDialog(ArrayList<Pair<String, Integer>> stats)
     {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext());
@@ -464,7 +427,7 @@ public class DynamicCharacterSheetFragment
     {
         try
         {
-            for (DynamicStatLayout statContainer : statContainers)
+            for (StatLayout statContainer : statContainers)
             {
                 boolean shouldContain = statContainer.shouldContain(stat);
 
@@ -484,7 +447,7 @@ public class DynamicCharacterSheetFragment
     @Override
     public void addSelectedStatToPanel(Stat stat)
     {
-        for (DynamicStatLayout statContainer : statContainers)
+        for (StatLayout statContainer : statContainers)
         {
             if (statContainer.shouldContain(stat))
             {
@@ -559,6 +522,11 @@ public class DynamicCharacterSheetFragment
         target.postStatChange();
 
         target.performViewRefresh();
+
+        for (RefreshingView refreshingView : refreshingViews)
+        {
+            refreshingView.performViewRefresh();
+        }
 
         presenter.persistChanges();
     }
