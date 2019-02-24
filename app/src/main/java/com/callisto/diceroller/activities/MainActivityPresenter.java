@@ -1,4 +1,4 @@
-package com.callisto.diceroller.presenters;
+package com.callisto.diceroller.activities;
 
 import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.CharacterEditorRequestedEvent;
@@ -15,7 +15,7 @@ public class MainActivityPresenter
 
     private final MainActivityNavigation.View view;
 
-    public MainActivityPresenter(MainActivityNavigation.View view)
+    MainActivityPresenter(MainActivityNavigation.View view)
     {
         this.view = view;
 

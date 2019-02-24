@@ -17,23 +17,29 @@ import io.realm.RealmList;
 
 public class XMLParser
 {
-    public static RealmList<Stat> parseStats()
+    private static XmlPullParser createParser(String filename) throws IOException, XmlPullParserException
     {
         XmlPullParserFactory factory;
 
+        InputStream is = App.getRes().getAssets().open(filename);
+
+        factory = XmlPullParserFactory.newInstance();
+
+        XmlPullParser parser = factory.newPullParser();
+
+        parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+
+        parser.setInput(is, null);
+
+        return parser;
+    }
+
+
+    public static RealmList<Stat> parseStats()
+    {
         try
         {
-            factory = XmlPullParserFactory.newInstance();
-
-            XmlPullParser parser = factory.newPullParser();
-
-            InputStream is = App.getRes().getAssets().open("cofdrules.xml");
-
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-
-            parser.setInput(is, null);
-
-            return processParsing(parser);
+            return processParsing(createParser("cofdrules.xml"));
         }
         catch (XmlPullParserException e)
         {

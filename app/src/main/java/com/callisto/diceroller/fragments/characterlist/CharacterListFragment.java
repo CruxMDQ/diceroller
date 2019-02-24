@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.application.App;
@@ -25,9 +27,20 @@ public class CharacterListFragment
 
     GridView gv;
 
+//    private Toolbar toolbar;
+
     FloatingActionButton fabNewCharacter;
-    FloatingActionButton fab1;              // Reserved for future use
-    FloatingActionButton fab2;              // Reserved for future use
+    TextView labelNewCharacter;
+    LinearLayout panelNewCharacter;
+
+    FloatingActionButton fabSettings;
+    TextView labelSettings;
+    LinearLayout panelSettings;
+
+    FloatingActionButton fabOpposedCheck;
+    TextView labelOpposedCheck;
+    LinearLayout panelOpposedCheck;
+
 
     private List<Character> characters;
 
@@ -61,12 +74,6 @@ public class CharacterListFragment
             Character character = characters.get(position);
 
             presenter.requestCharacterEditor(character.getName());
-
-//            Toast.makeText(
-//                this.getContext(),
-//                character.getName(),
-//                Toast.LENGTH_SHORT
-//            ).show();
         });
     }
 
@@ -82,15 +89,50 @@ public class CharacterListFragment
         gv = rootView.findViewById(R.id.gv);
 
         setUpFAB();
+
+//        setUpToolbar();
     }
+
+//    private void setUpToolbar()
+//    {
+//        toolbar = rootView.findViewById(R.id.toolbar);
+//
+//        if (toolbar != null) {
+//            ((AppCompatActivity) Objects.requireNonNull(getActivity()))
+//                .setSupportActionBar(toolbar);
+//        }
+//
+//        Objects.requireNonNull(toolbar).setOnMenuItemClickListener(menuItem ->
+//        {
+//            switch (menuItem.getItemId())
+//            {
+//                case R.id.action_settings:
+//                {
+//                    return true;
+//                }
+//                default:
+//                {
+//                    return false;
+//                }
+//            }
+//        });
+//    }
 
     private void setUpFAB()
     {
         FloatingActionButton fabUnfold = rootView.findViewById(R.id.fabUnfold);
 
         fabNewCharacter = rootView.findViewById(R.id.fabNewCharacter);
-        fab1 = rootView.findViewById(R.id.fab1);
-        fab2 = rootView.findViewById(R.id.fab2);
+        labelNewCharacter = rootView.findViewById(R.id.labelNewCharacter);
+        panelNewCharacter = rootView.findViewById(R.id.panelNewCharacter);
+
+        fabOpposedCheck = rootView.findViewById(R.id.fabOpposedCheck);
+        labelOpposedCheck = rootView.findViewById(R.id.labelOpposedCheck);
+        panelOpposedCheck = rootView.findViewById(R.id.panelOpposedCheck);
+        
+        fabSettings = rootView.findViewById(R.id.fabSettings);
+        labelSettings = rootView.findViewById(R.id.labelSettings);
+        panelSettings = rootView.findViewById(R.id.panelSettings);
 
         fabUnfold.setOnClickListener(v -> {
             if (!isFABOpen)
@@ -104,6 +146,13 @@ public class CharacterListFragment
         });
 
         fabNewCharacter.setOnClickListener(v -> spawnCharacterCreationDialog());
+
+        fabSettings.setOnClickListener(v -> invokeSettingsScreen());
+    }
+
+    private void invokeSettingsScreen()
+    {
+        // TODO Invoke settings fragment launch here
     }
 
     private void spawnCharacterCreationDialog()
@@ -145,17 +194,28 @@ public class CharacterListFragment
     {
         isFABOpen = true;
 
-        fabNewCharacter.animate().translationY(-App.getRes().getDimension(R.dimen.fab_offset_1));
-        fab1.animate().translationY(-App.getRes().getDimension(R.dimen.fab_offset_2));
-        fab2.animate().translationY(-App.getRes().getDimension(R.dimen.fab_offset_3));
+        panelNewCharacter.animate().translationY(-App.getRes().getDimension(R.dimen.fab_offset_1));
+        labelNewCharacter.setVisibility(View.VISIBLE);
+
+        panelOpposedCheck.animate().translationY(-App.getRes().getDimension(R.dimen.fab_offset_2));
+        labelOpposedCheck.setVisibility(View.VISIBLE);
+
+        panelSettings.animate().translationY(-App.getRes().getDimension(R.dimen.fab_offset_3));
+        labelSettings.setVisibility(View.VISIBLE);
+
     }
 
     private void closeFABMenu()
     {
         isFABOpen = false;
 
-        fabNewCharacter.animate().translationY(0);
-        fab1.animate().translationY(0);
-        fab2.animate().translationY(0);
+        panelNewCharacter.animate().translationY(0);
+        labelNewCharacter.setVisibility(View.GONE);
+
+        panelOpposedCheck.animate().translationY(0);
+        labelOpposedCheck.setVisibility(View.GONE);
+
+        panelSettings.animate().translationY(0);
+        labelSettings.setVisibility(View.GONE);
     }
 }

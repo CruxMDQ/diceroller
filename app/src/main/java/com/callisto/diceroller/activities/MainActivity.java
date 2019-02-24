@@ -13,7 +13,6 @@ import com.callisto.diceroller.R;
 import com.callisto.diceroller.fragments.BaseFragment;
 import com.callisto.diceroller.fragments.characterlist.CharacterListFragment;
 import com.callisto.diceroller.fragments.charactersheet.CharacterSheetFragment;
-import com.callisto.diceroller.presenters.MainActivityPresenter;
 import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.viewmanagers.MainActivityNavigation;
 

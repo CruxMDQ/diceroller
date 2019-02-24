@@ -12,7 +12,7 @@ public class Character
     @PrimaryKey
     private long id;
     private String name;
-    private String template;
+    private Template template;
     private RealmList<Stat> stats;
 
     public Character() {}
@@ -53,12 +53,12 @@ public class Character
         this.name = name;
     }
 
-    public String getTemplate()
+    public Template getTemplate()
     {
         return template;
     }
 
-    public void setTemplate(String template)
+    public void setTemplate(Template template)
     {
         this.template = template;
     }

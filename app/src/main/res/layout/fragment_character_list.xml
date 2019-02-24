@@ -13,19 +13,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+        <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:theme="@style/AppTheme.AppBarOverlay">-->
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+        <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?attr/actionBarSize"-->
+        <!--android:background="?attr/colorPrimary"-->
+        <!--app:popupTheme="@style/AppTheme.PopupOverlay"/>-->
 
-        </android.support.design.widget.AppBarLayout>
+        <!--</android.support.design.widget.AppBarLayout>-->
 
         <GridView
             android:id="@+id/gv"
@@ -37,29 +37,82 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabNewCharacter"
-        android:layout_width="@dimen/fab_size_small"
-        android:layout_height="@dimen/fab_size_small"
+    <LinearLayout android:id="@+id/panelNewCharacter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/margin_fab_small"
-        android:src="@android:drawable/ic_menu_add"/>
+        android:orientation="horizontal">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab2"
-        android:layout_width="@dimen/fab_size_small"
-        android:layout_height="@dimen/fab_size_small"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/margin_fab_small"
-        android:src="@android:drawable/ic_menu_add"/>
+        <TextView
+            android:id="@+id/labelNewCharacter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/label_new_character"
+            android:visibility="gone"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab1"
-        android:layout_width="@dimen/fab_size_small"
-        android:layout_height="@dimen/fab_size_small"
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabNewCharacter"
+            android:layout_width="@dimen/fab_size_small"
+            android:layout_height="@dimen/fab_size_small"
+            android:layout_margin="@dimen/margin_fab_small"
+            android:backgroundTint="@color/color_yellow_light"
+            android:src="@drawable/ic_feather_pen"
+            app:fabCustomSize="@dimen/fab_size_small"
+            />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/panelSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/margin_fab_small"
-        android:src="@android:drawable/ic_menu_add"/>
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/labelSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/action_settings"
+            android:visibility="gone"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabSettings"
+            android:layout_width="@dimen/fab_size_small"
+            android:layout_height="@dimen/fab_size_small"
+            android:layout_margin="@dimen/margin_fab_small"
+            android:backgroundTint="@color/color_blue_dark"
+            android:src="@drawable/ic_wrench"
+            android:tint="@color/color_white"
+            app:fabCustomSize="@dimen/fab_size_small"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/panelOpposedCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/labelOpposedCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/label_opposed_check"
+            android:visibility="gone"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabOpposedCheck"
+            android:layout_width="@dimen/fab_size_small"
+            android:layout_height="@dimen/fab_size_small"
+            android:layout_margin="@dimen/margin_fab_small"
+            android:src="@drawable/ic_fight"
+            android:tint="@android:color/white"
+            app:fabCustomSize="@dimen/fab_size_small"
+            />
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabUnfold"
@@ -68,5 +121,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/margin_small"
         android:src="@android:drawable/ic_menu_add"/>
-    
+
 </android.support.design.widget.CoordinatorLayout>

@@ -131,4 +131,43 @@ public class Constants
             return text;
         }
     }
+
+    public enum Templates
+    {
+        KINDRED("Kindred");
+
+        private String text;
+
+        Templates(String text)
+        {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+    }
+
+    public enum Credits
+    {
+        ICON_FIGHT("Designed by Freepik from www.flaticon.com"),
+        ICON_FEATHER_PEN("Designed by EpicCoders from www.flaticon.com"),
+        ICON_D10("Designed by Skoll from www.game-icons.net"),
+        ICON_D20("Designed by Skoll from www.game-icons.net"),
+        ICON_WRENCH("Designed by Dave Grandy from www.flaticon.com");
+
+        private String text;
+
+        Credits(String text)
+        {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+
+    }
 }

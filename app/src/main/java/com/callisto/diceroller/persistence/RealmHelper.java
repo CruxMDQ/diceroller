@@ -1,7 +1,6 @@
 package com.callisto.diceroller.persistence;
 
 import com.callisto.diceroller.application.App;
-import com.callisto.diceroller.persistence.modules.StorytellerModule;
 import com.callisto.diceroller.tools.Constants;
 
 import io.realm.Realm;
@@ -37,12 +36,20 @@ public class RealmHelper
 
     private RealmConfiguration buildRealmConfig()
     {
-        return new RealmConfiguration.Builder()
-                .name("cofd.realm")
-    //            .encryptionKey(getKey())
-                .schemaVersion(0)
-                .modules(new StorytellerModule())
-                .build();
+        RealmConfiguration config;
+
+//        config = new RealmConfiguration.Builder()
+//            .name("cofd.realm")
+//            .schemaVersion(0)
+//            .modules(new StorytellerModule())
+//            .build();
+
+        config = new RealmConfiguration.Builder()
+            .schemaVersion(3)
+            .migration(new CofdMigration())
+            .build();
+
+        return config;
     }
 
     public <T extends RealmObject> RealmResults<T> getList(Class<T> klass)

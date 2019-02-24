@@ -93,4 +93,8 @@
     <string name="label_character_bio">Bio</string>
     <string name="label_character_name">Name:</string>
     <string name="label_character_player">Player:</string>
+    <string name="label_new_character">New character</string>
+    <string name="label_opposed_check">Make opposing check</string>
+    <string name="label_input_character_name">Character name:</string>
+    <string name="label_create">Create</string>
 </resources>
