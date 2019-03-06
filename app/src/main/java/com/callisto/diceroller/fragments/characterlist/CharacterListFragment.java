@@ -6,16 +6,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.application.App;
 import com.callisto.diceroller.fragments.BaseFragment;
 import com.callisto.diceroller.persistence.objects.Character;
+import com.callisto.diceroller.persistence.objects.Template;
 
 import java.util.List;
 
@@ -73,7 +77,7 @@ public class CharacterListFragment
         {
             Character character = characters.get(position);
 
-            presenter.requestCharacterEditor(character.getName());
+            presenter.requestCharacterEditor(character.getName(), character.getTemplate().getFont());
         });
     }
 
@@ -162,13 +166,41 @@ public class CharacterListFragment
         // Set dialog title
         dialogBuilder.setTitle("Character creation");
 
+        final Template[] template = new Template[1];
+
         // Set dialog view
         final View view = getLayoutInflater().inflate(R.layout.dialog_character_create, null);
         dialogBuilder.setView(view);
 
         // Find dialog components
         final EditText inputName = view.findViewById(R.id.inputName);
+        Spinner pickerTemplate = view.findViewById(R.id.pickerTemplate);
         Button btnCreate = view.findViewById(R.id.btnCreate);
+
+        TemplateAdapter templateAdapter = new TemplateAdapter();
+
+        pickerTemplate.setAdapter(templateAdapter);
+
+        pickerTemplate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                Template selectedItem = (Template) templateAdapter.getItem(position);
+                Toast.makeText(
+                    getContext(),
+                    selectedItem.getName(),
+                    Toast.LENGTH_SHORT).show();
+
+                template[0] = selectedItem;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
 
         // Store dialog reference to later be able to dismiss it
         final AlertDialog dialog = dialogBuilder.show();
@@ -180,10 +212,10 @@ public class CharacterListFragment
             presenter.createNewCharacter(
                 characterName,
                 // TODO Create support for setting player
-                "Kindred"                 // TODO Create support for setting template
+                template[0].getName()
             );
 
-            presenter.requestCharacterEditor(characterName);
+            presenter.requestCharacterEditor(characterName, template[0].getFont());
 
             dialog.cancel();
         });

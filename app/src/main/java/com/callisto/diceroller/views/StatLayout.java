@@ -420,4 +420,25 @@ public class StatLayout
             labelTitle.setVisibility(GONE);
         }
     }
+
+    private void deselectAll()
+    {
+        final int childCount = panelContainer.getChildCount();
+
+        for (int i = 0; i < childCount; i++)
+        {
+            StatBox v = (StatBox) panelContainer.getChildAt(i);
+
+            v.setSelectedForDicePool(getContext(), false);
+        }
+    }
+
+    public void flush()
+    {
+        pickedStats.clear();
+
+        deselectAll();
+
+        setPanelColor();
+    }
 }

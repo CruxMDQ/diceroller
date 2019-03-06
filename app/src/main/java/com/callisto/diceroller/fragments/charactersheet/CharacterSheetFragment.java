@@ -27,9 +27,9 @@ import com.callisto.diceroller.interfaces.StatEditionCallbackHandler;
 import com.callisto.diceroller.persistence.objects.Stat;
 import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.tools.TypefaceSpanBuilder;
-import com.callisto.diceroller.views.StatLayout;
 import com.callisto.diceroller.views.ResourceLayout;
 import com.callisto.diceroller.views.StatBox;
+import com.callisto.diceroller.views.StatLayout;
 import com.callisto.diceroller.views.UnfoldingLayout;
 import com.squareup.otto.Subscribe;
 
@@ -56,7 +56,8 @@ public class CharacterSheetFragment
 
     private ResourceLayout
         resourcePanelHealth,
-        resourcePanelWillpower;
+        resourcePanelWillpower,
+        resourcePanelIntegrity;
 
     private TextView
         labelCharacterBio,
@@ -91,6 +92,11 @@ public class CharacterSheetFragment
         {
             Log.d("Dynamic charsheet", "Refreshing view unsubscribed");
             refreshingView.unsubscribeFromEvents();
+        }
+
+        for (StatLayout statLayout : statContainers)
+        {
+            statLayout.flush();
         }
 
         super.onDetach();
@@ -213,7 +219,7 @@ public class CharacterSheetFragment
             presenter.getStatByName(App.getRes().getString(R.string.skill_subterfuge)));
 
         panelStatsDerived.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_derived_size)));
+            presenter.getStatByName(App.getRes().getString(R.string.label_core_size)));
         panelStatsDerived.addSelectableStat(
             presenter.getStatByName(App.getRes().getString(R.string.label_derived_defense)));
         panelStatsDerived.addSelectableStat(
@@ -221,10 +227,16 @@ public class CharacterSheetFragment
         panelStatsDerived.addSelectableStat(
             presenter.getStatByName(App.getRes().getString(R.string.label_derived_speed)));
 
+        resourcePanelHealth.setFont(font);
+        resourcePanelWillpower.setFont(font);
+        resourcePanelIntegrity.setFont(font);
+
         resourcePanelHealth.setStat(
             presenter.getStatByName(App.getRes().getString(R.string.label_derived_health)));
         resourcePanelWillpower.setStat(
             presenter.getStatByName(App.getRes().getString(R.string.label_derived_willpower)));
+        resourcePanelIntegrity.setStat(
+            presenter.getStatByName(App.getRes().getString(R.string.label_core_integrity)));
     }
 
     @Override
@@ -255,6 +267,7 @@ public class CharacterSheetFragment
 
         resourcePanelHealth = rootView.findViewById(R.id.panelHealth);
         resourcePanelWillpower = rootView.findViewById(R.id.panelWillpower);
+        resourcePanelIntegrity = rootView.findViewById(R.id.panelIntegrity);
 
         setUpFAB();
     }
@@ -445,7 +458,7 @@ public class CharacterSheetFragment
     }
 
     @Override
-    public void addSelectedStatToPanel(Stat stat)
+    public void addOrRemoveStatFromPanel(Stat stat)
     {
         for (StatLayout statContainer : statContainers)
         {
@@ -462,7 +475,7 @@ public class CharacterSheetFragment
         presenter.addOrRemoveStat(new Pair<>(event.getStatName(), event.getStatValue()));
         Stat stat = presenter.getStatDetails(event.getStatName());
 
-        addSelectedStatToPanel(stat);
+        addOrRemoveStatFromPanel(stat);
         setStatPanelColor(stat);
     }
 

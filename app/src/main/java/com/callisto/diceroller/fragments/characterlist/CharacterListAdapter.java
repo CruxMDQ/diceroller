@@ -38,7 +38,7 @@ public class CharacterListAdapter
     @Override
     public long getItemId(int position)
     {
-        return 0;
+        return ((Character) getItem(position)).getId();
     }
 
     @NonNull

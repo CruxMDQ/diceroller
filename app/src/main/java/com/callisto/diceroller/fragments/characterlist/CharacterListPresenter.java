@@ -34,8 +34,8 @@ class CharacterListPresenter
         BusProvider.getInstance().register(this);
     }
 
-    void requestCharacterEditor(String characterName)
+    void requestCharacterEditor(String characterName, String font)
     {
-        BusProvider.getInstance().post(new CharacterEditorRequestedEvent(characterName));
+        BusProvider.getInstance().post(new CharacterEditorRequestedEvent(characterName, font));
     }
 }

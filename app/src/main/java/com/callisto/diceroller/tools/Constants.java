@@ -51,7 +51,9 @@ public class Constants
 
     public enum Fonts
     {
-        CEZANNE("Cezanne.TTF");
+        CEZANNE("Cezanne.TTF"),
+        ITALIANNO("Italianno.otf"),
+        PERCOLATOR("PERCEXP.TTF");
 
         private String text;
 
@@ -134,7 +136,8 @@ public class Constants
 
     public enum Templates
     {
-        KINDRED("Kindred");
+        KINDRED("Kindred"),
+        NOBLE("Noble");
 
         private String text;
 

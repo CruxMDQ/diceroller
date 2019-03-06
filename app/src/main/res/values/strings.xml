@@ -57,10 +57,12 @@
     <string name="stat_type_mental">Mental</string>
     <string name="stat_type_physical">Physical</string>
     <string name="stat_type_social">Social</string>
+    <string name="stat_type_core">Core</string>
 
     <string name="stat_kind_power">Power</string>
     <string name="stat_kind_finesse">Finesse</string>
     <string name="stat_kind_resistance">Resistance</string>
+    <string name="stat_kind_resource">Resource</string>
 
     <string name="alert_no_dice">There are no dice to roll!</string>
     <string name="label_dice_pool">Dice pool:</string>
@@ -81,14 +83,17 @@
     <string name="stat_category_attr">Attribute</string>
     <string name="stat_category_skill">Skill</string>
     <string name="stat_category_derived">Derived</string>
+    <string name="stat_category_template">Template</string>
 
     <string name="label_derived_stats">Derived stats</string>
-    <string name="label_derived_size">Size</string>
     <string name="label_derived_defense">Defense</string>
     <string name="label_derived_health">Health</string>
     <string name="label_derived_initiative">Initiative</string>
     <string name="label_derived_speed">Speed</string>
     <string name="label_derived_willpower">Willpower</string>
+
+    <string name="label_core_size">Size</string>
+    <string name="label_core_integrity">Integrity</string>
 
     <string name="label_character_bio">Bio</string>
     <string name="label_character_name">Name:</string>
@@ -97,4 +102,8 @@
     <string name="label_opposed_check">Make opposing check</string>
     <string name="label_input_character_name">Character name:</string>
     <string name="label_create">Create</string>
+    <string name="label_template">Template:</string>
+
+    <string name="stat_kindred_blood_potency">Blood Potency</string>
+    <string name="stat_kindred_vitae">Vitae</string>
 </resources>

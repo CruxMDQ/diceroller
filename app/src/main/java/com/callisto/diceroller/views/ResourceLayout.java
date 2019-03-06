@@ -42,6 +42,7 @@ public class ResourceLayout
     private TextView lblTitle;
 
     private ViewWatcher viewWatcher;
+    private String font;
 
     public ResourceLayout(Context context, AttributeSet attrs)
     {
@@ -176,7 +177,7 @@ public class ResourceLayout
         TypefaceSpanBuilder.setTypefacedTitle(
             lblTitle,
             statName,
-            Constants.Fonts.CEZANNE.getText(),
+            font,
             Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
         );
 
@@ -248,6 +249,11 @@ public class ResourceLayout
 
             boxContainer.addView(resourceBox);
         }
+    }
+
+    public void setFont(String font)
+    {
+        this.font = font;
     }
 
     public Parcelable onSaveInstanceState()

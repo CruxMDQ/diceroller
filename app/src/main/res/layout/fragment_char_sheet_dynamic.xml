@@ -122,6 +122,14 @@
                 app:statName="@string/label_derived_willpower"
                 app:statValue="5"/>
 
+            <com.callisto.diceroller.views.ResourceLayout
+                android:id="@+id/panelIntegrity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxesHaveMultipleStates="false"
+                app:statName="@string/label_core_integrity"
+                app:statValue="7"/>
+
             <TextView
                 android:id="@+id/labelDerived"
                 android:layout_width="wrap_content"
@@ -140,6 +148,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/panelSkillsPhysical"
                 app:title="@string/label_derived_stats"
+                android:layout_marginBottom="@dimen/margin_huge"
                 />
         </LinearLayout>
 

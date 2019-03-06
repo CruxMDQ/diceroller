@@ -1,8 +1,16 @@
 package com.callisto.diceroller.persistence;
 
+import android.support.v4.content.ContextCompat;
+
+import com.callisto.diceroller.R;
+import com.callisto.diceroller.persistence.objects.Stat;
 import com.callisto.diceroller.persistence.objects.System;
 import com.callisto.diceroller.persistence.objects.Template;
 
+import io.realm.RealmList;
+
+import static com.callisto.diceroller.application.App.getInstance;
+import static com.callisto.diceroller.application.App.getRes;
 import static com.callisto.diceroller.tools.Constants.Fonts;
 import static com.callisto.diceroller.tools.Constants.Systems;
 import static com.callisto.diceroller.tools.Constants.Templates;
@@ -18,14 +26,31 @@ public class BaseDataBuilder
 
     private static void createTemplates()
     {
-        Template kindred = new Template(
-            RealmHelper.getInstance().getLastId(Template.class),
-            Templates.KINDRED.getText(),
-            Fonts.CEZANNE.getText(),
-            RealmHelper.getInstance().get(System.class, Systems.COFD.getText())
-        );
+        RealmHelper realmHelper = RealmHelper.getInstance();
 
-        RealmHelper.getInstance().save(kindred);
+        if (!realmHelper.exists(Template.class, Templates.KINDRED.getText()))
+        {
+            Template kindred = new Template(
+                realmHelper.getLastId(Template.class),
+                Templates.KINDRED.getText(),
+                Fonts.CEZANNE.getText(),
+                realmHelper.get(System.class, Systems.COFD.getText())
+            );
+
+            realmHelper.save(kindred);
+        }
+
+        if (!realmHelper.exists(Template.class, Templates.NOBLE.getText()))
+        {
+            Template noble = new Template(
+                realmHelper.getLastId(Template.class),
+                Templates.NOBLE.getText(),
+                Fonts.ITALIANNO.getText(),
+                realmHelper.get(System.class, Systems.COFD.getText())
+            );
+
+            realmHelper.save(noble);
+        }
     }
 
     private static void createSystems()
@@ -38,447 +63,462 @@ public class BaseDataBuilder
         RealmHelper.getInstance().save(cofd);
     }
 
-//    private static void createStats()
-//    {
-//        int color_power = ContextCompat
-//            .getColor(App.getInstance().getApplicationContext(), R.color.color_red_dark);
-//        int color_finesse = ContextCompat
-//            .getColor(App.getInstance().getApplicationContext(), R.color.color_green_dark);
-//        int color_resistance = ContextCompat
-//            .getColor(App.getInstance().getApplicationContext(), R.color.color_blue_dark);
-//        int color_skill = ContextCompat
-//            .getColor(App.getInstance().getApplicationContext(), R.color.color_purple_dark);
-//
-//        Stat intelligence = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_attr_int),
-//            App.getRes().getString(R.string.stat_category_attr),
-//            App.getRes().getString(R.string.stat_type_mental),
-//            App.getRes().getString(R.string.stat_kind_power),
-//            color_power,
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(intelligence);
-//
-//        Stat wits = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_attr_wits),
-//            App.getRes().getString(R.string.stat_category_attr),
-//            App.getRes().getString(R.string.stat_type_mental),
-//            App.getRes().getString(R.string.stat_kind_finesse),
-//            color_finesse,
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(wits);
-//
-//        Stat resolve = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_attr_res),
-//            App.getRes().getString(R.string.stat_category_attr),
-//            App.getRes().getString(R.string.stat_type_mental),
-//            App.getRes().getString(R.string.stat_kind_resistance),
-//            color_resistance,
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(resolve);
-//
-//        Stat strength = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_attr_str),
-//            App.getRes().getString(R.string.stat_category_attr),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            App.getRes().getString(R.string.stat_kind_power),
-//            color_power,
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(strength);
-//
-//        Stat dexterity = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_attr_dex),
-//            App.getRes().getString(R.string.stat_category_attr),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            App.getRes().getString(R.string.stat_kind_finesse),
-//            color_finesse,
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(dexterity);
-//
-//        Stat stamina = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_attr_sta),
-//            App.getRes().getString(R.string.stat_category_attr),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            App.getRes().getString(R.string.stat_kind_resistance),
-//            color_resistance,
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(stamina);
-//
-//        Stat presence = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_attr_pre),
-//            App.getRes().getString(R.string.stat_category_attr),
-//            App.getRes().getString(R.string.stat_type_social),
-//            App.getRes().getString(R.string.stat_kind_power),
-//            color_power,
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(presence);
-//
-//        Stat manipulation = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_attr_man),
-//            App.getRes().getString(R.string.stat_category_attr),
-//            App.getRes().getString(R.string.stat_type_social),
-//            App.getRes().getString(R.string.stat_kind_finesse),
-//            color_finesse,
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(manipulation);
-//
-//        Stat composure = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_attr_com),
-//            App.getRes().getString(R.string.stat_category_attr),
-//            App.getRes().getString(R.string.stat_type_social),
-//            App.getRes().getString(R.string.stat_kind_resistance),
-//            color_resistance,
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(composure);
-//
-//        Stat academics = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_academics),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_mental),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(academics);
-//
-//        Stat crafts = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_crafts),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_mental),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(crafts);
-//
-//        Stat computer = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_computer),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_mental),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(computer);
-//
-//        Stat investigation = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_investigation),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_mental),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(investigation);
-//
-//        Stat medicine = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_medicine),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_mental),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(medicine);
-//
-//        Stat occult = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_occult),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_mental),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(occult);
-//
-//        Stat politics = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_politics),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_mental),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(politics);
-//
-//        Stat science = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_science),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_mental),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(science);
-//
-//        Stat athletics = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_athletics),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(athletics);
-//
-//        Stat brawl = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_brawl),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(brawl);
-//
-//        Stat drive = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_athletics),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(drive);
-//
-//        Stat firearms = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_guns),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(firearms);
-//
-//        Stat larceny = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_larceny),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(larceny);
-//
-//        Stat stealth = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_stealth),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(stealth);
-//
-//        Stat survival = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_survival),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(survival);
-//
-//        Stat weaponry = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_weaponry),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(weaponry);
-//
-//        Stat animalKen = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_animal_ken),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_social),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(animalKen);
-//
-//        Stat empathy = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_empathy),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(empathy);
-//
-//        Stat expression = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_expression),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(expression);
-//
-//        Stat intimidation = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_intimidation),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(intimidation);
-//
-//        Stat persuasion = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_persuasion),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(persuasion);
-//
-//        Stat socialize = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_socialize),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(socialize);
-//
-//        Stat streetwise = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_streetwise),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(streetwise);
-//
-//        Stat subterfuge = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.skill_subterfuge),
-//            App.getRes().getString(R.string.stat_category_skill),
-//            App.getRes().getString(R.string.stat_type_physical),
-//            color_skill
-//        );
-//
-//        RealmHelper.getInstance().add(subterfuge);
-//
-//        Stat size = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_derived_size),
-//            App.getRes().getString(R.string.stat_category_derived),
-//            5
-//        );
-//
-//        RealmHelper.getInstance().add(size);
-//
-//        Stat defense = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_derived_defense),
-//            App.getRes().getString(R.string.stat_category_derived),
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(defense);
-//
-//        Stat health = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_derived_health),
-//            App.getRes().getString(R.string.stat_category_derived),
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(health);
-//
-//        Stat initiative = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_derived_initiative),
-//            App.getRes().getString(R.string.stat_category_derived),
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(initiative);
-//
-//        Stat speed = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_derived_speed),
-//            App.getRes().getString(R.string.stat_category_derived),
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(speed);
-//
-//        Stat willpower = new Stat(
-//            RealmHelper.getInstance().getLastId(Stat.class),
-//            App.getRes().getString(R.string.label_derived_willpower),
-//            App.getRes().getString(R.string.stat_category_derived),
-//            0
-//        );
-//
-//        RealmHelper.getInstance().add(willpower);
-//
-//        wits.addObserver(defense);
-//
-//        resolve.addObserver(willpower);
-//
-//        strength.addObserver(speed);
-//
-//        dexterity.addObserver(initiative);
-//        dexterity.addObserver(speed);
-//        dexterity.addObserver(defense);
-//
-//        stamina.addObserver(health);
-//
-//        composure.addObserver(initiative);
-//        composure.addObserver(willpower);
-//
-//        defense.addObservedStat(dexterity);
-//        defense.addObservedStat(wits);
-//
-//        health.addObservedStat(size);
-//        health.addObservedStat(stamina);
-//
-//        initiative.addObservedStat(composure);
-//        initiative.addObservedStat(dexterity);
-//
-//        speed.addObservedStat(dexterity);
-//        speed.addObservedStat(strength);
-//
-//        willpower.addObservedStat(composure);
-//        willpower.addObservedStat(resolve);
-//    }
+    public static RealmList<Stat> generateEmptyStatList()
+    {
+        RealmList<Stat> list = new RealmList<>();
+
+        int color_power = ContextCompat
+            .getColor(getInstance().getApplicationContext(), R.color.color_red_dark);
+        int color_finesse = ContextCompat
+            .getColor(getInstance().getApplicationContext(), R.color.color_green_dark);
+        int color_resistance = ContextCompat
+            .getColor(getInstance().getApplicationContext(), R.color.color_blue_dark);
+        int color_skill = ContextCompat
+            .getColor(getInstance().getApplicationContext(), R.color.color_purple_dark);
+
+        RealmHelper realmHelper = RealmHelper.getInstance();
+
+        Stat intelligence = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_attr_int),
+            getRes().getString(R.string.stat_category_attr),
+            getRes().getString(R.string.stat_type_mental),
+            getRes().getString(R.string.stat_kind_power),
+            color_power,
+            0
+        );
+
+        list.add(realmHelper.add(intelligence));
+
+        Stat wits = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_attr_wits),
+            getRes().getString(R.string.stat_category_attr),
+            getRes().getString(R.string.stat_type_mental),
+            getRes().getString(R.string.stat_kind_finesse),
+            color_finesse,
+            0
+        );
+
+        list.add(realmHelper.add(wits));
+
+        Stat resolve = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_attr_res),
+            getRes().getString(R.string.stat_category_attr),
+            getRes().getString(R.string.stat_type_mental),
+            getRes().getString(R.string.stat_kind_resistance),
+            color_resistance,
+            0
+        );
+
+        list.add(realmHelper.add(resolve));
+
+        Stat strength = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_attr_str),
+            getRes().getString(R.string.stat_category_attr),
+            getRes().getString(R.string.stat_type_physical),
+            getRes().getString(R.string.stat_kind_power),
+            color_power,
+            0
+        );
+
+        list.add(realmHelper.add(strength));
+
+        Stat dexterity = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_attr_dex),
+            getRes().getString(R.string.stat_category_attr),
+            getRes().getString(R.string.stat_type_physical),
+            getRes().getString(R.string.stat_kind_finesse),
+            color_finesse,
+            0
+        );
+
+        list.add(realmHelper.add(dexterity));
+
+        Stat stamina = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_attr_sta),
+            getRes().getString(R.string.stat_category_attr),
+            getRes().getString(R.string.stat_type_physical),
+            getRes().getString(R.string.stat_kind_resistance),
+            color_resistance,
+            0
+        );
+
+        list.add(realmHelper.add(stamina));
+
+        Stat presence = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_attr_pre),
+            getRes().getString(R.string.stat_category_attr),
+            getRes().getString(R.string.stat_type_social),
+            getRes().getString(R.string.stat_kind_power),
+            color_power,
+            0
+        );
+
+        list.add(realmHelper.add(presence));
+
+        Stat manipulation = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_attr_man),
+            getRes().getString(R.string.stat_category_attr),
+            getRes().getString(R.string.stat_type_social),
+            getRes().getString(R.string.stat_kind_finesse),
+            color_finesse,
+            0
+        );
+
+        list.add(realmHelper.add(manipulation));
+
+        Stat composure = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_attr_com),
+            getRes().getString(R.string.stat_category_attr),
+            getRes().getString(R.string.stat_type_social),
+            getRes().getString(R.string.stat_kind_resistance),
+            color_resistance,
+            0
+        );
+
+        list.add(realmHelper.add(composure));
+
+        Stat academics = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_academics),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_mental),
+            color_skill
+        );
+
+        list.add(realmHelper.add(academics));
+
+        Stat crafts = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_crafts),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_mental),
+            color_skill
+        );
+
+        list.add(realmHelper.add(crafts));
+
+        Stat computer = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_computer),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_mental),
+            color_skill
+        );
+
+        list.add(realmHelper.add(computer));
+
+        Stat investigation = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_investigation),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_mental),
+            color_skill
+        );
+
+        list.add(realmHelper.add(investigation));
+
+        Stat medicine = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_medicine),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_mental),
+            color_skill
+        );
+
+        list.add(realmHelper.add(medicine));
+
+        Stat occult = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_occult),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_mental),
+            color_skill
+        );
+
+        list.add(realmHelper.add(occult));
+
+        Stat politics = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_politics),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_mental),
+            color_skill
+        );
+
+        list.add(realmHelper.add(politics));
+
+        Stat science = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_science),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_mental),
+            color_skill
+        );
+
+        list.add(realmHelper.add(science));
+
+        Stat athletics = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_athletics),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(athletics));
+
+        Stat brawl = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_brawl),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(brawl));
+
+        Stat drive = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_drive),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(drive));
+
+        Stat firearms = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_guns),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(firearms));
+
+        Stat larceny = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_larceny),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(larceny));
+
+        Stat stealth = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_stealth),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(stealth));
+
+        Stat survival = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_survival),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(survival));
+
+        Stat weaponry = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_weaponry),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(weaponry));
+
+        Stat animalKen = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_animal_ken),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_social),
+            color_skill
+        );
+
+        list.add(realmHelper.add(animalKen));
+
+        Stat empathy = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_empathy),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(empathy));
+
+        Stat expression = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_expression),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(expression));
+
+        Stat intimidation = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_intimidation),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(intimidation));
+
+        Stat persuasion = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_persuasion),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(persuasion));
+
+        Stat socialize = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_socialize),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(socialize));
+
+        Stat streetwise = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_streetwise),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(streetwise));
+
+        Stat subterfuge = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.skill_subterfuge),
+            getRes().getString(R.string.stat_category_skill),
+            getRes().getString(R.string.stat_type_physical),
+            color_skill
+        );
+
+        list.add(realmHelper.add(subterfuge));
+
+        Stat size = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_core_size),
+            getRes().getString(R.string.stat_category_derived),
+            5
+        );
+
+        list.add(realmHelper.add(size));
+
+        Stat defense = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_derived_defense),
+            getRes().getString(R.string.stat_category_derived),
+            0
+        );
+
+        list.add(realmHelper.add(defense));
+
+        Stat health = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_derived_health),
+            getRes().getString(R.string.stat_category_derived),
+            0
+        );
+
+        list.add(realmHelper.add(health));
+
+        Stat initiative = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_derived_initiative),
+            getRes().getString(R.string.stat_category_derived),
+            0
+        );
+
+        list.add(realmHelper.add(initiative));
+
+        Stat speed = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_derived_speed),
+            getRes().getString(R.string.stat_category_derived),
+            0
+        );
+
+        list.add(realmHelper.add(speed));
+
+        Stat willpower = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_derived_willpower),
+            getRes().getString(R.string.stat_category_derived),
+            0
+        );
+
+        list.add(realmHelper.add(willpower));
+
+        Stat integrity = new Stat(
+            realmHelper.getLastId(Stat.class),
+            getRes().getString(R.string.label_core_integrity),
+            getRes().getString(R.string.stat_category_derived),
+            7
+        );
+
+        list.add(realmHelper.add(integrity));
+
+        wits.addObserver(defense);
+
+        resolve.addObserver(willpower);
+
+        strength.addObserver(speed);
+
+        dexterity.addObserver(initiative);
+        dexterity.addObserver(speed);
+        dexterity.addObserver(defense);
+
+        stamina.addObserver(health);
+
+        composure.addObserver(initiative);
+        composure.addObserver(willpower);
+
+        defense.addObservedStat(dexterity);
+        defense.addObservedStat(wits);
+
+        health.addObservedStat(size);
+        health.addObservedStat(stamina);
+
+        initiative.addObservedStat(composure);
+        initiative.addObservedStat(dexterity);
+
+        speed.addObservedStat(dexterity);
+        speed.addObservedStat(strength);
+
+        willpower.addObservedStat(composure);
+        willpower.addObservedStat(resolve);
+
+        return list;
+    }
 }

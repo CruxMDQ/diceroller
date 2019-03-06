@@ -3,7 +3,6 @@ package com.callisto.diceroller.activities;
 import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.CharacterEditorRequestedEvent;
 import com.callisto.diceroller.fragments.BaseFragment;
-import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.viewmanagers.FragmentNavigation;
 import com.callisto.diceroller.viewmanagers.MainActivityNavigation;
 import com.squareup.otto.Subscribe;
@@ -37,7 +36,7 @@ public class MainActivityPresenter
     public void loadCharacterEditor(CharacterEditorRequestedEvent event)
     {
         view.loadCharacterSheet(
-                Constants.Fonts.CEZANNE.getText(),
+                event.getFont(),
                 event.getCharacterName()
         );
     }

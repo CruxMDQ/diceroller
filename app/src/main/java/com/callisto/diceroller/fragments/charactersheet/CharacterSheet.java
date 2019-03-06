@@ -9,6 +9,6 @@ public interface CharacterSheet
     interface View {
         void showResults(ArrayList<Integer> rolls, int successes, boolean isExtended);
         void setStatPanelColor(Stat stat);
-        void addSelectedStatToPanel(Stat stat);
+        void addOrRemoveStatFromPanel(Stat stat);
     }
 }

@@ -101,8 +101,6 @@ public class StatBox
             }
             return true;
         });
-
-//        subscribeToEvents();
     }
 
     public void performValueChange(int statValue)
@@ -164,24 +162,55 @@ public class StatBox
         lblStat.setText(statName);
     }
 
-    private void toggleSelected(Context context)
+    public void setSelectedForDicePool(Context context, boolean isSelected)
+    {
+        this.isSelected = isSelected;
+
+        toggleSelectedAppearance(context, isSelected);
+
+        performViewRefresh();
+
+        postDicePoolChange();
+    }
+
+    private void toggleSelectedAppearance(Context context, boolean isSelected)
     {
         if (isSelected)
-        {
-            setBackgroundColor(ContextCompat.getColor(context, R.color.color_light_gray));
-            lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_black));
-            lblStat.setTypeface(Typeface.DEFAULT);
-
-            isSelected = false;
-        }
-        else
         {
             setBackgroundColor(colorSelected);
             lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_white));
             lblStat.setTypeface(Typeface.DEFAULT_BOLD);
-
-            isSelected = true;
         }
+        else
+        {
+            setBackgroundColor(ContextCompat.getColor(context, R.color.color_light_gray));
+            lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_black));
+            lblStat.setTypeface(Typeface.DEFAULT);
+        }
+    }
+
+    private void toggleSelected(Context context)
+    {
+        isSelected = !isSelected;
+
+        toggleSelectedAppearance(context, isSelected);
+
+//        if (isSelected)
+//        {
+//            setBackgroundColor(ContextCompat.getColor(context, R.color.color_light_gray));
+//            lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_black));
+//            lblStat.setTypeface(Typeface.DEFAULT);
+//
+//            isSelected = false;
+//        }
+//        else
+//        {
+//            setBackgroundColor(colorSelected);
+//            lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_white));
+//            lblStat.setTypeface(Typeface.DEFAULT_BOLD);
+//
+//            isSelected = true;
+//        }
 
         performViewRefresh();
 
@@ -232,7 +261,6 @@ public class StatBox
     {
        try
         {
-//            if (event.name.equals(statBoxName))
             if (event.statId == statId)
             {
                 Log.d("Stat box", "DerivedStatUpdatedEvent captured, event statId = " + event.statId + ", container statId = " + statId);

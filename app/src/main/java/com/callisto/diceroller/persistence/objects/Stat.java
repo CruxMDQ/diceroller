@@ -14,31 +14,17 @@ public class Stat
 
     private int color, value;
 
-    private RealmList<String> watchers;
-    private RealmList<String> watched;
-
     private RealmList<Stat> observers;
     private RealmList<Stat> observed;
 
-    public static Stat newInstance()
-    {
-        return new Stat();
-    }
-
     public Stat()
     {
-        this.watchers = new RealmList<>();
-        this.watched = new RealmList<>();
-
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
     }
 
     public Stat(String name, String category, int value)
     {
-        this.watchers = new RealmList<>();
-        this.watched = new RealmList<>();
-
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
@@ -49,9 +35,6 @@ public class Stat
 
     public Stat(long id, String name, String category, int value)
     {
-        this.watchers = new RealmList<>();
-        this.watched = new RealmList<>();
-
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
@@ -63,9 +46,6 @@ public class Stat
 
     public Stat(String name, String category, String type, int color)
     {
-        this.watchers = new RealmList<>();
-        this.watched = new RealmList<>();
-
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
@@ -77,9 +57,6 @@ public class Stat
 
     public Stat(long id, String name, String category, String type, int color)
     {
-        this.watchers = new RealmList<>();
-        this.watched = new RealmList<>();
-
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
@@ -92,9 +69,6 @@ public class Stat
 
     public Stat(String name, String category, String type, String kind, int color)
     {
-        this.watchers = new RealmList<>();
-        this.watched = new RealmList<>();
-
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
@@ -107,9 +81,6 @@ public class Stat
 
     public Stat(String name, String category, String type, String kind, int color, int value)
     {
-        this.watchers = new RealmList<>();
-        this.watched = new RealmList<>();
-
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
@@ -123,9 +94,6 @@ public class Stat
 
     public Stat(long id, String name, String category, String type, String kind, int color, int value)
     {
-        this.watchers = new RealmList<>();
-        this.watched = new RealmList<>();
-
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
@@ -247,17 +215,6 @@ public class Stat
         this.id = id;
     }
 
-    public void addWatcher(String watcher)
-    {
-        watchers.add(watcher);
-    }
-
-    public void addWatchedStat(String watchedStat)
-    {
-        watched.add(watchedStat);
-
-    }
-
     public void addObserver(Stat observer)
     {
         observers.add(observer);
@@ -277,15 +234,5 @@ public class Stat
     public RealmList<Stat> getObservedStats()
     {
         return observed;
-    }
-
-    public RealmList<String> getWatchedStats()
-    {
-        return watched;
-    }
-
-    public RealmList<String> getWatchers()
-    {
-        return watchers;
     }
 }

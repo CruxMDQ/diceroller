@@ -89,12 +89,12 @@ public class RealmHelper
         return realmObject != null;
     }
 
-    public <T extends RealmObject> long add(T item)
+    public <T extends RealmObject> T add(T item)
     {
         realm.beginTransaction();
         realm.copyToRealm(item);
         realm.commitTransaction();
-        return 0;
+        return item;
     }
 
     public <T extends RealmObject> long save(T item)

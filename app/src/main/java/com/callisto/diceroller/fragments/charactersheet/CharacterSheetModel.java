@@ -9,11 +9,11 @@ import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.DerivedStatUpdatedEvent;
 import com.callisto.diceroller.bus.events.StatChangedEvent;
 import com.callisto.diceroller.model.DiceRoller;
+import com.callisto.diceroller.persistence.BaseDataBuilder;
 import com.callisto.diceroller.persistence.RealmHelper;
 import com.callisto.diceroller.persistence.objects.Character;
 import com.callisto.diceroller.persistence.objects.Stat;
 import com.callisto.diceroller.tools.Constants;
-import com.callisto.diceroller.persistence.XMLParser;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class CharacterSheetModel
 
         if (activeCharacter == null)
         {
-            RealmList<Stat> statistics = XMLParser.parseStats();
+            RealmList<Stat> statistics = BaseDataBuilder.generateEmptyStatList();
 
             activeCharacter = new Character(characterName, statistics);
 
