@@ -193,6 +193,10 @@ public class CharacterListFragment
                     Toast.LENGTH_SHORT).show();
 
                 template[0] = selectedItem;
+
+                templateAdapter.clearSelection();
+
+                templateAdapter.addSelection(position);
             }
 
             @Override

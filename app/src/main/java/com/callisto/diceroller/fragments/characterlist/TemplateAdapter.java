@@ -13,6 +13,7 @@ import com.callisto.diceroller.persistence.objects.Template;
 import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.tools.TypefaceSpanBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TemplateAdapter
@@ -20,8 +21,12 @@ public class TemplateAdapter
 {
     private List<Template> templates;
 
+    private List<Integer> selectedIndexes;
+
     TemplateAdapter()
     {
+        selectedIndexes = new ArrayList<>();
+
         // TODO Implement filtering by game system
         this.templates = RealmHelper.getInstance().getList(Template.class);
     }
@@ -70,5 +75,34 @@ public class TemplateAdapter
         }
 
         return convertView;
+    }
+
+    @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent)
+    {
+        View v;
+
+        if (selectedIndexes.contains(position))
+        {
+            TextView tv = new TextView(App.getInstance().getApplicationContext());
+            tv.setVisibility(View.GONE);
+            v = tv;
+        }
+        else
+        {
+            v = super.getDropDownView(position, null, parent);
+        }
+
+        return v;
+    }
+
+    public void addSelection(int index)
+    {
+        selectedIndexes.add(index);
+    }
+
+    public void clearSelection()
+    {
+        selectedIndexes.clear();
     }
 }
