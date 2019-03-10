@@ -40,7 +40,7 @@
     <string name="skill_athletics">Athletics</string>
     <string name="skill_brawl">Brawl</string>
     <string name="skill_drive">Drive</string>
-    <string name="skill_guns">Firearms</string>
+    <string name="skill_firearms">Firearms</string>
     <string name="skill_larceny">Larceny</string>
     <string name="skill_stealth">Stealth</string>
     <string name="skill_survival">Survival</string>
@@ -104,6 +104,16 @@
     <string name="label_create">Create</string>
     <string name="label_template">Template:</string>
 
-    <string name="stat_kindred_blood_potency">Blood Potency</string>
-    <string name="stat_kindred_vitae">Vitae</string>
+    <string name="label_template_traits">Template traits</string>
+
+    <string name="label_advantage">Advantage</string>
+    <string name="label_advantage_blood_potency">Blood Potency</string>
+    <string name="label_advantage_inner_light">Inner Light</string>
+    <string name="label_resource">Resource</string>
+    <string name="label_resource_vitae">Vitae</string>
+    <string name="label_resource_wisp">Wisps</string>
+    <string name="label_morality">Morality</string>
+    <string name="label_morality_humanity">Humanity</string>
+    <string name="label_morality_belief">Belief</string>
+
 </resources>

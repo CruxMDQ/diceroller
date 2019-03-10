@@ -9,6 +9,8 @@ import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
+import io.realm.RealmList;
+
 public class CharacterSheetPresenter
 {
     private final CharacterSheet.View view;
@@ -105,5 +107,50 @@ public class CharacterSheetPresenter
     @Subscribe void performPersistence(PersistCharacterEvent event)
     {
         model.persistChanges();
+    }
+
+    RealmList<Stat> getAdvantages()
+    {
+        return model.getAdvantages();
+    }
+
+    RealmList<Stat> getResources()
+    {
+        return model.getResources();
+    }
+
+    Stat getMorality()
+    {
+        return model.getMorality();
+    }
+
+    RealmList<Stat> getMentalAttributes()
+    {
+        return model.getMentalAttributes();
+    }
+
+    RealmList<Stat> getPhysicalAttributes()
+    {
+        return model.getPhysicalAttributes();
+    }
+
+    RealmList<Stat> getSocialAttributes()
+    {
+        return model.getSocialAttributes();
+    }
+
+    RealmList<Stat> getMentalSkills()
+    {
+        return model.getMentalSkills();
+    }
+
+    RealmList<Stat> getPhysicalSkills()
+    {
+        return model.getPhysicalSkills();
+    }
+
+    RealmList<Stat> getSocialSkills()
+    {
+        return model.getSocialSkills();
     }
 }

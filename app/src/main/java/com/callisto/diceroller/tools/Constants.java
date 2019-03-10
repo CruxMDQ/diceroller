@@ -108,22 +108,50 @@ public class Constants
         }
     }
 
-    public enum XmlTags
+    public enum Classes
     {
-        TAG_STAT_ID("id"),
-        TAG_STAT_SINGLE("stat"),
-        TAG_STAT_FIELD_NAME("name"),
-        TAG_STAT_FIELD_CATEGORY("category"),
-        TAG_STAT_FIELD_TYPE("type"),
-        TAG_STAT_FIELD_KIND("kind"),
-        TAG_STAT_FIELD_COLOR("color"),
-        TAG_STAT_FIELD_VALUE("value"),
-        TAG_STAT_FIELD_OBSERVER("observer"),
-        TAG_STAT_FIELD_OBSERVES("observes");
+        CHARACTER("Character"),
+        STAT("Stat"),
+        SYSTEM("System"),
+        TEMPLATE("Template");
 
         private String text;
 
-        XmlTags(String text)
+        Classes(String text)
+        {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+    }
+
+    public enum Fields
+    {
+//        TAG_STAT_SINGLE("stat"),
+//        TAG_STAT_FIELD_CATEGORY("category"),
+//        TAG_STAT_FIELD_TYPE("type"),
+//        TAG_STAT_FIELD_KIND("kind"),
+//        TAG_STAT_FIELD_COLOR("color"),
+//        TAG_STAT_FIELD_VALUE("value"),
+//        TAG_STAT_FIELD_OBSERVER("observer"),
+//        TAG_STAT_FIELD_OBSERVES("observes"),
+        ID("id"),
+        NAME("name"),
+        SYSTEM("system"),
+        TEMPLATE("template"),
+        FONT("font"),
+        ADVANTAGES("advantages"),
+        RESOURCES("resources"),
+        KEYWORDS("keywords"),
+        TRAITS("traits"),
+        TEMPORARYVALUE("temporaryValue");
+
+        private String text;
+
+        Fields(String text)
         {
             this.text = text;
         }

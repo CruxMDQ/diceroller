@@ -101,6 +101,23 @@
                 app:title="@string/label_skills_social"
                 />
 
+            <TextView
+                android:id="@+id/labelTemplateTraits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/label_template_traits"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/panelSkillsSocial"
+                />
+
+            <LinearLayout
+                android:id="@+id/panelTemplateTraits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
             <!-- Health = Stamina + Size -->
             <!-- - Must account for bashing, lethal and aggravated damage -->
             <!-- - Has both a temporary and a permanent score -->
@@ -122,13 +139,13 @@
                 app:statName="@string/label_derived_willpower"
                 app:statValue="5"/>
 
-            <com.callisto.diceroller.views.ResourceLayout
-                android:id="@+id/panelIntegrity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxesHaveMultipleStates="false"
-                app:statName="@string/label_core_integrity"
-                app:statValue="7"/>
+            <!--<com.callisto.diceroller.views.ResourceLayout-->
+                <!--android:id="@+id/panelIntegrity"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:boxesHaveMultipleStates="false"-->
+                <!--app:statName="@string/label_core_integrity"-->
+                <!--app:statValue="7"/>-->
 
             <TextView
                 android:id="@+id/labelDerived"

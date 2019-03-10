@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,8 +57,8 @@ public class CharacterSheetFragment
 
     private ResourceLayout
         resourcePanelHealth,
-        resourcePanelWillpower,
-        resourcePanelIntegrity;
+        resourcePanelWillpower;
+//        resourcePanelIntegrity;
 
     private TextView
         labelCharacterBio,
@@ -72,6 +73,8 @@ public class CharacterSheetFragment
     private ArrayList<StatLayout> statContainers;
 
     private ArrayList<RefreshingView> refreshingViews;
+
+    private LinearLayout panelTemplateTraits;
 
     @Override
     public void onResume()
@@ -146,77 +149,25 @@ public class CharacterSheetFragment
         refreshingViews.add(resourcePanelWillpower);
         refreshingViews.add(panelStatsDerived);
 
-        panelAttributesMental.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_attr_int)));
-        panelAttributesMental.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_attr_wits)));
-        panelAttributesMental.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_attr_res)));
+        panelAttributesMental.addSelectableStats(
+            presenter.getMentalAttributes()
+        );
+        panelAttributesPhysical.addSelectableStats(
+            presenter.getPhysicalAttributes()
+        );
+        panelAttributesSocial.addSelectableStats(
+            presenter.getSocialAttributes()
+        );
 
-        panelAttributesPhysical.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_attr_str)));
-        panelAttributesPhysical.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_attr_dex)));
-        panelAttributesPhysical.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_attr_sta)));
-
-        panelAttributesSocial.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_attr_pre)));
-        panelAttributesSocial.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_attr_man)));
-        panelAttributesSocial.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_attr_com)));
-
-        panelSkillsMental.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_academics)));
-        panelSkillsMental.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_computer)));
-        panelSkillsMental.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_crafts)));
-        panelSkillsMental.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_investigation)));
-        panelSkillsMental.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_medicine)));
-        panelSkillsMental.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_occult)));
-        panelSkillsMental.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_politics)));
-        panelSkillsMental.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_science)));
-
-        panelSkillsPhysical.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_athletics)));
-        panelSkillsPhysical.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_brawl)));
-        panelSkillsPhysical.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_drive)));
-        panelSkillsPhysical.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_guns)));
-        panelSkillsPhysical.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_larceny)));
-        panelSkillsPhysical.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_stealth)));
-        panelSkillsPhysical.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_survival)));
-        panelSkillsPhysical.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_weaponry)));
-
-        panelSkillsSocial.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_animal_ken)));
-        panelSkillsSocial.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_empathy)));
-        panelSkillsSocial.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_expression)));
-        panelSkillsSocial.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_intimidation)));
-        panelSkillsSocial.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_persuasion)));
-        panelSkillsSocial.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_socialize)));
-        panelSkillsSocial.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_streetwise)));
-        panelSkillsSocial.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.skill_subterfuge)));
+        panelSkillsMental.addSelectableStats(
+            presenter.getMentalSkills()
+        );
+        panelSkillsPhysical.addSelectableStats(
+            presenter.getPhysicalSkills()
+        );
+        panelSkillsSocial.addSelectableStats(
+            presenter.getSocialSkills()
+        );
 
         panelStatsDerived.addSelectableStat(
             presenter.getStatByName(App.getRes().getString(R.string.label_core_size)));
@@ -229,14 +180,42 @@ public class CharacterSheetFragment
 
         resourcePanelHealth.setFont(font);
         resourcePanelWillpower.setFont(font);
-        resourcePanelIntegrity.setFont(font);
+//        resourcePanelIntegrity.setFont(font);
 
         resourcePanelHealth.setStat(
             presenter.getStatByName(App.getRes().getString(R.string.label_derived_health)));
         resourcePanelWillpower.setStat(
             presenter.getStatByName(App.getRes().getString(R.string.label_derived_willpower)));
-        resourcePanelIntegrity.setStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_core_integrity)));
+//        resourcePanelIntegrity.setStat(
+//            presenter.getStatByName(App.getRes().getString(R.string.label_core_integrity)));
+
+        for (Stat advantage : presenter.getAdvantages())
+        {
+            ResourceLayout resourceLayout = new ResourceLayout(getContext(), font, false);
+
+            panelTemplateTraits.addView(resourceLayout);
+
+            resourceLayout.setStat(advantage);
+        }
+
+        for (Stat resource : presenter.getResources())
+        {
+            ResourceLayout resourceLayout = new ResourceLayout(getContext(), font, false);
+
+            panelTemplateTraits.addView(resourceLayout);
+
+            resourceLayout.setStat(resource);
+        }
+
+        Stat integrity = presenter.getMorality();
+        if (integrity != null)
+        {
+            ResourceLayout resourceLayout = new ResourceLayout(getContext(), font, false);
+
+            panelTemplateTraits.addView(resourceLayout);
+
+            resourceLayout.setStat(integrity);
+        }
     }
 
     @Override
@@ -267,7 +246,9 @@ public class CharacterSheetFragment
 
         resourcePanelHealth = rootView.findViewById(R.id.panelHealth);
         resourcePanelWillpower = rootView.findViewById(R.id.panelWillpower);
-        resourcePanelIntegrity = rootView.findViewById(R.id.panelIntegrity);
+//        resourcePanelIntegrity = rootView.findViewById(R.id.panelIntegrity);
+
+        panelTemplateTraits = rootView.findViewById(R.id.panelTemplateTraits);
 
         setUpFAB();
     }

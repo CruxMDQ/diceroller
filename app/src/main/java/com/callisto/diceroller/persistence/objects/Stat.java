@@ -10,27 +10,34 @@ public class Stat
     @PrimaryKey
     private long id;
 
-    private String name, category, type, kind;
+    private String name;
+    private String category;
 
     private int color, value;
+    private int temporaryValue = 0;
 
     private RealmList<Stat> observers;
     private RealmList<Stat> observed;
+    
+    private RealmList<String> keywords;
 
     public Stat()
     {
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
+        
+        this.keywords = new RealmList<>();
     }
 
-    public Stat(String name, String category, int value)
+    public Stat(long id, String name)
     {
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
+        this.keywords = new RealmList<>();
+
+        this.id = id;
         this.name = name;
-        this.category = category;
-        this.value = value;
     }
 
     public Stat(long id, String name, String category, int value)
@@ -38,70 +45,24 @@ public class Stat
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
+        this.keywords = new RealmList<>();
+
         this.id = id;
         this.name = name;
         this.category = category;
         this.value = value;
     }
 
-    public Stat(String name, String category, String type, int color)
+
+    public Stat(long lastId, String name, int color, int value)
     {
         this.observers = new RealmList<>();
         this.observed = new RealmList<>();
 
+        this.keywords = new RealmList<>();
+
+        this.id = lastId;
         this.name = name;
-        this.category = category;
-        this.type = type;
-        this.color = color;
-    }
-
-    public Stat(long id, String name, String category, String type, int color)
-    {
-        this.observers = new RealmList<>();
-        this.observed = new RealmList<>();
-
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.type = type;
-        this.color = color;
-    }
-
-    public Stat(String name, String category, String type, String kind, int color)
-    {
-        this.observers = new RealmList<>();
-        this.observed = new RealmList<>();
-
-        this.name = name;
-        this.category = category;
-        this.type = type;
-        this.kind = kind;
-        this.color = color;
-    }
-
-    public Stat(String name, String category, String type, String kind, int color, int value)
-    {
-        this.observers = new RealmList<>();
-        this.observed = new RealmList<>();
-
-        this.name = name;
-        this.category = category;
-        this.type = type;
-        this.kind = kind;
-        this.color = color;
-        this.value = value;
-    }
-
-    public Stat(long id, String name, String category, String type, String kind, int color, int value)
-    {
-        this.observers = new RealmList<>();
-        this.observed = new RealmList<>();
-
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.type = type;
-        this.kind = kind;
         this.color = color;
         this.value = value;
     }
@@ -136,42 +97,6 @@ public class Stat
     public Stat setName(String name)
     {
         this.name = name;
-
-        return this;
-    }
-
-    public String getCategory()
-    {
-        return category;
-    }
-
-    public Stat setCategory(String category)
-    {
-        this.category = category;
-
-        return this;
-    }
-
-    public String getType()
-    {
-        return type;
-    }
-
-    public Stat setType(String type)
-    {
-        this.type = type;
-
-        return this;
-    }
-
-    public String getKind()
-    {
-        return kind;
-    }
-
-    public Stat setKind(String kind)
-    {
-        this.kind = kind;
 
         return this;
     }
@@ -234,5 +159,27 @@ public class Stat
     public RealmList<Stat> getObservedStats()
     {
         return observed;
+    }
+
+    public RealmList<String> getKeywords()
+    {
+        return keywords;
+    }
+    
+    public Stat addKeyword(String keyword)
+    {
+        keywords.add(keyword);
+
+        return this;
+    }
+
+    public int getTemporaryValue()
+    {
+        return temporaryValue;
+    }
+
+    public void setTemporaryValue(int temporaryValue)
+    {
+        this.temporaryValue = temporaryValue;
     }
 }

@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
+import io.realm.RealmList;
+
 public class StatLayout
     extends UnfoldingLayout
     implements RefreshingView
@@ -230,6 +232,14 @@ public class StatLayout
         addContainedStat(stat);
         performViewRefresh();
         toggleStatPanel(GONE, false);
+    }
+
+    public void addSelectableStats(RealmList<Stat> stats)
+    {
+        for (Stat stat : stats)
+        {
+            addSelectableStat(stat);
+        }
     }
 
     public void performViewRefresh()

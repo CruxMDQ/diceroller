@@ -9,7 +9,7 @@ import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.DerivedStatUpdatedEvent;
 import com.callisto.diceroller.bus.events.StatChangedEvent;
 import com.callisto.diceroller.model.DiceRoller;
-import com.callisto.diceroller.persistence.BaseDataBuilder;
+import com.callisto.diceroller.model.RulesBuilder;
 import com.callisto.diceroller.persistence.RealmHelper;
 import com.callisto.diceroller.persistence.objects.Character;
 import com.callisto.diceroller.persistence.objects.Stat;
@@ -19,6 +19,8 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 
 import io.realm.RealmList;
+
+import static com.callisto.diceroller.application.App.getRes;
 
 public class CharacterSheetModel
 {
@@ -46,7 +48,7 @@ public class CharacterSheetModel
 
         if (activeCharacter == null)
         {
-            RealmList<Stat> statistics = BaseDataBuilder.generateEmptyStatList();
+            RealmList<Stat> statistics = RulesBuilder.generateEmptyStatList();
 
             activeCharacter = new Character(characterName, statistics);
 
@@ -265,5 +267,119 @@ public class CharacterSheetModel
             Log.e(this.getClass().getName(), "Null tag!");
         }
         return null;
+    }
+
+    private RealmList<Stat> getStatsByKeywords(RealmList<String> params)
+    {
+        RealmList<Stat> result = new RealmList<>();
+
+        try
+        {
+            for (Stat stat : activeCharacter.getStats())
+            {
+                RealmList<String> keywords = stat.getKeywords();
+
+                if (keywords.size() > 0)
+                {
+                    if (keywords.containsAll(params))
+                    {
+                        result.add(stat);
+                    }
+                }
+            }
+        }
+        catch (NullPointerException npe)
+        {
+            Log.e(this.getClass().getName(), "Null tag!");
+        }
+
+        return result;
+    }
+
+    RealmList<Stat> getAdvantages()
+    {
+        RealmList<String> params = new RealmList<>();
+
+        params.add(getRes().getString(R.string.label_advantage));
+
+        return getStatsByKeywords(params);
+    }
+
+    RealmList<Stat> getResources()
+    {
+        RealmList<String> params = new RealmList<>();
+
+        params.add(getRes().getString(R.string.label_resource));
+
+        return getStatsByKeywords(params);
+    }
+
+    RealmList<Stat> getMentalAttributes()
+    {
+        RealmList<String> params = new RealmList<>();
+
+        params.add(getRes().getString(R.string.stat_category_attr));
+        params.add(getRes().getString(R.string.stat_type_mental));
+
+        return getStatsByKeywords(params);
+    }
+
+    RealmList<Stat> getPhysicalAttributes()
+    {
+        RealmList<String> params = new RealmList<>();
+
+        params.add(getRes().getString(R.string.stat_category_attr));
+        params.add(getRes().getString(R.string.stat_type_physical));
+
+        return getStatsByKeywords(params);
+    }
+
+    RealmList<Stat> getSocialAttributes()
+    {
+        RealmList<String> params = new RealmList<>();
+
+        params.add(getRes().getString(R.string.stat_category_attr));
+        params.add(getRes().getString(R.string.stat_type_social));
+
+        return getStatsByKeywords(params);
+    }
+
+    RealmList<Stat> getMentalSkills()
+    {
+        RealmList<String> params = new RealmList<>();
+
+        params.add(getRes().getString(R.string.stat_category_skill));
+        params.add(getRes().getString(R.string.stat_type_mental));
+
+        return getStatsByKeywords(params);
+    }
+
+    RealmList<Stat> getPhysicalSkills()
+    {
+        RealmList<String> params = new RealmList<>();
+
+        params.add(getRes().getString(R.string.stat_category_skill));
+        params.add(getRes().getString(R.string.stat_type_physical));
+
+        return getStatsByKeywords(params);
+    }
+
+    RealmList<Stat> getSocialSkills()
+    {
+        RealmList<String> params = new RealmList<>();
+
+        params.add(getRes().getString(R.string.stat_category_skill));
+        params.add(getRes().getString(R.string.stat_type_social));
+
+        return getStatsByKeywords(params);
+    }
+
+    Stat getMorality()
+    {
+        RealmList<String> params = new RealmList<>();
+
+        params.add(getRes().getString(R.string.label_morality));
+
+        return getStatsByKeywords(params).first();
     }
 }

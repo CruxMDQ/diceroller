@@ -1,5 +1,6 @@
 package com.callisto.diceroller.persistence.objects;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -9,13 +10,17 @@ public class Template extends RealmObject
     private String name;
     private String font;
     private System system;
+    private RealmList<Stat> traits;
 
     public Template()
     {
+        this.traits = new RealmList<>();
     }
 
     public Template(long id, String name, String font, System system)
     {
+        this.traits = new RealmList<>();
+
         this.id = id;
         this.name = name;
         this.font = font;
@@ -60,5 +65,15 @@ public class Template extends RealmObject
     public void setSystem(System system)
     {
         this.system = system;
+    }
+
+    public void addTrait(Stat trait)
+    {
+        traits.add(trait);
+    }
+
+    public RealmList<Stat> getTraits()
+    {
+        return traits;
     }
 }

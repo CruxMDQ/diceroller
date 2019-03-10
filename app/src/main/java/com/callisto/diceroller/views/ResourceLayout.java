@@ -58,14 +58,38 @@ public class ResourceLayout
 
         args.recycle();
 
-        setOrientation(LinearLayout.VERTICAL);
-        setGravity(Gravity.CENTER);
+        performInflation();
+
+//        subscribeToEvents();
+    }
+
+    public ResourceLayout(Context context, String font, Boolean boxesHaveMultipleStates)
+    {
+        super(context);
+        this.boxesHaveMultipleStates = boxesHaveMultipleStates;
+        this.font = font;
+        this.setId(View.generateViewId());
+        this.subscribeToEvents();
+        performInflation();
+
+        this.isOpen = false;
+    }
+
+    public ResourceLayout(Context context)
+    {
+        super(context);
+
+        performInflation();
+    }
+
+    private void performInflation()
+    {
+        setOrientation(LinearLayout.HORIZONTAL);
+        setGravity(Gravity.CENTER_VERTICAL);
 
         inflateLayout();
 
         resolveViews();
-
-//        subscribeToEvents();
     }
 
     private void resolveViews()

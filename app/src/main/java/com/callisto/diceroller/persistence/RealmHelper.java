@@ -45,7 +45,7 @@ public class RealmHelper
 //            .build();
 
         config = new RealmConfiguration.Builder()
-            .schemaVersion(3)
+            .schemaVersion(8)
             .migration(new CofdMigration())
             .build();
 
@@ -59,7 +59,7 @@ public class RealmHelper
 
     public <T extends RealmObject> T get(Class<T> klass, long id)
     {
-        T first = realm.where(klass).equalTo(Constants.XmlTags.TAG_STAT_ID.getText(), id)
+        T first = realm.where(klass).equalTo(Constants.Fields.ID.getText(), id)
             .findFirst();
 
         return first;
@@ -69,7 +69,7 @@ public class RealmHelper
     {
         RealmQuery<T> query = realm.where(klass);
 
-        T first = query.equalTo(Constants.XmlTags.TAG_STAT_FIELD_NAME.getText(), name)
+        T first = query.equalTo(Constants.Fields.NAME.getText(), name)
             .findFirst();
 
         return first;
