@@ -38,6 +38,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
+import static com.callisto.diceroller.tools.Constants.Derived.DEFENSE;
+import static com.callisto.diceroller.tools.Constants.Derived.HEALTH;
+import static com.callisto.diceroller.tools.Constants.Derived.INITIATIVE;
+import static com.callisto.diceroller.tools.Constants.Derived.SIZE;
+import static com.callisto.diceroller.tools.Constants.Derived.SPEED;
+import static com.callisto.diceroller.tools.Constants.Derived.WILLPOWER;
+
 public class CharacterSheetFragment
     extends BaseFragment
     implements CharacterSheet.View,
@@ -170,22 +177,22 @@ public class CharacterSheetFragment
         );
 
         panelStatsDerived.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_core_size)));
+            presenter.getStatByName(SIZE.getText()));
         panelStatsDerived.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_derived_defense)));
+            presenter.getStatByName(DEFENSE.getText()));
         panelStatsDerived.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_derived_initiative)));
+            presenter.getStatByName(INITIATIVE.getText()));
         panelStatsDerived.addSelectableStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_derived_speed)));
+            presenter.getStatByName(SPEED.getText()));
 
         resourcePanelHealth.setFont(font);
         resourcePanelWillpower.setFont(font);
 //        resourcePanelIntegrity.setFont(font);
 
         resourcePanelHealth.setStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_derived_health)));
+            presenter.getStatByName(HEALTH.getText()));
         resourcePanelWillpower.setStat(
-            presenter.getStatByName(App.getRes().getString(R.string.label_derived_willpower)));
+            presenter.getStatByName(WILLPOWER.getText()));
 //        resourcePanelIntegrity.setStat(
 //            presenter.getStatByName(App.getRes().getString(R.string.label_core_integrity)));
 
@@ -292,28 +299,28 @@ public class CharacterSheetFragment
     {
         TypefaceSpanBuilder.setTypefacedTitle(
             labelCharacterBio,
-            App.getRes().getString(R.string.label_character_bio),
+            App.getRes().getString(R.string.title_character_bio),
             font,
             Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
         );
 
         TypefaceSpanBuilder.setTypefacedTitle(
             labelAttributes,
-            App.getRes().getString(R.string.label_attributes),
+            App.getRes().getString(R.string.title_attributes),
             font,
             Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
         );
 
         TypefaceSpanBuilder.setTypefacedTitle(
             labelSkills,
-            App.getRes().getString(R.string.label_skills),
+            App.getRes().getString(R.string.title_skills),
             font,
             Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
         );
 
         TypefaceSpanBuilder.setTypefacedTitle(
             labelDerived,
-            App.getRes().getString(R.string.label_derived_stats),
+            App.getRes().getString(R.string.title_derived_stats),
             font,
             Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
         );

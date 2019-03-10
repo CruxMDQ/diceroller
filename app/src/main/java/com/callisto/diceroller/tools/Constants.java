@@ -128,30 +128,195 @@ public class Constants
         }
     }
 
+    public enum Keywords
+    {
+        ATTRIBUTE("Attribute"),
+        SKILL("Skill"),
+        DERIVED("Derived"),
+        MENTAL("Mental"),
+        PHYSICAL("Physical"),
+        SOCIAL("Social"),
+        POWER("Power"),
+        FINESSE("Finesse"),
+        RESISTANCE("Resistance"),
+        MORALITY("Morality"),
+        ADVANTAGE("Advantage"),
+        RESOURCE("Resource");
+
+        private String text;
+
+        Keywords(String text)
+        {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+    }
+
+    public enum Moralities
+    {
+        HUMANITY("Humanity"),
+        BELIEF("Belief");
+
+        private String text;
+
+        Moralities(String text)
+        {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+    }
+
+    public enum Resources
+    {
+        VITAE("Vitae"),
+        WISPS("Wisps");
+
+        private String text;
+
+        Resources(String text)
+        {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+    }
+
+    public enum Advantages
+    {
+        BLOODPOTENCY("Blood Potency"),
+        INNERLIGHT("Inner Light");
+
+        private String text;
+
+        Advantages(String text)
+        {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+    }
+    
+    public enum Derived
+    {
+        DEFENSE("Defense"),
+        HEALTH("Health"),
+        INITIATIVE("Initiative"),
+        SIZE("Size"),
+        SPEED("Speed"),
+        WILLPOWER("Willpower");
+
+        private String text;
+
+        Derived(String text)
+        {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+
+    }
+
     public enum Fields
     {
-//        TAG_STAT_SINGLE("stat"),
-//        TAG_STAT_FIELD_CATEGORY("category"),
-//        TAG_STAT_FIELD_TYPE("type"),
-//        TAG_STAT_FIELD_KIND("kind"),
-//        TAG_STAT_FIELD_COLOR("color"),
-//        TAG_STAT_FIELD_VALUE("value"),
-//        TAG_STAT_FIELD_OBSERVER("observer"),
-//        TAG_STAT_FIELD_OBSERVES("observes"),
         ID("id"),
-        NAME("name"),
-        SYSTEM("system"),
-        TEMPLATE("template"),
-        FONT("font"),
         ADVANTAGES("advantages"),
-        RESOURCES("resources"),
+        FONT("font"),
         KEYWORDS("keywords"),
+        NAME("name"),
+        TEMPLATE("template"),
+        RESOURCES("resources"),
+        SYSTEM("system"),
         TRAITS("traits"),
         TEMPORARYVALUE("temporaryValue");
 
         private String text;
 
         Fields(String text)
+        {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+    }
+
+    public enum Attributes
+    {
+        INTELLIGENCE("Intelligence"),
+        WITS("Wits"),
+        RESOLVE("Resolve"),
+        STRENGTH("Strength"),
+        DEXTERITY("Dexterity"),
+        STAMINA("Stamina"),
+        PRESENCE("Presence"),
+        MANIPULATION("Manipulation"),
+        COMPOSURE("Composure");
+
+        private String text;
+
+        Attributes(String text)
+        {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+    }
+
+    public enum Skills
+    {
+        // Mental
+        ACADEMICS("Academics"),
+        CRAFTS("Crafts"),
+        COMPUTER("Computer"),
+        INVESTIGATION("Investigation"),
+        MEDICINE("Medicine"),
+        OCCULT("Occult"),
+        POLITICS("Politics"),
+        SCIENCE("Science"),
+        // Physical
+        ATHLETICS("Athletics"),
+        BRAWL("Brawl"),
+        DRIVE("Drive"),
+        FIREARMS("Firearms"),
+        LARCENY("Larceny"),
+        STEALTH("Stealth"),
+        SURVIVAL("Survival"),
+        WEAPONRY("Weaponry"),
+        // Social
+        ANIMALKEN("Animal Ken"),
+        EMPATHY("Empathy"),
+        EXPRESSION("Expression"),
+        INTIMIDATION("Intimidation"),
+        PERSUASION("Persuasion"),
+        SOCIALIZE("Socialize"),
+        STREETWISE("Streetwise"),
+        SUBTERFUGE("Subterfuge");
+
+        private String text;
+
+        Skills(String text)
         {
             this.text = text;
         }

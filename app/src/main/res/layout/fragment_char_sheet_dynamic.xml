@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_small"
-                android:text="@string/label_attributes"
+                android:text="@string/title_attributes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/label_skills"
+                android:text="@string/title_skills"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/panelAttributesSocial"
@@ -152,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_small"
-                android:text="@string/label_derived_stats"
+                android:text="@string/title_derived_stats"
                 />
 
             <com.callisto.diceroller.views.StatLayout
@@ -164,7 +164,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/panelSkillsPhysical"
-                app:title="@string/label_derived_stats"
+                app:title="@string/title_derived_stats"
                 android:layout_marginBottom="@dimen/margin_huge"
                 />
         </LinearLayout>

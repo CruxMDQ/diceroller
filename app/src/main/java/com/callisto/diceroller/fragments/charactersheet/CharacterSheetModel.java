@@ -3,8 +3,6 @@ package com.callisto.diceroller.fragments.charactersheet;
 import android.util.Log;
 import android.util.Pair;
 
-import com.callisto.diceroller.R;
-import com.callisto.diceroller.application.App;
 import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.DerivedStatUpdatedEvent;
 import com.callisto.diceroller.bus.events.StatChangedEvent;
@@ -20,7 +18,16 @@ import java.util.ArrayList;
 
 import io.realm.RealmList;
 
-import static com.callisto.diceroller.application.App.getRes;
+import static com.callisto.diceroller.tools.Constants.Derived.DEFENSE;
+import static com.callisto.diceroller.tools.Constants.Derived.SPEED;
+import static com.callisto.diceroller.tools.Constants.Keywords.ADVANTAGE;
+import static com.callisto.diceroller.tools.Constants.Keywords.ATTRIBUTE;
+import static com.callisto.diceroller.tools.Constants.Keywords.MENTAL;
+import static com.callisto.diceroller.tools.Constants.Keywords.MORALITY;
+import static com.callisto.diceroller.tools.Constants.Keywords.PHYSICAL;
+import static com.callisto.diceroller.tools.Constants.Keywords.RESOURCE;
+import static com.callisto.diceroller.tools.Constants.Keywords.SKILL;
+import static com.callisto.diceroller.tools.Constants.Keywords.SOCIAL;
 
 public class CharacterSheetModel
 {
@@ -221,7 +228,7 @@ public class CharacterSheetModel
         int newScore;
         RealmList<Stat> observedStats = observer.getObservedStats();
 
-        if (observer.getName().equals(App.getRes().getString(R.string.label_derived_defense)))
+        if (observer.getName().equals(DEFENSE.getText()))
         {
             newScore = 100;
 
@@ -242,7 +249,7 @@ public class CharacterSheetModel
                 newScore += observedStat.getValue();
             }
 
-            if (observer.getName().equals(App.getRes().getString(R.string.label_derived_speed)))
+            if (observer.getName().equals(SPEED.getText()))
             {
                 newScore += Constants.Values.COFD_SPEED_BASE.getValue();
             }
@@ -300,7 +307,7 @@ public class CharacterSheetModel
     {
         RealmList<String> params = new RealmList<>();
 
-        params.add(getRes().getString(R.string.label_advantage));
+        params.add(ADVANTAGE.getText());
 
         return getStatsByKeywords(params);
     }
@@ -309,7 +316,7 @@ public class CharacterSheetModel
     {
         RealmList<String> params = new RealmList<>();
 
-        params.add(getRes().getString(R.string.label_resource));
+        params.add(RESOURCE.getText());
 
         return getStatsByKeywords(params);
     }
@@ -318,8 +325,8 @@ public class CharacterSheetModel
     {
         RealmList<String> params = new RealmList<>();
 
-        params.add(getRes().getString(R.string.stat_category_attr));
-        params.add(getRes().getString(R.string.stat_type_mental));
+        params.add(ATTRIBUTE.getText());
+        params.add(MENTAL.getText());
 
         return getStatsByKeywords(params);
     }
@@ -328,8 +335,8 @@ public class CharacterSheetModel
     {
         RealmList<String> params = new RealmList<>();
 
-        params.add(getRes().getString(R.string.stat_category_attr));
-        params.add(getRes().getString(R.string.stat_type_physical));
+        params.add(ATTRIBUTE.getText());
+        params.add(PHYSICAL.getText());
 
         return getStatsByKeywords(params);
     }
@@ -338,8 +345,8 @@ public class CharacterSheetModel
     {
         RealmList<String> params = new RealmList<>();
 
-        params.add(getRes().getString(R.string.stat_category_attr));
-        params.add(getRes().getString(R.string.stat_type_social));
+        params.add(ATTRIBUTE.getText());
+        params.add(SOCIAL.getText());
 
         return getStatsByKeywords(params);
     }
@@ -348,8 +355,8 @@ public class CharacterSheetModel
     {
         RealmList<String> params = new RealmList<>();
 
-        params.add(getRes().getString(R.string.stat_category_skill));
-        params.add(getRes().getString(R.string.stat_type_mental));
+        params.add(SKILL.getText());
+        params.add(MENTAL.getText());
 
         return getStatsByKeywords(params);
     }
@@ -358,8 +365,8 @@ public class CharacterSheetModel
     {
         RealmList<String> params = new RealmList<>();
 
-        params.add(getRes().getString(R.string.stat_category_skill));
-        params.add(getRes().getString(R.string.stat_type_physical));
+        params.add(SKILL.getText());
+        params.add(PHYSICAL.getText());
 
         return getStatsByKeywords(params);
     }
@@ -368,8 +375,8 @@ public class CharacterSheetModel
     {
         RealmList<String> params = new RealmList<>();
 
-        params.add(getRes().getString(R.string.stat_category_skill));
-        params.add(getRes().getString(R.string.stat_type_social));
+        params.add(SKILL.getText());
+        params.add(SOCIAL.getText());
 
         return getStatsByKeywords(params);
     }
@@ -378,7 +385,7 @@ public class CharacterSheetModel
     {
         RealmList<String> params = new RealmList<>();
 
-        params.add(getRes().getString(R.string.label_morality));
+        params.add(MORALITY.getText());
 
         return getStatsByKeywords(params).first();
     }

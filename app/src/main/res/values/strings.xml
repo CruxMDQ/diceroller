@@ -2,67 +2,21 @@
     <string name="app_name">DiceRoller</string>
     <string name="action_settings">Settings</string>
 
-    <string name="label_dice">Dice</string>
     <string name="label_reroll_threshold">Reroll threshold</string>
-    <string name="label_results">Results</string>
-    <string name="label_successes">Successes</string>
 
     <string name="sample_character_name">Andrzej Kryszycha</string>
     <string name="sample_character_player">Storyteller</string>
 
-    <string name="text_sample_roll">The rolls were: 5, 4, 8, 9, 1</string>
-    <string name="text_sample_successes">2 successes</string>
+    <string name="title_attributes">Attributes</string>
+    <string name="title_skills">Skills</string>
+    <string name="title_derived_stats">Derived stats</string>
+    <string name="title_character_bio">Bio</string>
 
-    <string name="label_attributes">Attributes</string>
     <string name="label_attr_int">Intelligence</string>
-    <string name="label_attr_wits">Wits</string>
-    <string name="label_attr_res">Resolve</string>
-    <string name="label_attr_str">Strength</string>
-    <string name="label_attr_dex">Dexterity</string>
-    <string name="label_attr_sta">Stamina</string>
-    <string name="label_attr_pre">Presence</string>
-    <string name="label_attr_man">Manipulation</string>
-    <string name="label_attr_com">Composure</string>
 
-    <string name="label_skills">Skills</string>
     <string name="label_skills_mental">Mental (-3)</string>
     <string name="label_skills_physical">Physical (-1)</string>
     <string name="label_skills_social">Social (-1)</string>
-
-    <string name="skill_academics">Academics</string>
-    <string name="skill_crafts">Crafts</string>
-    <string name="skill_computer">Computer</string>
-    <string name="skill_investigation">Investigation</string>
-    <string name="skill_medicine">Medicine</string>
-    <string name="skill_occult">Occult</string>
-    <string name="skill_politics">Politics</string>
-    <string name="skill_science">Science</string>
-    <string name="skill_athletics">Athletics</string>
-    <string name="skill_brawl">Brawl</string>
-    <string name="skill_drive">Drive</string>
-    <string name="skill_firearms">Firearms</string>
-    <string name="skill_larceny">Larceny</string>
-    <string name="skill_stealth">Stealth</string>
-    <string name="skill_survival">Survival</string>
-    <string name="skill_weaponry">Weaponry</string>
-    <string name="skill_animal_ken">Animal Ken</string>
-    <string name="skill_empathy">Empathy</string>
-    <string name="skill_expression">Expression</string>
-    <string name="skill_intimidation">Intimidation</string>
-    <string name="skill_persuasion">Persuasion</string>
-    <string name="skill_socialize">Socialize</string>
-    <string name="skill_streetwise">Streetwise</string>
-    <string name="skill_subterfuge">Subterfuge</string>
-
-    <string name="stat_type_mental">Mental</string>
-    <string name="stat_type_physical">Physical</string>
-    <string name="stat_type_social">Social</string>
-    <string name="stat_type_core">Core</string>
-
-    <string name="stat_kind_power">Power</string>
-    <string name="stat_kind_finesse">Finesse</string>
-    <string name="stat_kind_resistance">Resistance</string>
-    <string name="stat_kind_resource">Resource</string>
 
     <string name="alert_no_dice">There are no dice to roll!</string>
     <string name="label_dice_pool">Dice pool:</string>
@@ -80,22 +34,6 @@
     <string name="prompt_stat_edition">Set new value for %1$s</string>
     <string name="label_btn_ok">OK</string>
 
-    <string name="stat_category_attr">Attribute</string>
-    <string name="stat_category_skill">Skill</string>
-    <string name="stat_category_derived">Derived</string>
-    <string name="stat_category_template">Template</string>
-
-    <string name="label_derived_stats">Derived stats</string>
-    <string name="label_derived_defense">Defense</string>
-    <string name="label_derived_health">Health</string>
-    <string name="label_derived_initiative">Initiative</string>
-    <string name="label_derived_speed">Speed</string>
-    <string name="label_derived_willpower">Willpower</string>
-
-    <string name="label_core_size">Size</string>
-    <string name="label_core_integrity">Integrity</string>
-
-    <string name="label_character_bio">Bio</string>
     <string name="label_character_name">Name:</string>
     <string name="label_character_player">Player:</string>
     <string name="label_new_character">New character</string>
@@ -105,15 +43,6 @@
     <string name="label_template">Template:</string>
 
     <string name="label_template_traits">Template traits</string>
-
-    <string name="label_advantage">Advantage</string>
-    <string name="label_advantage_blood_potency">Blood Potency</string>
-    <string name="label_advantage_inner_light">Inner Light</string>
-    <string name="label_resource">Resource</string>
-    <string name="label_resource_vitae">Vitae</string>
-    <string name="label_resource_wisp">Wisps</string>
-    <string name="label_morality">Morality</string>
-    <string name="label_morality_humanity">Humanity</string>
-    <string name="label_morality_belief">Belief</string>
-
+    <string name="label_derived_health">Health</string>
+    <string name="label_derived_willpower">Willpower</string>
 </resources>
