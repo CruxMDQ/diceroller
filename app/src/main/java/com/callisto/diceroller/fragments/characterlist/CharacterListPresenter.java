@@ -3,15 +3,16 @@ package com.callisto.diceroller.fragments.characterlist;
 import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.CharacterEditorRequestedEvent;
 import com.callisto.diceroller.persistence.objects.Character;
+import com.callisto.diceroller.persistence.objects.Template;
 
 import java.util.List;
 
 class CharacterListPresenter
 {
     private final CharacterListModel model;
-    private final CharacterListView view;
+    private final CharacterListFragment view;
 
-    CharacterListPresenter(CharacterListView view)
+    CharacterListPresenter(CharacterListFragment view)
     {
         this.model = new CharacterListModel();
         this.view = view;
@@ -37,5 +38,10 @@ class CharacterListPresenter
     void requestCharacterEditor(String characterName, String font)
     {
         BusProvider.getInstance().post(new CharacterEditorRequestedEvent(characterName, font));
+    }
+
+    List<Template> getTemplates()
+    {
+        return model.getTemplates();
     }
 }

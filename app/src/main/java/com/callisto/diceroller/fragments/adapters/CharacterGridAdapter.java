@@ -1,4 +1,4 @@
-package com.callisto.diceroller.fragments.characterlist;
+package com.callisto.diceroller.fragments.adapters;
 
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -13,12 +13,12 @@ import com.callisto.diceroller.persistence.objects.Character;
 
 import java.util.List;
 
-public class CharacterListAdapter
+public class CharacterGridAdapter
     extends BaseAdapter
 {
     private List<Character> characters;
 
-    CharacterListAdapter(@NonNull List<Character> objects)
+    public CharacterGridAdapter(@NonNull List<Character> objects)
     {
         this.characters = objects;
     }

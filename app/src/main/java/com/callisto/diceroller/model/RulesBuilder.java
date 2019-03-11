@@ -14,6 +14,7 @@ import io.realm.RealmList;
 
 import static com.callisto.diceroller.application.App.getInstance;
 import static com.callisto.diceroller.tools.Constants.Advantages.BLOODPOTENCY;
+import static com.callisto.diceroller.tools.Constants.Advantages.INNERLIGHT;
 import static com.callisto.diceroller.tools.Constants.Attributes.COMPOSURE;
 import static com.callisto.diceroller.tools.Constants.Attributes.DEXTERITY;
 import static com.callisto.diceroller.tools.Constants.Attributes.INTELLIGENCE;
@@ -42,6 +43,7 @@ import static com.callisto.diceroller.tools.Constants.Keywords.RESISTANCE;
 import static com.callisto.diceroller.tools.Constants.Keywords.RESOURCE;
 import static com.callisto.diceroller.tools.Constants.Keywords.SKILL;
 import static com.callisto.diceroller.tools.Constants.Keywords.SOCIAL;
+import static com.callisto.diceroller.tools.Constants.Moralities.BELIEF;
 import static com.callisto.diceroller.tools.Constants.Moralities.HUMANITY;
 import static com.callisto.diceroller.tools.Constants.Skills.ACADEMICS;
 import static com.callisto.diceroller.tools.Constants.Skills.ANIMALKEN;
@@ -137,6 +139,42 @@ public class RulesBuilder
                 Fonts.ITALIANNO.getText(),
                 realmHelper.get(System.class, Systems.COFD.getText())
             );
+
+            realmHelper.save(noble);
+
+            Stat innerLight = new Stat(
+                realmHelper.getLastId(Stat.class),
+                INNERLIGHT.getText()
+            );
+
+            innerLight.addKeyword(ADVANTAGE.getText());
+            innerLight.setValue(1);
+
+            realmHelper.save(innerLight);
+
+            Stat wisps = new Stat(
+                realmHelper.getLastId(Stat.class),
+                Constants.Resources.WISPS.getText()
+            );
+
+            wisps.addKeyword(RESOURCE.getText());
+            wisps.setValue(10);
+
+            realmHelper.save(wisps);
+
+            Stat belief = new Stat(
+                realmHelper.getLastId(Stat.class),
+                BELIEF.getText()
+            );
+
+            belief.addKeyword(MORALITY.getText());
+            belief.setValue(7);
+
+            realmHelper.save(belief);
+
+            noble.addTrait(innerLight);
+            noble.addTrait(wisps);
+            noble.addTrait(belief);
 
             realmHelper.save(noble);
         }

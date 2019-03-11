@@ -23,6 +23,7 @@
     <string name="label_extended_roll">Extended roll</string>
     <string name="label_btn_roll">Roll</string>
     <string name="label_dice_roll">Dice roll</string>
+    <string name="title_opposed_check">Opposed check</string>
     <string name="label_attrs_mental">Mental</string>
     <string name="label_attrs_physical">Physical</string>
     <string name="label_attrs_social">Social</string>
@@ -45,4 +46,11 @@
     <string name="label_template_traits">Template traits</string>
     <string name="label_derived_health">Health</string>
     <string name="label_derived_willpower">Willpower</string>
+
+    <string name="label_spinner_character">Character:</string>
+    <string name="label_spinner_opponent">Opponent:</string>
+    <string name="label_spinner_stat">Stat:</string>
+    <string name="title_dialog_opposed_check_results">Opposed check results</string>
+    <string name="tag_fragment_performer">TAG_PERFORMER</string>
+    <string name="tag_fragment_opponent">TAG_OPPONENT</string>
 </resources>

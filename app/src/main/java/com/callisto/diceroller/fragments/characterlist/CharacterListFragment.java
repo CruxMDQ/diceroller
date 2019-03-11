@@ -1,5 +1,6 @@
 package com.callisto.diceroller.fragments.characterlist;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,14 +19,18 @@ import android.widget.Toast;
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.application.App;
 import com.callisto.diceroller.fragments.BaseFragment;
+import com.callisto.diceroller.fragments.adapters.CharacterGridAdapter;
+import com.callisto.diceroller.fragments.adapters.TemplateAdapter;
+import com.callisto.diceroller.fragments.contestedcheck.ActionContestFragment;
 import com.callisto.diceroller.persistence.objects.Character;
 import com.callisto.diceroller.persistence.objects.Template;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class CharacterListFragment
     extends BaseFragment
-    implements CharacterListView
 {
     CharacterListPresenter presenter;
 
@@ -44,7 +49,6 @@ public class CharacterListFragment
     FloatingActionButton fabOpposedCheck;
     TextView labelOpposedCheck;
     LinearLayout panelOpposedCheck;
-
 
     private List<Character> characters;
 
@@ -68,7 +72,7 @@ public class CharacterListFragment
     {
         characters = presenter.getCharacters();
 
-        gv.setAdapter(new CharacterListAdapter(characters));
+        gv.setAdapter(new CharacterGridAdapter(characters));
     }
 
     private void setClickListenerOnGridView()
@@ -149,9 +153,26 @@ public class CharacterListFragment
             }
         });
 
-        fabNewCharacter.setOnClickListener(v -> spawnCharacterCreationDialog());
+        fabNewCharacter.setOnClickListener(v ->
+        {
+            spawnCharacterCreationDialog();
 
-        fabSettings.setOnClickListener(v -> invokeSettingsScreen());
+            closeFABMenu();
+        });
+
+        fabSettings.setOnClickListener(v ->
+        {
+            invokeSettingsScreen();
+
+            closeFABMenu();
+        });
+
+        fabOpposedCheck.setOnClickListener(v ->
+        {
+            spawnOpposingCheckDialog();
+
+            closeFABMenu();
+        });
     }
 
     private void invokeSettingsScreen()
@@ -169,6 +190,7 @@ public class CharacterListFragment
         final Template[] template = new Template[1];
 
         // Set dialog view
+        @SuppressLint("InflateParams")
         final View view = getLayoutInflater().inflate(R.layout.dialog_character_create, null);
         dialogBuilder.setView(view);
 
@@ -177,7 +199,7 @@ public class CharacterListFragment
         Spinner pickerTemplate = view.findViewById(R.id.pickerTemplate);
         Button btnCreate = view.findViewById(R.id.btnCreate);
 
-        TemplateAdapter templateAdapter = new TemplateAdapter();
+        TemplateAdapter templateAdapter = new TemplateAdapter(presenter.getTemplates());
 
         pickerTemplate.setAdapter(templateAdapter);
 
@@ -224,6 +246,98 @@ public class CharacterListFragment
             dialog.cancel();
         });
 
+    }
+
+    public void spawnOpposingCheckDialog()
+    {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext());
+
+        // Set dialog title
+        dialogBuilder.setTitle(getString(R.string.title_opposed_check));
+
+        // Set dialog view
+        @SuppressLint("InflateParams")
+        final View view = getLayoutInflater().inflate(R.layout.dialog_opposed_check, null);
+        dialogBuilder.setView(view);
+
+        ActionContestFragment fragmentPerformer = (ActionContestFragment)
+            getChildFragmentManager().findFragmentByTag(getString(R.string.tag_fragment_performer));
+        ActionContestFragment fragmentOpponent = (ActionContestFragment)
+            getChildFragmentManager().findFragmentByTag(getString(R.string.tag_fragment_opponent));
+
+        Button btnDoOpposedCheck = view.findViewById(R.id.btnDoOpposedCheck);
+
+        // Store dialog reference to later be able to dismiss it
+        final AlertDialog dialog = dialogBuilder.show();
+
+        btnDoOpposedCheck.setOnClickListener(view1 ->
+        {
+            String successesPerformer =
+                String.valueOf(getString(R.string.label_successes_report,
+                    Objects.requireNonNull(fragmentPerformer).getSuccesses()));
+            String successesOpponent =
+                String.valueOf(getString(R.string.label_successes_report,
+                    Objects.requireNonNull(fragmentOpponent).getSuccesses()));
+
+            String rollsPerformer = buildRollsString(fragmentPerformer.getRolls());
+            String rollsOpponent = buildRollsString(fragmentOpponent.getRolls());
+
+            dialog.cancel();
+
+            spawnOpposingCheckResultsDialog(
+                successesPerformer, rollsPerformer, successesOpponent, rollsOpponent
+            );
+        });
+    }
+
+    private void spawnOpposingCheckResultsDialog(String successesPerformer, String rollsPerformer, String successesOpponent, String rollsOpponent)
+    {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext());
+
+        // Set dialog title
+        dialogBuilder.setTitle(getString(R.string.title_dialog_opposed_check_results));
+
+        // Set dialog view
+        @SuppressLint("InflateParams")
+        final View view = getLayoutInflater().inflate(R.layout.dialog_opposed_check_results, null);
+        dialogBuilder.setView(view);
+
+        TextView txtPerformerSuccesses = view.findViewById(R.id.txtPerformerSuccesses);
+        TextView txtOpponentSuccesses = view.findViewById(R.id.txtOpponentSuccesses);
+        TextView txtPerformerRolls = view.findViewById(R.id.txtPerformerRolls);
+        TextView txtOpponentRolls = view.findViewById(R.id.txtOpponentRolls);
+        Button btnClose = view.findViewById(R.id.btnClose);
+
+        txtPerformerSuccesses.setText(successesPerformer);
+        txtPerformerRolls.setText(rollsPerformer);
+        txtOpponentSuccesses.setText(successesOpponent);
+        txtOpponentRolls.setText(rollsOpponent);
+
+        // Store dialog reference to later be able to dismiss it
+        final AlertDialog dialog = dialogBuilder.show();
+
+        btnClose.setOnClickListener(v -> dialog.cancel());
+    }
+
+    private String buildRollsString(@NonNull List<Integer> rolls)
+    {
+        String string = "";
+
+        Iterator iterator = rolls.iterator();
+
+        while (iterator.hasNext())
+        {
+            Integer roll = (Integer) iterator.next();
+
+            string = string.concat(String.valueOf(roll));
+
+            if (iterator.hasNext())
+            {
+                string = string.concat(" + ");
+            }
+        }
+
+        return string;
     }
 
     private void showFABMenu()
