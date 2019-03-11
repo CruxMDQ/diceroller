@@ -5,23 +5,27 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.callisto.diceroller.R;
-import com.callisto.diceroller.beans.Stat;
 import com.callisto.diceroller.bus.BusProvider;
+import com.callisto.diceroller.bus.events.DicePoolChangedEvent;
 import com.callisto.diceroller.bus.events.StatChangedEvent;
-import com.callisto.diceroller.bus.events.StatUpdatedEvent;
+import com.callisto.diceroller.bus.events.StatEditionRequestedEvent;
+import com.callisto.diceroller.bus.events.DerivedStatUpdatedEvent;
+import com.callisto.diceroller.interfaces.RefreshingView;
 import com.callisto.diceroller.interfaces.StatContainer;
-import com.callisto.diceroller.interfaces.ViewWatcher;
+import com.callisto.diceroller.persistence.objects.Stat;
 import com.squareup.otto.Subscribe;
 
 public class StatBox
     extends LinearLayout
     implements
+    RefreshingView,
     StatContainer
 {
 
@@ -33,12 +37,11 @@ public class StatBox
 
     private boolean isSelected = false;
 
+    private long statId;
     private int statValue;
     private String statBoxName;
 
     private boolean isEditionAllowed = true;
-
-    private ViewWatcher viewWatcher;
 
     public StatBox(final Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -59,19 +62,24 @@ public class StatBox
         setTag(args.getString(R.styleable.StatBox_statName));
         statBoxName = args.getString(R.styleable.StatBox_statName);
 
-        colorSelected = args.getColor(
-            R.styleable.StatBox_colorSelected,
-            ContextCompat.getColor(
-                getContext(),
-                R.color.color_purple_dark)
-        );
-
-        statValue = Integer.parseInt(args.getString(R.styleable.StatBox_statValue));
+        statValue = args.getInteger(R.styleable.StatBox_statValue, 0);
 
         isEditionAllowed = args.getBoolean(R.styleable.StatBox_isEditionAllowed, true);
 
         args.recycle();
 
+        performInflation(context);
+    }
+
+    public StatBox(Context context)
+    {
+        super(context);
+
+        performInflation(context);
+    }
+
+    private void performInflation(Context context)
+    {
         setOrientation(LinearLayout.HORIZONTAL);
         setGravity(Gravity.CENTER_VERTICAL);
 
@@ -82,21 +90,26 @@ public class StatBox
         setBackgroundColor(ContextCompat.getColor(context, R.color.color_light_gray));
 
         setOnClickListener(v ->
-        {
-//                if (isEditionAllowed())
-//                {
-                toggleSelected(context);
-//                }
-        });
+            toggleSelected(context)
+        );
 
         setOnLongClickListener(v ->
         {
             if (isEditionAllowed())
             {
-                viewWatcher.spawnStatEditionDialog(v.getId(), statBoxName);
+                postStatEditionRequest(v.getId(), statId, statBoxName);
             }
             return true;
         });
+    }
+
+    public void performValueChange(int statValue)
+    {
+        setValue(statValue);
+
+        performViewRefresh();
+
+        postStatChange();
     }
 
     public void setValue(String statValue) {
@@ -112,54 +125,96 @@ public class StatBox
     public void setStat(Stat stat)
     {
         statBoxName = stat.getName();
+        statId = stat.getId();
         statValue = stat.getValue();
+        colorSelected = stat.getColor();
 
         setName(statBoxName);
         setValue(statValue);
 
         postStatChange();
 
-        refreshPointsPanel(!isSelected);
+        performViewRefresh();
     }
 
-    private void postStatChange()
+    public void postDicePoolChange()
     {
-        BusProvider.getInstance().post(new StatChangedEvent(statBoxName, statValue));
+        BusProvider.getInstance().post(new DicePoolChangedEvent(
+            lblStat.getText().toString(),
+            statValue,
+            colorSelected
+        ));
+    }
+
+    public void postStatChange()
+    {
+        BusProvider.getInstance().post(new StatChangedEvent(statId, statBoxName, statValue));
+    }
+
+    private void postStatEditionRequest(int viewId, long statId, String statBoxName)
+    {
+        Log.d("Stat tracking", "View: " + viewId + ", statId: " + statId + ", stat: " + statBoxName + ", value: " + statValue);
+
+        BusProvider.getInstance().post(new StatEditionRequestedEvent(viewId, statId, statBoxName));
     }
 
     private void setName(String statName) {
         lblStat.setText(statName);
     }
 
-    private void toggleSelected(Context context)
+    public void setSelectedForDicePool(Context context, boolean isSelected)
+    {
+        this.isSelected = isSelected;
+
+        toggleSelectedAppearance(context, isSelected);
+
+        performViewRefresh();
+
+        postDicePoolChange();
+    }
+
+    private void toggleSelectedAppearance(Context context, boolean isSelected)
     {
         if (isSelected)
-        {
-            setBackgroundColor(ContextCompat.getColor(context, R.color.color_light_gray));
-            lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_black));
-            lblStat.setTypeface(Typeface.DEFAULT);
-
-            isSelected = false;
-        }
-        else
         {
             setBackgroundColor(colorSelected);
             lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_white));
             lblStat.setTypeface(Typeface.DEFAULT_BOLD);
-
-            isSelected = true;
         }
-
-        refreshPointsPanel(!isSelected);
-
-        changeDicePool();
+        else
+        {
+            setBackgroundColor(ContextCompat.getColor(context, R.color.color_light_gray));
+            lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_black));
+            lblStat.setTypeface(Typeface.DEFAULT);
+        }
     }
 
-    private void changeDicePool() {
-        viewWatcher.changeDicePool(
-            lblStat.getText().toString(),
-            statValue,
-            colorSelected);
+    private void toggleSelected(Context context)
+    {
+        isSelected = !isSelected;
+
+        toggleSelectedAppearance(context, isSelected);
+
+//        if (isSelected)
+//        {
+//            setBackgroundColor(ContextCompat.getColor(context, R.color.color_light_gray));
+//            lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_black));
+//            lblStat.setTypeface(Typeface.DEFAULT);
+//
+//            isSelected = false;
+//        }
+//        else
+//        {
+//            setBackgroundColor(colorSelected);
+//            lblStat.setTextColor(ContextCompat.getColor(context, R.color.color_white));
+//            lblStat.setTypeface(Typeface.DEFAULT_BOLD);
+//
+//            isSelected = true;
+//        }
+
+        performViewRefresh();
+
+        postDicePoolChange();
     }
 
     private void inflateLayout() {
@@ -176,22 +231,13 @@ public class StatBox
         panelValue = findViewById(R.id.panelValue);
     }
 
-    public StatBox setViewWatcher(ViewWatcher viewWatcher) {
-        this.viewWatcher = viewWatcher;
-        this.viewWatcher.setStatOnView(this.getTag());
-
-        subscribeToEvents();
-
-        return this;
-    }
-
-    private void refreshPointsPanel(boolean isBlack) {
+    public void performViewRefresh() {
         panelValue.removeAllViews();
 
         for (int i = 0; i < statValue; i++) {
             RadioButton rdb = new RadioButton(getContext());
 
-            rdb.setChecked(isBlack);
+            rdb.setChecked(!isSelected);
 
             rdb.setButtonDrawable(ContextCompat.getDrawable(getContext(), R.drawable.selector_points));
 
@@ -211,15 +257,17 @@ public class StatBox
         return this;
     }
 
-    @Subscribe public void updateStatValue(StatUpdatedEvent event)
+    @Subscribe public void updateStatValue(DerivedStatUpdatedEvent event)
     {
-        try
+       try
         {
-            if (event.name.equals(statBoxName))
+            if (event.statId == statId)
             {
+                Log.d("Stat box", "DerivedStatUpdatedEvent captured, event statId = " + event.statId + ", container statId = " + statId);
+
                 this.statValue = event.value;
 
-                refreshPointsPanel(!isSelected);
+                performViewRefresh();
             }
         }
         catch (NullPointerException ignored)
@@ -228,8 +276,19 @@ public class StatBox
         }
     }
 
-    private void subscribeToEvents()
+    public void subscribeToEvents()
     {
         BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void unsubscribeFromEvents()
+    {
+        BusProvider.getInstance().unregister(this);
+    }
+
+    public String getStatBoxName()
+    {
+        return statBoxName;
     }
 }

@@ -4,7 +4,7 @@ public interface ViewWatcher
 {
     void spawnStatEditionDialog(int id, String statName);
 
-    void changeDicePool(String statName, int value, int colorSelected);
+//    void changeDicePool(String statName, int value, int colorSelected);
 
     void setStatOnView(Object tag);
 }

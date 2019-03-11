@@ -1,4 +1,6 @@
-package com.callisto.diceroller.beans;
+package com.callisto.diceroller.persistence.objects;
+
+import com.callisto.diceroller.persistence.RealmHelper;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -8,8 +10,9 @@ public class Character
     extends RealmObject
 {
     @PrimaryKey
-    long id;
+    private long id;
     private String name;
+    private Template template;
     private RealmList<Stat> stats;
 
     public Character() {}
@@ -48,5 +51,21 @@ public class Character
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public Template getTemplate()
+    {
+        return template;
+    }
+
+    public void setTemplate(Template template)
+    {
+        this.template = template;
+    }
+
+    @Override
+    public String toString()
+    {
+        return RealmHelper.getInstance().get(Character.class, this.id).getName();
     }
 }

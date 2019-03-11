@@ -14,22 +14,42 @@ public class RealmHelper
     private static RealmHelper instance;
 
     private Realm realm;
+    private final RealmConfiguration config;
 
-    public static RealmHelper getInstance() {
-        if (instance == null) {
+    public static RealmHelper getInstance()
+    {
+        if (instance == null)
+        {
             instance = new RealmHelper();
         }
         return instance;
     }
 
-    private RealmHelper() {
+    private RealmHelper()
+    {
         Realm.init(App.getInstance().getApplicationContext());
 
-        RealmConfiguration config = new RealmConfiguration.Builder()
-            .deleteRealmIfMigrationNeeded()
-            .build();
+        config = buildRealmConfig();
 
         realm = Realm.getInstance(config);
+    }
+
+    private RealmConfiguration buildRealmConfig()
+    {
+        RealmConfiguration config;
+
+//        config = new RealmConfiguration.Builder()
+//            .name("cofd.realm")
+//            .schemaVersion(0)
+//            .modules(new StorytellerModule())
+//            .build();
+
+        config = new RealmConfiguration.Builder()
+            .schemaVersion(8)
+            .migration(new CofdMigration())
+            .build();
+
+        return config;
     }
 
     public <T extends RealmObject> RealmResults<T> getList(Class<T> klass)
@@ -39,7 +59,7 @@ public class RealmHelper
 
     public <T extends RealmObject> T get(Class<T> klass, long id)
     {
-        T first = realm.where(klass).equalTo(Constants.XmlTags.TAG_STAT_ID.getText(), id)
+        T first = realm.where(klass).equalTo(Constants.Fields.ID.getText(), id)
             .findFirst();
 
         return first;
@@ -47,14 +67,19 @@ public class RealmHelper
 
     public <T extends RealmObject> T get(Class<T> klass, String name)
     {
-        RealmResults<T> objects = this.getList(klass);
-
         RealmQuery<T> query = realm.where(klass);
 
-        T first = query.equalTo(Constants.XmlTags.TAG_STAT_FIELD_NAME.getText(), name)
+        T first = query.equalTo(Constants.Fields.NAME.getText(), name)
             .findFirst();
 
         return first;
+    }
+
+    public boolean exists(Class klass, long id)
+    {
+        RealmObject realmObject = get(klass, id);
+
+        return realmObject != null;
     }
 
     public boolean exists(Class klass, String name)
@@ -64,20 +89,33 @@ public class RealmHelper
         return realmObject != null;
     }
 
-    public <T extends RealmObject> long save(T item) {
+    public <T extends RealmObject> T add(T item)
+    {
+        realm.beginTransaction();
+        realm.copyToRealm(item);
+        realm.commitTransaction();
+        return item;
+    }
+
+    public <T extends RealmObject> long save(T item)
+    {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(item);
         realm.commitTransaction();
         return 0;
     }
 
-    public long getLastId(Class className) {
+    public long getLastId(Class className)
+    {
         long key;
-        try {
+        try
+        {
             RealmQuery query = realm.where(className);
             Number max = query.max("id");
             key = max != null ? max.longValue() + 1 : 0;
-        } catch (ArrayIndexOutOfBoundsException ex) {
+        }
+        catch (ArrayIndexOutOfBoundsException ex)
+        {
             key = 0;
         }
         return key;

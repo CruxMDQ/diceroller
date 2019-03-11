@@ -9,55 +9,42 @@ import android.graphics.drawable.ShapeDrawable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.callisto.diceroller.R;
-import com.callisto.diceroller.beans.Stat;
-import com.callisto.diceroller.interfaces.StatusObserver;
+import com.callisto.diceroller.bus.BusProvider;
+import com.callisto.diceroller.bus.events.PanelTappedEvent;
+import com.callisto.diceroller.interfaces.RefreshingView;
+import com.callisto.diceroller.persistence.objects.Stat;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class StatLayout extends LinearLayout {
+import io.realm.RealmList;
 
-    private Boolean isOpen;
+public class StatLayout
+    extends UnfoldingLayout
+    implements RefreshingView
+{
+    private LinearLayout panelMain;
+    private LinearLayout panelContainer;
+
+    private TextView labelTitle;
+    private TextView labelSummary;
 
     private ArrayList<Stat> containedStats;
     private ArrayList<Stat> pickedStats;
 
-    private LinearLayout panelStats;
-
-    private TextView lblSelectedStats;
-    private TextView txtSelectedStats;
-
-    private StatusObserver observer;
-
     public StatLayout(
         Context context,
         AttributeSet attrs,
-        int defStyleAttr,
-        int defStyleRes)
+        int defStyleAttr)
     {
-        super(context, attrs, defStyleAttr, defStyleRes);
-
-        TypedArray args = context.obtainStyledAttributes(
-            attrs,
-            R.styleable.StatLayout,
-            0,
-            0);
-
-        init(args);
-
-        args.recycle();
-    }
-
-    public StatLayout(
-        Context context,
-        AttributeSet attrs,
-        int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         TypedArray args = context.obtainStyledAttributes(
@@ -69,10 +56,27 @@ public class StatLayout extends LinearLayout {
         init(args);
 
         args.recycle();
+
+        setOrientation(LinearLayout.VERTICAL);
+        setGravity(Gravity.CENTER);
+
+        inflateLayout();
+
+        resolveViews();
+
+        performViewRefresh();
     }
 
-    public StatLayout(Context context, AttributeSet attrs) {
+    public StatLayout(Context context, AttributeSet attrs)
+    {
         super(context, attrs);
+
+        setOrientation(LinearLayout.VERTICAL);
+        setGravity(Gravity.CENTER);
+
+        inflateLayout();
+
+        resolveViews();
 
         TypedArray args = context.obtainStyledAttributes(
             attrs,
@@ -83,79 +87,114 @@ public class StatLayout extends LinearLayout {
         init(args);
 
         args.recycle();
+
+        performViewRefresh();
     }
 
-    public StatLayout(Context context) {
+    public StatLayout(Context context)
+    {
         super(context);
         init(null);
     }
 
-    private void init(@Nullable TypedArray args) {
-        if (args != null) {
+    @Override
+    public LinearLayout getPanel()
+    {
+        return panelContainer;
+    }
+
+    private void init(@Nullable TypedArray args)
+    {
+        if (args != null)
+        {
             isOpen = args.getBoolean(R.styleable.StatLayout_isOpen, false);
-        } else {
-            isOpen = false;
+            labelTitle.setText(args.getString(R.styleable.StatLayout_title));
+
+            showTitle(args.getBoolean(R.styleable.StatLayout_isTitleVisible, true));
+
+            setOpen(isOpen);
+        }
+        else
+        {
+            setOpen(false);
         }
 
         containedStats = new ArrayList<>();
         pickedStats = new ArrayList<>();
 
-            setOnClickListener(new OnClickListener()
+        setOnClickListener(v ->
         {
-            @Override
-            public void onClick(View v)
+            int id = v.getId();
+
+            postPanelTapped(id);
+
+            StatLayout t = (StatLayout) v;
+
+            if (pickedStats.size() == 0)
             {
-
-                observer.togglePanels(v.getId());
-
-                StatLayout t = (StatLayout) v;
-
-                if (t.getPickedStatsCount() == 0)
+                if (!(t.isOpen()))
                 {
-                    if (!(t.isOpen()))
-                    {
-                        toggleStatPanel
-                            (
-                                View.VISIBLE,
-                                true,
-                                R.color.color_light_gray
-                            );
-                    } else
-                    {
-                        toggleStatPanel
-                            (
-                                View.GONE,
-                                false,
-                                R.color.color_dark_gray
-                            );
-                    }
+                    toggleStatPanel
+                        (
+                            View.VISIBLE,
+                            true,
+                            R.color.color_light_gray
+                        );
                 }
                 else
                 {
-                    if (!(t.isOpen()))
-                    {
-                        toggleStatPanel
-                            (
-                                View.VISIBLE,
-                                true
-                            );
-                    } else
-                    {
-                        toggleStatPanel
-                            (
-                                View.GONE,
-                                false
-                            );
-                    }
+                    toggleStatPanel
+                        (
+                            View.GONE,
+                            false,
+                            R.color.color_dark_gray
+                        );
+                }
+            }
+            else
+            {
+                if (!(t.isOpen()))
+                {
+                    toggleStatPanel
+                        (
+                            View.VISIBLE,
+                            true
+                        );
+                }
+                else
+                {
+                    toggleStatPanel
+                        (
+                            View.GONE,
+                            false
+                        );
                 }
             }
         });
     }
 
-    public void toggleStatPanel(int visible, boolean isOpen)
+    private void resolveViews()
     {
-        getPanelStats().setVisibility(visible);
-        setOpen(isOpen);
+        panelMain = findViewById(R.id.panelMain);
+        panelContainer = findViewById(R.id.panelContainer);
+
+        labelTitle = findViewById(R.id.labelTitle);
+        labelSummary = findViewById(R.id.labelSummary);
+    }
+
+    private void inflateLayout()
+    {
+        inflate(this.getContext(), getLayout(), this);
+    }
+
+    private int getLayout()
+    {
+        return R.layout.view_stat_layout;
+    }
+
+    private void postPanelTapped(int id)
+    {
+        BusProvider.getInstance().post(new PanelTappedEvent(id));
     }
 
     private void toggleStatPanel(
@@ -166,39 +205,90 @@ public class StatLayout extends LinearLayout {
         toggleStatPanel(visible, isOpen);
         int targetColor = ContextCompat.getColor(
             Objects.requireNonNull(getContext()), color);
-        
+
         setBackgroundDrawableColor(targetColor);
     }
 
     private void setBackgroundDrawableColor(int targetColor)
     {
-        Drawable background = getBackground();
-        if (background instanceof ShapeDrawable) {
-            ((ShapeDrawable)background).getPaint().setColor(targetColor);
-        } else if (background instanceof GradientDrawable) {
-            ((GradientDrawable)background).setColor(targetColor);
-        } else if (background instanceof ColorDrawable) {
-            ((ColorDrawable)background).setColor(targetColor);
+        Drawable background = panelMain.getBackground();
+
+        if (background instanceof ShapeDrawable)
+        {
+            ((ShapeDrawable) background).getPaint().setColor(targetColor);
+        }
+        else if (background instanceof GradientDrawable)
+        {
+            ((GradientDrawable) background).setColor(targetColor);
+        }
+        else if (background instanceof ColorDrawable)
+        {
+            ((ColorDrawable) background).setColor(targetColor);
         }
     }
 
-    public Boolean isOpen() {
-        return isOpen;
-    }
-
-    public void setOpen(Boolean open) {
-        this.isOpen = open;
-    }
-
-    public void addOrRemoveContainedStat(Stat stat)
+    public void addSelectableStat(Stat stat)
     {
-        if (containedStats.contains(stat))
+        addContainedStat(stat);
+        performViewRefresh();
+        toggleStatPanel(GONE, false);
+    }
+
+    public void addSelectableStats(RealmList<Stat> stats)
+    {
+        for (Stat stat : stats)
         {
-            containedStats.remove(stat);
+            addSelectableStat(stat);
         }
-        else
+    }
+
+    public void performViewRefresh()
+    {
+        updateSummaryLabel();
+        refreshStatPanel();
+    }
+
+    @Override
+    public void unsubscribeFromEvents()
+    {
+        final int childCount = panelContainer.getChildCount();
+
+        for (int i = 0; i < childCount; i++)
         {
-            containedStats.add(stat);
+            StatBox statBox = (StatBox) panelContainer.getChildAt(i);
+
+            statBox.unsubscribeFromEvents();
+        }
+
+        panelContainer.removeAllViews();
+    }
+
+    @Override
+    public void subscribeToEvents()
+    {
+        refreshStatPanel();
+    }
+
+    private void addContainedStat(Stat stat)
+    {
+        containedStats.add(stat);
+    }
+
+    public void refreshStatPanel()
+    {
+        panelContainer.removeAllViews();
+
+        for (Stat stat : containedStats)
+        {
+            StatBox statBox = new StatBox(getContext());
+
+            statBox.setId(View.generateViewId());
+
+            statBox.setStat(stat);
+
+            statBox.subscribeToEvents();
+
+            panelContainer.addView(statBox);
         }
     }
 
@@ -213,30 +303,57 @@ public class StatLayout extends LinearLayout {
             pickedStats.add(stat);
         }
 
-        updateSelectedStatLabel();
+        updateSummaryLabel();
     }
 
-    private void updateSelectedStatLabel()
+    public void updateSummaryLabel()
     {
-        if (getPickedStatsCount() > 0)
+        labelSummary.setVisibility(VISIBLE);
+
+        if (pickedStats.size() > 0)
         {
-            txtSelectedStats.setVisibility(VISIBLE);
-            txtSelectedStats.setText(getSelectedStatsString());
+            labelSummary.setText(getSelectedStatsString());
         }
         else
         {
-            txtSelectedStats.setVisibility(GONE);
+            labelSummary.setText(getStatSummary());
         }
     }
 
-    public int getPickedStatsCount() {
-        return pickedStats.size();
+    public String getStatSummary()
+    {
+        Iterator iterator = containedStats.iterator();
+
+        String result = "(";
+
+        try
+        {
+            while (iterator.hasNext())
+            {
+                Stat stat = (Stat) iterator.next();
+
+                result = result.concat(String.valueOf(stat.getName()));
+
+                result = result.concat(" ");
+
+                result = result.concat(String.valueOf(stat.getValue()));
+
+                if (iterator.hasNext())
+                {
+                    result = result.concat(", ");
+                }
+            }
+        }
+        catch (NullPointerException e)
+        {
+            Log.e(this.getClass().getSimpleName(), "Null array?");
+        }
+
+        result = result.concat(")");
+
+        return result;
     }
 
-    public boolean shouldContain(Stat stat)
-    {
-        return containedStats.contains(stat);
-    }
 
     public String getSelectedStatsString()
     {
@@ -244,12 +361,14 @@ public class StatLayout extends LinearLayout {
 
         String result = "(";
 
-        while (iterator.hasNext()) {
+        while (iterator.hasNext())
+        {
             Stat stat = (Stat) iterator.next();
 
             result = result.concat(String.valueOf(stat.getName()));
 
-            if (iterator.hasNext()) {
+            if (iterator.hasNext())
+            {
                 result = result.concat(", ");
             }
         }
@@ -259,31 +378,24 @@ public class StatLayout extends LinearLayout {
         return result;
     }
 
-    public LinearLayout getPanelStats()
+    public boolean shouldContain(Stat stat)
     {
-        return panelStats;
+        return containedStats.contains(stat);
     }
 
-    public void setPanelStats(LinearLayout panelStats)
+    public void setPanelColor()
     {
-        this.panelStats = panelStats;
-    }
-
-    public void setTxtSelectedStats(TextView txtSelectedStats)
-    {
-        this.txtSelectedStats = txtSelectedStats;
-    }
-
-    public void setPanelColor() {
         int tan = ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_tan);
-        int gray = ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_light_gray);
+        int gray = ContextCompat
+            .getColor(Objects.requireNonNull(getContext()), R.color.color_light_gray);
 
-        int selectedStatCount = getPickedStatsCount();
+        int selectedStatCount = pickedStats.size();
 
         if (selectedStatCount == 1)
         {
             Stat stat = pickedStats.get(0);
-            setBackgroundDrawableColor(stat.getColor());
+            int color = stat.getColor();
+            setBackgroundDrawableColor(color);
             setTextViewsColor(
                 ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_white));
         }
@@ -293,7 +405,7 @@ public class StatLayout extends LinearLayout {
             setTextViewsColor(
                 ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.color_white));
         }
-        else if (selectedStatCount == 0)
+        else
         {
             setBackgroundDrawableColor(gray);
             setTextViewsColor(
@@ -303,17 +415,40 @@ public class StatLayout extends LinearLayout {
 
     private void setTextViewsColor(int color)
     {
-        txtSelectedStats.setTextColor(color);
-        lblSelectedStats.setTextColor(color);
+        labelTitle.setTextColor(color);
+        labelSummary.setTextColor(color);
     }
 
-    public void setLblSelectedStats(TextView lblSelectedStats)
+    public void showTitle(boolean isVisible)
     {
-        this.lblSelectedStats = lblSelectedStats;
+        if (isVisible)
+        {
+            labelTitle.setVisibility(VISIBLE);
+        }
+        else
+        {
+            labelTitle.setVisibility(GONE);
+        }
     }
 
-    public void setObserver(StatusObserver observer)
+    private void deselectAll()
     {
-        this.observer = observer;
+        final int childCount = panelContainer.getChildCount();
+
+        for (int i = 0; i < childCount; i++)
+        {
+            StatBox v = (StatBox) panelContainer.getChildAt(i);
+
+            v.setSelectedForDicePool(getContext(), false);
+        }
+    }
+
+    public void flush()
+    {
+        pickedStats.clear();
+
+        deselectAll();
+
+        setPanelColor();
     }
 }
