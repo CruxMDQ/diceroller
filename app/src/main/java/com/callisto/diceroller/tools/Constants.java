@@ -72,6 +72,14 @@ public class Constants
     {
         ID("id"),
         CHARACTER_NAME("charname"),
+        CHECK_TYPE_SKILL("Skill"),
+        CHECK_TYPE_COMBAT("Combat"),
+        CHECK_SUBTYPE_SKILL_CONTESTED("Contested"),
+        CHECK_SUBTYPE_SKILL_RESISTED("Resisted"),
+        CHECK_SUBTYPE_COMBAT_UNARMED("Unarmed"),
+        CHECK_SUBTYPE_COMBAT_MELEE("Melee"),
+        CHECK_SUBTYPE_COMBAT_RANGED("Ranged"),
+        CHECK_SUBTYPE_COMBAT_THROWN("Thrown"),
         FONT("font"),
         STAT_ID("statId"),
         STAT_NAME("statname");
@@ -85,7 +93,7 @@ public class Constants
 
         public String getText()
         {
-            return FONT_DIR + text;
+            return text;
         }
     }
 
@@ -93,8 +101,10 @@ public class Constants
     {
         TAG_FRAGMENT_CHAR_LIST("list"),
         TAG_FRAGMENT_CHAR_SHEET("sheet"),
-        TAG_FRAGMENT_DIALOG_STAT_EDIT("edit stat");
-
+        TAG_FRAGMENT_DIALOG_STAT_EDIT("edit stat"),
+        TAG_FRAGMENT_OPPOSED_CHECK("opposed check"),
+        TAG_FRAGMENT_OPPOSED_CHECK_PERFORMER("performer"),
+        TAG_FRAGMENT_OPPOSED_CHECK_OPPONENT("opponent");
         private String text;
 
         FragmentTags(String text)
@@ -113,7 +123,8 @@ public class Constants
         CHARACTER("Character"),
         STAT("Stat"),
         SYSTEM("System"),
-        TEMPLATE("Template");
+        TEMPLATE("Template"),
+        MANEUVER("Maneuver");
 
         private String text;
 
@@ -136,7 +147,7 @@ public class Constants
         MENTAL("Mental"),
         PHYSICAL("Physical"),
         SOCIAL("Social"),
-        POWER("Power"),
+        POWER("Maneuver"),
         FINESSE("Finesse"),
         RESISTANCE("Resistance"),
         MORALITY("Morality"),
@@ -146,6 +157,29 @@ public class Constants
         private String text;
 
         Keywords(String text)
+        {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+    }
+
+    public enum Feats
+    {
+        UNARMED("Unarmed"),
+        MELEE("Melee"),
+        RANGED("Ranged"),
+        THROWN("Thrown"),
+        OFFENSE("Offense"),
+        DEFENSE("Defense"),
+        PERCEPTION("Perception");
+
+        private String text;
+
+        Feats(String text)
         {
             this.text = text;
         }
@@ -233,6 +267,47 @@ public class Constants
 
     }
 
+    public enum Maneuvers
+    {
+        ATTACK("Attack"),
+        ATTACK_UNARMED("Unarmed"),
+        ATTACK_MELEE("Melee"),
+        ATTACK_RANGED("Ranged"),
+        ATTACK_THROWN("Thrown");
+
+        private String text;
+
+        public String getText()
+        {
+            return text;
+        }
+
+        Maneuvers(String text)
+        {
+            this.text = text;
+        }
+    }
+
+    public enum Targets
+    {
+        SELF("Self"),
+        NONE("None"),
+        ONE("One"),
+        MANY("Many");
+
+        private String text;
+
+        Targets(String text)
+        {
+            this.text = text;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+    }
+
     public enum Fields
     {
         ID("id"),
@@ -244,7 +319,12 @@ public class Constants
         RESOURCES("resources"),
         SYSTEM("system"),
         TRAITS("traits"),
-        TEMPORARYVALUE("temporaryValue");
+        TEMPORARYVALUE("temporaryValue"),
+        REQUIREMENTS("requirements"),
+        DICEPOOL("dicePool"),
+        DEFENSEPOOL("defensePool"),
+        TARGETS("targets"),
+        BASESTATS("baseStats");
 
         private String text;
 

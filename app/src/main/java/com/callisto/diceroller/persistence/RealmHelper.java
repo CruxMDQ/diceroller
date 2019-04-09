@@ -45,7 +45,7 @@ public class RealmHelper
 //            .build();
 
         config = new RealmConfiguration.Builder()
-            .schemaVersion(8)
+            .schemaVersion(10)
             .migration(new CofdMigration())
             .build();
 

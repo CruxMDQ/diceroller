@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_tiny"
+    android:background="@drawable/background_resource_box"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btnPickCharacter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/label_btn_pick_character"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_tiny"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titleCharacter"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_medium"
+            android:text="@string/sample_character_name"
+            />
+
+        <include layout="@layout/panel_dice_pool" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_tiny">
+
+            <TextView
+                android:id="@+id/lblCharacterRerollThreshold"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginStart="@dimen/margin_small"
+                android:gravity="center"
+                android:text="@string/label_reroll_threshold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/inputPerformerRerollThreshold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/inputPerformerRerollThreshold"/>
+
+            <EditText
+                android:id="@+id/inputPerformerRerollThreshold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:inputType="number"
+                android:text="10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/lblCharacterRerollThreshold"/>
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+</FrameLayout>

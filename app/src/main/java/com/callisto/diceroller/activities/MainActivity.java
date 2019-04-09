@@ -13,6 +13,7 @@ import com.callisto.diceroller.R;
 import com.callisto.diceroller.fragments.BaseFragment;
 import com.callisto.diceroller.fragments.characterlist.CharacterListFragment;
 import com.callisto.diceroller.fragments.charactersheet.CharacterSheetFragment;
+import com.callisto.diceroller.fragments.contestedcheck.OpposedCheckFragment;
 import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.viewmanagers.MainActivityNavigation;
 
@@ -22,6 +23,7 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 import static com.callisto.diceroller.tools.Constants.FragmentTags.TAG_FRAGMENT_CHAR_LIST;
 import static com.callisto.diceroller.tools.Constants.FragmentTags.TAG_FRAGMENT_CHAR_SHEET;
+import static com.callisto.diceroller.tools.Constants.FragmentTags.TAG_FRAGMENT_OPPOSED_CHECK;
 
 public class MainActivity
     extends AppCompatActivity
@@ -30,6 +32,8 @@ public class MainActivity
     CharacterListFragment characterList;
 
     CharacterSheetFragment characterSheet;
+
+    OpposedCheckFragment opposedCheckScreen;
 
     private MainActivityPresenter presenter;
 
@@ -138,5 +142,18 @@ public class MainActivity
         Objects.requireNonNull(characterSheet).setArguments(args);
 
         setFragment(characterSheet, tag);
+    }
+
+    @Override
+    public void loadOpposedCheckScreen()
+    {
+        String tag = TAG_FRAGMENT_OPPOSED_CHECK.getText();
+
+        if (opposedCheckScreen == null)
+        {
+            opposedCheckScreen = new OpposedCheckFragment();
+        }
+
+        setFragment(opposedCheckScreen, tag);
     }
 }

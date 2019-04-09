@@ -2,6 +2,7 @@ package com.callisto.diceroller.fragments.characterlist;
 
 import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.CharacterEditorRequestedEvent;
+import com.callisto.diceroller.bus.events.OpposedCheckScreenRequestedEvent;
 import com.callisto.diceroller.persistence.objects.Character;
 import com.callisto.diceroller.persistence.objects.Template;
 
@@ -43,5 +44,10 @@ class CharacterListPresenter
     List<Template> getTemplates()
     {
         return model.getTemplates();
+    }
+
+    void requestOpposedCheckFragment()
+    {
+        BusProvider.getInstance().post(new OpposedCheckScreenRequestedEvent());
     }
 }

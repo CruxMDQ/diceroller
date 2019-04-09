@@ -16,37 +16,21 @@ public class Stat
     private int color, value;
     private int temporaryValue = 0;
 
-    private RealmList<Stat> observers;
-    private RealmList<Stat> observed;
+    private RealmList<Stat> observers = new RealmList<>();
+    private RealmList<Stat> observed = new RealmList<>();
     
-    private RealmList<String> keywords;
+    private RealmList<String> keywords = new RealmList<>();
 
-    public Stat()
-    {
-        this.observers = new RealmList<>();
-        this.observed = new RealmList<>();
-        
-        this.keywords = new RealmList<>();
-    }
+    public Stat() {}
 
     public Stat(long id, String name)
     {
-        this.observers = new RealmList<>();
-        this.observed = new RealmList<>();
-
-        this.keywords = new RealmList<>();
-
         this.id = id;
         this.name = name;
     }
 
     public Stat(long id, String name, String category, int value)
     {
-        this.observers = new RealmList<>();
-        this.observed = new RealmList<>();
-
-        this.keywords = new RealmList<>();
-
         this.id = id;
         this.name = name;
         this.category = category;
@@ -56,11 +40,6 @@ public class Stat
 
     public Stat(long lastId, String name, int color, int value)
     {
-        this.observers = new RealmList<>();
-        this.observed = new RealmList<>();
-
-        this.keywords = new RealmList<>();
-
         this.id = lastId;
         this.name = name;
         this.color = color;

@@ -21,17 +21,20 @@
     android:orientation="vertical"
     android:paddingEnd="@dimen/margin_small"
     android:paddingStart="@dimen/margin_small"
-    android:background="@color/color_red_light">
+    android:id="@+id/panelItem">
 
     <TextView
         android:id="@+id/txtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"/>
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_gravity="center"
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/txtTemplate"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
 </LinearLayout>

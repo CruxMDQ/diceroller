@@ -7,14 +7,14 @@
 
     <fragment
         android:id="@+id/fragmentPerformer"
-        android:name="com.callisto.diceroller.fragments.contestedcheck.ActionContestFragment"
+        android:name="com.callisto.diceroller.fragments.contestedcheck.CharacterContestFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="@string/tag_fragment_performer"/>
 
     <fragment
         android:id="@+id/fragmentOpponent"
-        android:name="com.callisto.diceroller.fragments.contestedcheck.ActionContestFragment"
+        android:name="com.callisto.diceroller.fragments.contestedcheck.CharacterContestFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="@string/tag_fragment_opponent"/>

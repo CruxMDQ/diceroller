@@ -2,6 +2,7 @@ package com.callisto.diceroller.activities;
 
 import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.CharacterEditorRequestedEvent;
+import com.callisto.diceroller.bus.events.OpposedCheckScreenRequestedEvent;
 import com.callisto.diceroller.fragments.BaseFragment;
 import com.callisto.diceroller.viewmanagers.FragmentNavigation;
 import com.callisto.diceroller.viewmanagers.MainActivityNavigation;
@@ -39,5 +40,11 @@ public class MainActivityPresenter
                 event.getFont(),
                 event.getCharacterName()
         );
+    }
+
+    @Subscribe
+    public void loadOpposedCheckScreen(OpposedCheckScreenRequestedEvent event)
+    {
+        view.loadOpposedCheckScreen();
     }
 }

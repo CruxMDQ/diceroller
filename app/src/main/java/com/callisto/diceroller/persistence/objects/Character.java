@@ -13,7 +13,7 @@ public class Character
     private long id;
     private String name;
     private Template template;
-    private RealmList<Stat> stats;
+    private RealmList<Stat> stats = new RealmList<>();
 
     public Character() {}
 
@@ -31,6 +31,32 @@ public class Character
     public void setStats(RealmList<Stat> stats)
     {
         this.stats = stats;
+    }
+
+    public Character addStat(Stat stat)
+    {
+        stats.add(stat);
+
+        return this;
+    }
+
+    public Stat getStatByName(String name)
+    {
+        for (Stat stat : getStats())
+        {
+            if (stat.getName().equals(name))
+            {
+                return stat;
+            }
+        }
+        return null;
+//        return this.getStats()
+//            .where()
+//            .contains(
+//                NAME.getText(),
+//                name
+//            )
+//            .findFirst();
     }
 
     public long getId()
