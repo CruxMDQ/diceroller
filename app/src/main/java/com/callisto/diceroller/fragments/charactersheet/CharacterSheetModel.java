@@ -7,7 +7,6 @@ import com.callisto.diceroller.bus.BusProvider;
 import com.callisto.diceroller.bus.events.DerivedStatUpdatedEvent;
 import com.callisto.diceroller.bus.events.StatChangedEvent;
 import com.callisto.diceroller.model.DiceRoller;
-import com.callisto.diceroller.model.RulesBuilder;
 import com.callisto.diceroller.persistence.RealmHelper;
 import com.callisto.diceroller.persistence.objects.Character;
 import com.callisto.diceroller.persistence.objects.Stat;
@@ -53,16 +52,16 @@ public class CharacterSheetModel
 
         activeCharacter = RealmHelper.getInstance().get(Character.class, characterName);
 
-        if (activeCharacter == null)
-        {
-            RealmList<Stat> statistics = RulesBuilder.generateEmptyStatList();
-
-            activeCharacter = new Character(characterName, statistics);
-
-            activeCharacter.setId(RealmHelper.getInstance().getLastId(Character.class));
-
-            persistChanges();
-        }
+//        if (activeCharacter == null)
+//        {
+//            RealmList<Stat> statistics = RulesBuilder.generateEmptyStatList();
+//
+//            activeCharacter = new Character(characterName, statistics);
+//
+//            activeCharacter.setId(RealmHelper.getInstance().getLastId(Character.class));
+//
+//            persistChanges();
+//        }
     }
 
     static CharacterSheetModel newInstance(String characterName, CharacterSheetPresenter presenter)

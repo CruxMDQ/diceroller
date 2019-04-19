@@ -1,11 +1,14 @@
 package com.callisto.diceroller.fragments.characterlist;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,14 +21,17 @@ import android.widget.Toast;
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.application.App;
 import com.callisto.diceroller.fragments.BaseFragment;
+import com.callisto.diceroller.fragments.adapters.CharacterGridAdapter;
+import com.callisto.diceroller.fragments.adapters.SelectionHidingAdapter;
 import com.callisto.diceroller.persistence.objects.Character;
 import com.callisto.diceroller.persistence.objects.Template;
+import com.callisto.diceroller.tools.Constants;
+import com.callisto.diceroller.tools.TypefaceSpanBuilder;
 
 import java.util.List;
 
 public class CharacterListFragment
     extends BaseFragment
-    implements CharacterListView
 {
     CharacterListPresenter presenter;
 
@@ -44,7 +50,6 @@ public class CharacterListFragment
     FloatingActionButton fabOpposedCheck;
     TextView labelOpposedCheck;
     LinearLayout panelOpposedCheck;
-
 
     private List<Character> characters;
 
@@ -68,7 +73,7 @@ public class CharacterListFragment
     {
         characters = presenter.getCharacters();
 
-        gv.setAdapter(new CharacterListAdapter(characters));
+        gv.setAdapter(new CharacterGridAdapter(characters));
     }
 
     private void setClickListenerOnGridView()
@@ -149,9 +154,26 @@ public class CharacterListFragment
             }
         });
 
-        fabNewCharacter.setOnClickListener(v -> spawnCharacterCreationDialog());
+        fabNewCharacter.setOnClickListener(v ->
+        {
+            spawnCharacterCreationDialog();
 
-        fabSettings.setOnClickListener(v -> invokeSettingsScreen());
+            closeFABMenu();
+        });
+
+        fabSettings.setOnClickListener(v ->
+        {
+            invokeSettingsScreen();
+
+            closeFABMenu();
+        });
+
+        fabOpposedCheck.setOnClickListener(v ->
+        {
+            presenter.requestOpposedCheckFragment();
+
+            closeFABMenu();
+        });
     }
 
     private void invokeSettingsScreen()
@@ -169,6 +191,7 @@ public class CharacterListFragment
         final Template[] template = new Template[1];
 
         // Set dialog view
+        @SuppressLint("InflateParams")
         final View view = getLayoutInflater().inflate(R.layout.dialog_character_create, null);
         dialogBuilder.setView(view);
 
@@ -177,7 +200,43 @@ public class CharacterListFragment
         Spinner pickerTemplate = view.findViewById(R.id.pickerTemplate);
         Button btnCreate = view.findViewById(R.id.btnCreate);
 
-        TemplateAdapter templateAdapter = new TemplateAdapter();
+        SelectionHidingAdapter<Template> templateAdapter =
+            new SelectionHidingAdapter<Template>(presenter.getTemplates())
+        {
+            @Override
+            public long getItemId(int position)
+            {
+                return ((Template) getItem(position)).getId();
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent)
+            {
+                Template template = (Template) getItem(position);
+
+                if (convertView == null)
+                {
+                    convertView = LayoutInflater
+                        .from(App.getInstance().getApplicationContext())
+                        .inflate(R.layout.spinner_item, parent, false
+                        );
+
+                    TextView name = convertView.findViewById(R.id.text1);
+
+                    if (template != null)
+                    {
+                        TypefaceSpanBuilder.setTypefacedTitle(
+                            name,
+                            template.getName(),
+                            template.getFont(),
+                            Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
+                        );
+                    }
+                }
+
+                return convertView;
+            }
+        };
 
         pickerTemplate.setAdapter(templateAdapter);
 
@@ -196,14 +255,11 @@ public class CharacterListFragment
 
                 templateAdapter.clearSelection();
 
-                templateAdapter.addSelection(position);
+                templateAdapter.addOrRemoveSelection(position);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
 
         // Store dialog reference to later be able to dismiss it

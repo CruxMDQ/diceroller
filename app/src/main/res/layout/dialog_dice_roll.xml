@@ -18,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/label_dice_pool"
+            android:layout_margin="@dimen/margin_tiny"
             />
 
         <TextView
@@ -25,6 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_margin="@dimen/margin_tiny"
             />
     </LinearLayout>
 
@@ -39,7 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/label_reroll_threshold" />
+            android:text="@string/label_reroll_threshold"
+            android:layout_margin="@dimen/margin_tiny"/>
 
         <EditText
             android:id="@+id/inputRerollThreshold"
@@ -47,8 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="number"
-            android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_margin="@dimen/margin_tiny"
             android:gravity="center"
             android:text="10"/>
     </LinearLayout>

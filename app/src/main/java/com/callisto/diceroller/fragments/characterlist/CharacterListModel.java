@@ -3,6 +3,7 @@ package com.callisto.diceroller.fragments.characterlist;
 import com.callisto.diceroller.model.RulesBuilder;
 import com.callisto.diceroller.persistence.RealmHelper;
 import com.callisto.diceroller.persistence.objects.Character;
+import com.callisto.diceroller.persistence.objects.Template;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,5 +31,10 @@ class CharacterListModel
     void createNewCharacter(String name, String template)
     {
         RulesBuilder.createNewCharacter(name, template);
+    }
+
+    List<Template> getTemplates()
+    {
+        return RealmHelper.getInstance().getList(Template.class);
     }
 }

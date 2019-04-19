@@ -7,5 +7,6 @@ public interface MainActivityNavigation {
         void setFragment(BaseFragment fragment, String tag);
         void loadCharacterList();
         void loadCharacterSheet(String text, String characterName);
+        void loadOpposedCheckScreen();
     }
 }

@@ -10,17 +10,12 @@ public class Template extends RealmObject
     private String name;
     private String font;
     private System system;
-    private RealmList<Stat> traits;
+    private RealmList<Stat> traits = new RealmList<>();
 
-    public Template()
-    {
-        this.traits = new RealmList<>();
-    }
+    public Template() {}
 
     public Template(long id, String name, String font, System system)
     {
-        this.traits = new RealmList<>();
-
         this.id = id;
         this.name = name;
         this.font = font;

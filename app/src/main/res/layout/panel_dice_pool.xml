@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_tiny"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:id="@+id/panelDicePool"
+    tools:showIn="@layout/layout_char_pool_threshold">
+
+    <TextView
+        android:id="@+id/lblDicePool"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/margin_tiny"
+        android:layout_marginStart="@dimen/margin_tiny"
+        android:gravity="center"
+        android:text="@string/label_dice_pool"
+        />
+
+    <TextView
+        android:id="@+id/txtDicePool"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_tiny"
+        android:layout_marginStart="@dimen/margin_tiny"
+        android:layout_weight="1"
+        android:text="@string/tooltop_tap_select_stat"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabClearStats"
+        android:layout_width="@dimen/fab_size_tiny"
+        android:layout_height="@dimen/fab_size_tiny"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:backgroundTint="@color/color_red_dark"
+        android:src="@android:drawable/ic_delete"
+        android:tint="@color/color_white"
+        app:fabCustomSize="@dimen/fab_size_tiny"
+        />
+</LinearLayout>
+
+        

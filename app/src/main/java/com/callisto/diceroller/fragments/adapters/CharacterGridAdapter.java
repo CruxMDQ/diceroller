@@ -1,10 +1,9 @@
-package com.callisto.diceroller.fragments.characterlist;
+package com.callisto.diceroller.fragments.adapters;
 
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.callisto.diceroller.R;
@@ -13,26 +12,12 @@ import com.callisto.diceroller.persistence.objects.Character;
 
 import java.util.List;
 
-public class CharacterListAdapter
-    extends BaseAdapter
+public class CharacterGridAdapter
+    extends CustomAdapter
 {
-    private List<Character> characters;
-
-    CharacterListAdapter(@NonNull List<Character> objects)
+    public CharacterGridAdapter(@NonNull List<Character> objects)
     {
-        this.characters = objects;
-    }
-
-    @Override
-    public int getCount()
-    {
-        return characters.size();
-    }
-
-    @Override
-    public Object getItem(int position)
-    {
-        return characters.get(position);
+        super(objects);
     }
 
     @Override
@@ -58,13 +43,11 @@ public class CharacterListAdapter
                 .inflate(R.layout.grid_view_item, parent, false);
 
             TextView name = convertView.findViewById(R.id.txtName);
-//            TextView template = convertView.findViewById(R.id.txtTemplate);
 
             if (character != null)
             {
                 name.setText(character.getName());
             }
-//            template.setText(character.getTemplate());
 
         }
         return convertView;

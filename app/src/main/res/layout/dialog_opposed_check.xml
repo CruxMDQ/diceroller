@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/fragmentPerformer"
+        android:name="com.callisto.diceroller.fragments.contestedcheck.CharacterContestFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:tag="@string/tag_fragment_performer"/>
+
+    <fragment
+        android:id="@+id/fragmentOpponent"
+        android:name="com.callisto.diceroller.fragments.contestedcheck.CharacterContestFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:tag="@string/tag_fragment_opponent"/>
+
+    <Button
+        android:id="@+id/btnDoOpposedCheck"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_btn_roll"
+        />
+</LinearLayout>
