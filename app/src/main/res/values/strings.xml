@@ -63,4 +63,5 @@
     <string name="label_check_subtype">Subtype:</string>
     <string name="label_attack_type">Attack type:</string>
     <string name="tooltop_tap_select_stat">Tap to select stat</string>
+    <string name="label_start_combat">Start combat</string>
 </resources>

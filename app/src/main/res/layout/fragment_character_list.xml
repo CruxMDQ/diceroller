@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:numColumns="3"
             android:verticalSpacing="@dimen/margin_small"
+            android:gravity="center"
             />
 
     </LinearLayout>
@@ -81,8 +82,8 @@
             android:layout_width="@dimen/fab_size_small"
             android:layout_height="@dimen/fab_size_small"
             android:layout_margin="@dimen/margin_fab_small"
-            android:backgroundTint="@color/color_blue_dark"
             android:src="@drawable/ic_wrench"
+            android:backgroundTint="@color/color_blue_dark"
             android:tint="@color/color_white"
             app:fabCustomSize="@dimen/fab_size_small"
             />
@@ -110,6 +111,32 @@
             android:layout_margin="@dimen/margin_fab_small"
             android:src="@drawable/ic_fight"
             android:tint="@android:color/white"
+            app:fabCustomSize="@dimen/fab_size_small"
+            />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/panelCombat"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="bottom|end"
+                  android:orientation="horizontal"
+                  android:visibility="gone">
+
+        <TextView
+            android:id="@+id/labelCombat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/label_start_combat"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabCombat"
+            android:layout_width="@dimen/fab_size_small"
+            android:layout_height="@dimen/fab_size_small"
+            android:layout_margin="@dimen/margin_fab_small"
+            android:src="@drawable/ic_swords_crossed"
+            android:backgroundTint="@color/color_white"
+            android:tint="@color/color_red_dark"
             app:fabCustomSize="@dimen/fab_size_small"
             />
     </LinearLayout>

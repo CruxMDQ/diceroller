@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.application.App;
 import com.callisto.diceroller.persistence.objects.Character;
+import com.callisto.diceroller.tools.Constants;
+import com.callisto.diceroller.tools.TypefaceSpanBuilder;
 
 import java.util.List;
 
@@ -46,7 +48,13 @@ public class CharacterGridAdapter
 
             if (character != null)
             {
-                name.setText(character.getName());
+                TypefaceSpanBuilder.setTypefacedTitle(
+                    name,
+                    character.getName(),
+                    character.getTemplate().getFont(),
+                    Constants.Values.STAT_CONTAINER_FONT_TITLE.getValue()
+                );
+//                name.setText(character.getName());
             }
 
         }

@@ -12,6 +12,7 @@
     <dimen name="fab_offset_1">55dp</dimen>
     <dimen name="fab_offset_2">105dp</dimen>
     <dimen name="fab_offset_3">155dp</dimen>
+    <dimen name="fab_offset_4">205dp</dimen>
     <dimen name="margin_fab_small">13dp</dimen>
     <dimen name="fab_size_tiny">30dp</dimen>
     <dimen name="fab_size_small">45dp</dimen>

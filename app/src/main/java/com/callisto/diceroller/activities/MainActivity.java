@@ -13,16 +13,21 @@ import com.callisto.diceroller.R;
 import com.callisto.diceroller.fragments.BaseFragment;
 import com.callisto.diceroller.fragments.characterlist.CharacterListFragment;
 import com.callisto.diceroller.fragments.charactersheet.CharacterSheetFragment;
+import com.callisto.diceroller.fragments.combat.CombatFragment;
 import com.callisto.diceroller.fragments.contestedcheck.OpposedCheckFragment;
+import com.callisto.diceroller.persistence.objects.Character;
 import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.viewmanagers.MainActivityNavigation;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 import static com.callisto.diceroller.tools.Constants.FragmentTags.TAG_FRAGMENT_CHAR_LIST;
 import static com.callisto.diceroller.tools.Constants.FragmentTags.TAG_FRAGMENT_CHAR_SHEET;
+import static com.callisto.diceroller.tools.Constants.FragmentTags.TAG_FRAGMENT_COMBAT;
 import static com.callisto.diceroller.tools.Constants.FragmentTags.TAG_FRAGMENT_OPPOSED_CHECK;
 
 public class MainActivity
@@ -34,6 +39,8 @@ public class MainActivity
     CharacterSheetFragment characterSheet;
 
     OpposedCheckFragment opposedCheckScreen;
+
+    CombatFragment combatFragment;
 
     private MainActivityPresenter presenter;
 
@@ -155,5 +162,35 @@ public class MainActivity
         }
 
         setFragment(opposedCheckScreen, tag);
+    }
+
+    @Override
+    public void loadCombatScreen(List<Character> selectedCharacters)
+    {
+        String tag = TAG_FRAGMENT_COMBAT.getText();
+
+        if (combatFragment == null)
+        {
+            combatFragment = new CombatFragment();
+        }
+
+        Bundle args = new Bundle();
+
+        ArrayList<Integer> characterIds = new ArrayList<>();
+
+        for (Character character : selectedCharacters)
+        {
+            characterIds.add(Math.toIntExact(character.getId()));
+        }
+
+        args.putIntegerArrayList
+        (
+            Constants.Parameters.SELECTED_CHARACTERS.getText(),
+            characterIds
+        );
+
+        Objects.requireNonNull(combatFragment).setArguments(args);
+
+        setFragment(combatFragment, tag);
     }
 }

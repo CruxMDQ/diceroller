@@ -21,7 +21,10 @@
     android:orientation="vertical"
     android:paddingEnd="@dimen/margin_small"
     android:paddingStart="@dimen/margin_small"
-    android:id="@+id/panelItem">
+    android:id="@+id/panelItem"
+    android:minHeight="120dp"
+    android:gravity="center_vertical"
+    >
 
     <TextView
         android:id="@+id/txtName"

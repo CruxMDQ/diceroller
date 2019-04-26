@@ -82,7 +82,8 @@ public class Constants
         CHECK_SUBTYPE_COMBAT_THROWN("Thrown"),
         FONT("font"),
         STAT_ID("statId"),
-        STAT_NAME("statname");
+        STAT_NAME("statname"),
+        SELECTED_CHARACTERS("selected characters");
 
         private String text;
 
@@ -103,6 +104,7 @@ public class Constants
         TAG_FRAGMENT_CHAR_SHEET("sheet"),
         TAG_FRAGMENT_DIALOG_STAT_EDIT("edit stat"),
         TAG_FRAGMENT_OPPOSED_CHECK("opposed check"),
+        TAG_FRAGMENT_COMBAT("combat"),
         TAG_FRAGMENT_OPPOSED_CHECK_PERFORMER("performer"),
         TAG_FRAGMENT_OPPOSED_CHECK_OPPONENT("opponent");
         private String text;
@@ -431,7 +433,8 @@ public class Constants
         ICON_FEATHER_PEN("Designed by EpicCoders from www.flaticon.com"),
         ICON_D10("Designed by Skoll from www.game-icons.net"),
         ICON_D20("Designed by Skoll from www.game-icons.net"),
-        ICON_WRENCH("Designed by Dave Grandy from www.flaticon.com");
+        ICON_WRENCH("Designed by Dave Grandy from www.flaticon.com"),
+        ICON_SWORDS_CROSSED("Designed by Freepik from www.flaticon.com");
 
         private String text;
 

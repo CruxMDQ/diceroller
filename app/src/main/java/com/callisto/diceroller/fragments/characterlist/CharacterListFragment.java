@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import com.callisto.diceroller.persistence.objects.Template;
 import com.callisto.diceroller.tools.Constants;
 import com.callisto.diceroller.tools.TypefaceSpanBuilder;
 
-import java.util.List;
+import static com.callisto.diceroller.application.App.getInstance;
 
 public class CharacterListFragment
     extends BaseFragment
@@ -51,9 +52,12 @@ public class CharacterListFragment
     TextView labelOpposedCheck;
     LinearLayout panelOpposedCheck;
 
-    private List<Character> characters;
+    FloatingActionButton fabCombat;
+    TextView labelCombat;
+    LinearLayout panelCombat;
 
     private boolean isFABOpen;
+    private CharacterGridAdapter characterGridAdapter;
 
     @Override
     public void onViewCreated
@@ -67,22 +71,55 @@ public class CharacterListFragment
         bindGridView();
 
         setClickListenerOnGridView();
+
+        setLongClickListenerOnGridView();
     }
 
     private void bindGridView()
     {
-        characters = presenter.getCharacters();
+        characterGridAdapter = new CharacterGridAdapter(presenter.getCharacters());
 
-        gv.setAdapter(new CharacterGridAdapter(characters));
+        gv.setAdapter(characterGridAdapter);
     }
 
     private void setClickListenerOnGridView()
     {
         gv.setOnItemClickListener((parent, view, position, id) ->
         {
-            Character character = characters.get(position);
+            Character character = presenter.getCharacter(position);
 
             presenter.requestCharacterEditor(character.getName(), character.getTemplate().getFont());
+        });
+    }
+
+    private void setLongClickListenerOnGridView()
+    {
+        int color = ContextCompat
+            .getColor(getInstance().getApplicationContext(), R.color.color_red_light);
+        int white = ContextCompat
+            .getColor(getInstance().getApplicationContext(), android.R.color.white);
+
+        gv.setOnItemLongClickListener((parent, view, position, id) ->
+        {
+            Character item = (Character) characterGridAdapter.getItem(position);
+
+            presenter.addOrRemoveSelectedCharacter(item);
+
+            characterGridAdapter.addOrRemoveSelection(position);
+
+            LinearLayout panelItem = view.findViewById(R.id.panelItem);
+
+            if (presenter.getSelectedCharacters().contains(item))
+            {
+                panelItem.setBackgroundColor(color);
+            }
+            else
+            {
+                panelItem.setBackgroundColor(white);
+            }
+
+            // Is the event consumed here? If not, then other things may happen (e.g., normal click)
+            return true;
         });
     }
 
@@ -143,6 +180,10 @@ public class CharacterListFragment
         labelSettings = rootView.findViewById(R.id.labelSettings);
         panelSettings = rootView.findViewById(R.id.panelSettings);
 
+        fabCombat = rootView.findViewById(R.id.fabCombat);
+        labelCombat = rootView.findViewById(R.id.labelCombat);
+        panelCombat = rootView.findViewById(R.id.panelCombat);
+
         fabUnfold.setOnClickListener(v -> {
             if (!isFABOpen)
             {
@@ -171,6 +212,13 @@ public class CharacterListFragment
         fabOpposedCheck.setOnClickListener(v ->
         {
             presenter.requestOpposedCheckFragment();
+
+            closeFABMenu();
+        });
+
+        fabCombat.setOnClickListener(v ->
+        {
+            presenter.requestCombatFragment();
 
             closeFABMenu();
         });
@@ -262,7 +310,7 @@ public class CharacterListFragment
             public void onNothingSelected(AdapterView<?> parent) { }
         });
 
-        // Store dialog reference to later be able to dismiss it
+        // Store dialog reference to allow for dismissal later
         final AlertDialog dialog = dialogBuilder.show();
 
         btnCreate.setOnClickListener(view1 ->
@@ -295,6 +343,7 @@ public class CharacterListFragment
         panelSettings.animate().translationY(-App.getRes().getDimension(R.dimen.fab_offset_3));
         labelSettings.setVisibility(View.VISIBLE);
 
+        panelCombat.animate().translationY(-App.getRes().getDimension(R.dimen.fab_offset_4));
     }
 
     private void closeFABMenu()
@@ -309,5 +358,19 @@ public class CharacterListFragment
 
         panelSettings.animate().translationY(0);
         labelSettings.setVisibility(View.GONE);
+
+        panelCombat.animate().translationY(0);
+    }
+
+    public void checkIfCombatButtonShouldBeVisible(int selectedCharacters)
+    {
+        if (selectedCharacters > 1)
+        {
+            panelCombat.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            panelCombat.setVisibility(View.GONE);
+        }
     }
 }

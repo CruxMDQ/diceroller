@@ -179,7 +179,6 @@ public class CharacterContestFragment
                         name.setText(stat.getName());
                     }
 
-                    //noinspection SuspiciousMethodCalls
                     if (presenter.getSelectedStats().contains(stat))
                     {
                         panelItem.setBackgroundColor(color);
@@ -212,7 +211,9 @@ public class CharacterContestFragment
 
         gvStats.setOnItemClickListener((parent, view1, position, id) ->
         {
-            presenter.addOrRemoveSelectedStat((Stat) gridAdapter.getItem(position));
+            Stat item = (Stat) gridAdapter.getItem(position);
+
+            presenter.addOrRemoveSelectedStat(item);
 
             gridAdapter.addOrRemoveSelection(position);
 
@@ -221,8 +222,7 @@ public class CharacterContestFragment
 
             LinearLayout panelItem = view1.findViewById(R.id.panelItem);
 
-            //noinspection SuspiciousMethodCalls
-            if (presenter.getSelectedStats().contains(gridAdapter.getItem(position)))
+            if (presenter.getSelectedStats().contains(item))
             {
                 panelItem.setBackgroundColor(color);
             }

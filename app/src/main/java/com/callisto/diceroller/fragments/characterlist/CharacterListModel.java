@@ -12,12 +12,12 @@ import io.realm.RealmResults;
 
 class CharacterListModel
 {
-    private List<Character> characters;
+    private List<Character> characters = new ArrayList<>();
+
+    private List<Character> selectedCharacters = new ArrayList<>();
 
     CharacterListModel()
     {
-        this.characters = new ArrayList<>();
-
         RealmResults<Character> list = RealmHelper.getInstance().getList(Character.class);
 
         characters.addAll(list);
@@ -28,6 +28,11 @@ class CharacterListModel
         return characters;
     }
 
+    List<Character> getSelectedCharacters()
+    {
+        return selectedCharacters;
+    }
+
     void createNewCharacter(String name, String template)
     {
         RulesBuilder.createNewCharacter(name, template);
@@ -36,5 +41,17 @@ class CharacterListModel
     List<Template> getTemplates()
     {
         return RealmHelper.getInstance().getList(Template.class);
+    }
+
+    void addOrRemoveSelectedCharacter(Character character)
+    {
+        if (!selectedCharacters.contains(character))
+        {
+            selectedCharacters.add(character);
+        }
+        else
+        {
+            selectedCharacters.remove(character);
+        }
     }
 }

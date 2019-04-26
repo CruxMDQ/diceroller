@@ -1,10 +1,18 @@
 package com.callisto.diceroller.fragments.combat;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.callisto.diceroller.R;
 import com.callisto.diceroller.fragments.BaseFragment;
+import com.callisto.diceroller.tools.Constants;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class CombatFragment
     extends BaseFragment
@@ -14,6 +22,8 @@ public class CombatFragment
     private String selectedCheckType;
 
     private Spinner pickerRollType, pickerRollSubtype;
+
+    CombatPresenter presenter;
 
     @Override
     protected int getLayout()
@@ -30,6 +40,28 @@ public class CombatFragment
         panelRollSubtype = rootView.findViewById(R.id.panelRollSubtype);
     }
 
+    @Override
+    public void onViewCreated
+        (@NonNull android.view.View view,
+         @Nullable Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+
+        ArrayList<Integer> characterIds =
+            Objects.requireNonNull(getArguments()).getIntegerArrayList
+            (
+                Constants.Parameters.SELECTED_CHARACTERS.getText()
+            );
+
+        if (Objects.requireNonNull(characterIds).size() > 0)
+        {
+            presenter = new CombatPresenter(this, characterIds);
+
+            Toast.makeText(getContext(),
+                "Character ID: " + characterIds.get(0),
+                Toast.LENGTH_SHORT).show();
+        }
+    }
 //    private void setUpCharacterPickerAdapters()
 //    {
 //        if (selectedCheckType.equals(CHECK_TYPE_COMBAT.getText()))
