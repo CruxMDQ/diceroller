@@ -931,7 +931,7 @@ public class RulesBuilder
         Stat stamina = character.getStatByName(STAMINA.getText());
         Stat composure = character.getStatByName(COMPOSURE.getText());
         Stat defense = character.getStatByName(DEFENSE.getText());
-        Stat health = character.getStatByName(DEFENSE.getText());
+        Stat health = character.getStatByName(HEALTH.getText());
         Stat initiative = character.getStatByName(INITIATIVE.getText());
         Stat size = character.getStatByName(SIZE.getText());
         Stat speed = character.getStatByName(SPEED.getText());
